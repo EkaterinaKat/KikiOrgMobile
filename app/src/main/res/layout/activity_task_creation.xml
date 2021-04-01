@@ -2,30 +2,37 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:gravity="center"
     android:orientation="vertical">
 
-    <EditText
-        android:id="@+id/title_field"
-        android:hint="title"
-        android:inputType="text"
-        android:gravity="center"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+    <!-- Общие настройки -->
 
     <EditText
-        android:id="@+id/desc_field"
+        android:id="@+id/title_edit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:hint="title"
+        android:inputType="text" />
+
+    <EditText
+        android:id="@+id/desc_edit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
         android:hint="description"
         android:inputType="textMultiLine"
-        android:lines="3"
-        android:gravity="center"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:lines="3" />
 
     <Spinner
-        android:id="@+id/regularity_spinner"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-    </Spinner>
+        android:id="@+id/task_type_spinner"
+        android:layout_width="130dp"
+        android:layout_height="wrap_content" />
 
+    <Button
+        android:id="@+id/save_task_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="save" />
 
 </LinearLayout>

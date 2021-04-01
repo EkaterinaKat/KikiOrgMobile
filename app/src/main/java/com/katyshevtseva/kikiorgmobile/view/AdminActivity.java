@@ -1,9 +1,10 @@
 package com.katyshevtseva.kikiorgmobile.view;
 
-import androidx.appcompat.app.AppCompatActivity;
-
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.kikiorgmobile.R;
 
@@ -20,5 +21,17 @@ public class AdminActivity extends AppCompatActivity {
                 finish();
             }
         });
+
+        findViewById(R.id.new_task_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openNewTaskActivity();
+            }
+        });
+    }
+
+    private void openNewTaskActivity() {
+        Intent intent = new Intent(this, TaskCreationActivity.class);
+        startActivity(intent);
     }
 }
