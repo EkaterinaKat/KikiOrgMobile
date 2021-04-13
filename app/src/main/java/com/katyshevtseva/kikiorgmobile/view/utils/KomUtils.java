@@ -7,10 +7,13 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class KomUtils {
@@ -33,6 +36,12 @@ public class KomUtils {
     @FunctionalInterface
     public interface SpinnerListener {
         void execute(String selectedItem);
+    }
+
+    public static Date getDateByDatePicker(DatePicker datePicker) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(datePicker.getYear(), datePicker.getMonth(), datePicker.getDayOfMonth());
+        return calendar.getTime();
     }
 
     public static void associateButtonWithControls(final Button button, final View... views) {

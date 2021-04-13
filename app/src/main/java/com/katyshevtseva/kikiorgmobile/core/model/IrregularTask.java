@@ -9,10 +9,6 @@ public class IrregularTask {
     private Date date;
     private boolean done;
 
-    public IrregularTask() {
-        done = false;
-    }
-
     public void setId(long id) {
         this.id = id;
     }
@@ -49,6 +45,10 @@ public class IrregularTask {
         return done;
     }
 
+    public void setDone(boolean done) {
+        this.done = done;
+    }
+
     @Override
     public String toString() {
         return "IrregularTask{" +
@@ -56,6 +56,7 @@ public class IrregularTask {
                 ", title='" + title + '\'' +
                 ", desc='" + desc + '\'' +
                 ", date=" + date +
+                ", done=" + done +
                 '}';
     }
 }

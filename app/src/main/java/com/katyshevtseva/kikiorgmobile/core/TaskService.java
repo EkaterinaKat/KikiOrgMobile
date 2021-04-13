@@ -3,14 +3,17 @@ package com.katyshevtseva.kikiorgmobile.core;
 
 import com.katyshevtseva.kikiorgmobile.core.model.IrregularTask;
 
+import java.util.Date;
+
 
 public class TaskService {
 
-    public void saveNewTask(String type, String title, String desc) {
+    public void saveNewIrregularTask(String title, String desc, Date date) {
         IrregularTask task = new IrregularTask();
         task.setTitle(title);
         task.setDesc(desc);
-        System.out.println("type: " + type);
-        System.out.println("save new task: " + task);
+        task.setDate(date);
+        task.setDone(false);
+        System.out.println(task);
     }
 }

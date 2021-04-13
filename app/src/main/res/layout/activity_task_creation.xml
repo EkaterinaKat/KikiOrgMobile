@@ -29,6 +29,26 @@
         android:layout_width="130dp"
         android:layout_height="wrap_content" />
 
+    <!-- Настройки нерегулярных задач -->
+
+    <LinearLayout
+        android:id="@+id/irregular_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:animateLayoutChanges="true"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <DatePicker
+            android:id="@+id/irregular_date_picker"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:calendarViewShown="false"
+            android:gravity="center" />
+
+    </LinearLayout>
+
+
     <Button
         android:id="@+id/save_task_button"
         android:layout_width="match_parent"
