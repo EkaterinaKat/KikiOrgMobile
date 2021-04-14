@@ -9,6 +9,17 @@ public class IrregularTask {
     private Date date;
     private boolean done;
 
+    public IrregularTask(long id, String title, String desc, Date date, boolean done) {
+        this.id = id;
+        this.title = title;
+        this.desc = desc;
+        this.date = date;
+        this.done = done;
+    }
+
+    public IrregularTask() {
+    }
+
     public void setId(long id) {
         this.id = id;
     }

@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.kikiorgmobile.R;
 import com.katyshevtseva.kikiorgmobile.core.Core;
+import com.katyshevtseva.kikiorgmobile.core.TaskService;
 import com.katyshevtseva.kikiorgmobile.view.utils.KomUtils;
 import com.katyshevtseva.kikiorgmobile.view.utils.KomUtils.SpinnerListener;
 
@@ -19,6 +20,8 @@ import static com.katyshevtseva.kikiorgmobile.view.utils.KomUtils.adjustSpinner;
 import static com.katyshevtseva.kikiorgmobile.view.utils.KomUtils.associateButtonWithControls;
 
 public class TaskCreationActivity extends AppCompatActivity {
+    private TaskService taskService;
+
     private static final String REGULAR_STRING = "regular";
     private static final String IRREGULAR_STRING = "irregular";
     private static final String[] taskTypes = {"", REGULAR_STRING, IRREGULAR_STRING};
@@ -37,6 +40,7 @@ public class TaskCreationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task_creation);
 
+        taskService = Core.getTaskService(this);
         initializeControls();
         associateButtonWithControls(doneButton, titleEdit, descEdit);
         adjustSpinner(this, typeSpinner, taskTypes, typeSpinnerListener);
@@ -62,7 +66,7 @@ public class TaskCreationActivity extends AppCompatActivity {
             case REGULAR_STRING:
                 break;
             case IRREGULAR_STRING:
-                Core.getInstance().taskService().saveNewIrregularTask(
+                taskService.saveNewIrregularTask(
                         titleEdit.getText().toString(),
                         descEdit.getText().toString(),
                         KomUtils.getDateByDatePicker(irregularDatePicker)

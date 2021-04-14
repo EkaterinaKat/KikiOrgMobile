@@ -11,7 +11,7 @@
         android:layout_alignParentTop="true">
 
         <LinearLayout
-            android:id="@+id/linear_layout"
+            android:id="@+id/task_pane"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
@@ -28,21 +28,21 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="prev"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:text="prev" />
 
         <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Admin"
             android:id="@+id/admin_button"
-            android:layout_weight="1"/>
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Admin" />
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="next"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:text="next" />
     </LinearLayout>
 
 

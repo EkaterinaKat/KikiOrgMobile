@@ -1,18 +1,12 @@
 package com.katyshevtseva.kikiorgmobile.core;
 
+import android.content.Context;
+
+import com.katyshevtseva.kikiorgmobile.db.IrregularTaskDaoImpl;
+
 public class Core {
-    private static final Core INSTANCE = new Core();
-    private TaskService taskService = new TaskService();
 
-    private Core() {
-
-    }
-
-    public static Core getInstance() {
-        return INSTANCE;
-    }
-
-    public TaskService taskService() {
-        return taskService;
+    public static TaskService getTaskService(Context context) {
+        return new TaskService(new IrregularTaskDaoImpl(context));
     }
 }
