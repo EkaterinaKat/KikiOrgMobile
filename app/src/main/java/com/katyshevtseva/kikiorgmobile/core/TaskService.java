@@ -24,6 +24,10 @@ public class TaskService {
         irregularTaskDao.saveNewIrregularTask(task);
     }
 
+    public void saveNewDayPeriodTask(String title, String desc, Date startingDate, int period) {
+        System.out.println(title + " " + desc + " " + startingDate + " " + period);
+    }
+
     public List<IrregularTask> getAllIrregularTasks() {
         return irregularTaskDao.getAllIrregularTasks();
     }

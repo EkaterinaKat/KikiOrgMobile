@@ -20,4 +20,13 @@ public abstract class CoreUtils {
         }
         return null;
     }
+
+    public static boolean isDate(String s) {
+        try {
+            DATE_FORMAT.parse(s);
+            return true;
+        } catch (ParseException e) {
+            return false;
+        }
+    }
 }

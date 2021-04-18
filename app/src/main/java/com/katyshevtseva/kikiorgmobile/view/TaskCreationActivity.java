@@ -15,12 +15,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.kikiorgmobile.R;
 import com.katyshevtseva.kikiorgmobile.core.Core;
 import com.katyshevtseva.kikiorgmobile.core.TaskService;
+import com.katyshevtseva.kikiorgmobile.view.utils.KomUtils;
 import com.katyshevtseva.kikiorgmobile.view.utils.KomUtils.SpinnerListener;
 
 import static com.katyshevtseva.kikiorgmobile.core.CoreUtils.getDateByString;
 import static com.katyshevtseva.kikiorgmobile.core.CoreUtils.getDateString;
+import static com.katyshevtseva.kikiorgmobile.core.CoreUtils.isDate;
 import static com.katyshevtseva.kikiorgmobile.view.utils.KomUtils.adjustSpinner;
 import static com.katyshevtseva.kikiorgmobile.view.utils.KomUtils.isEmpty;
+import static com.katyshevtseva.kikiorgmobile.view.utils.KomUtils.setEditTextListener;
 
 public class TaskCreationActivity extends AppCompatActivity {
     private TaskService taskService;
@@ -46,6 +49,10 @@ public class TaskCreationActivity extends AppCompatActivity {
     private LinearLayout regularLayout;
     private Spinner periodTypeSpinner;
 
+    private LinearLayout dayPeriodLayout;
+    private EditText dayPeriodEditText;
+    private TextView dayPeriodDateTextView;
+
     private Button doneButton;
 
     @Override
@@ -67,7 +74,19 @@ public class TaskCreationActivity extends AppCompatActivity {
         irregularDateTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                openDatePicker();
+                openDatePicker(irregularDateTextView);
+            }
+        });
+        dayPeriodDateTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openDatePicker(dayPeriodDateTextView);
+            }
+        });
+        setEditTextListener(dayPeriodEditText, new KomUtils.EditTextListener() {
+            @Override
+            public void run(String text) {
+                setDoneButtonAccessibility();
             }
         });
     }
@@ -81,14 +100,18 @@ public class TaskCreationActivity extends AppCompatActivity {
         irregularDateTextView = findViewById(R.id.irregular_date_text_view);
         regularLayout = findViewById(R.id.regular_task_layout);
         periodTypeSpinner = findViewById(R.id.period_type_spinner);
+        dayPeriodDateTextView = findViewById(R.id.day_period_date_text_view);
+        dayPeriodEditText = findViewById(R.id.day_period_edit_text);
+        dayPeriodLayout = findViewById(R.id.day_period_layout);
     }
 
-    public void openDatePicker() {
+    public void openDatePicker(final TextView textViewToChange) {
         DatePickerDialog datePickerDialog = new DatePickerDialog(this);
         datePickerDialog.setOnDateSetListener(new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker datePicker, int year, int month, int day) {
-                irregularDateTextView.setText(getDateString(year, month + 1, day));
+                textViewToChange.setText(getDateString(year, month + 1, day));
+                setDoneButtonAccessibility();
             }
         });
         datePickerDialog.show();
@@ -97,6 +120,20 @@ public class TaskCreationActivity extends AppCompatActivity {
     private void saveTask() {
         switch ((String) typeSpinner.getSelectedItem()) {
             case REGULAR_STRING:
+                switch ((String) periodTypeSpinner.getSelectedItem()) {
+                    case BY_DAY_STRING:
+                        taskService.saveNewDayPeriodTask(
+                                titleEdit.getText().toString(),
+                                descEdit.getText().toString(),
+                                getDateByString(dayPeriodDateTextView.getText().toString()),
+                                Integer.parseInt(dayPeriodEditText.getText().toString()));
+                        break;
+                    case BY_WEEK_STRING:
+                        break;
+                    case BY_MONTH_STRING:
+                        break;
+                    case BY_YEAR_STRING:
+                }
                 break;
             case IRREGULAR_STRING:
                 taskService.saveNewIrregularTask(
@@ -104,8 +141,8 @@ public class TaskCreationActivity extends AppCompatActivity {
                         descEdit.getText().toString(),
                         getDateByString(irregularDateTextView.getText().toString())
                 );
-                finish();
         }
+        finish();
     }
 
     private SpinnerListener typeSpinnerListener = new SpinnerListener() {
@@ -127,8 +164,10 @@ public class TaskCreationActivity extends AppCompatActivity {
     private SpinnerListener periodTypeSpinnerListener = new SpinnerListener() {
         @Override
         public void execute(String selectedItem) {
+            dayPeriodLayout.setVisibility(View.GONE);
             switch ((String) periodTypeSpinner.getSelectedItem()) {
                 case BY_DAY_STRING:
+                    dayPeriodLayout.setVisibility(View.VISIBLE);
                     break;
                 case BY_WEEK_STRING:
                     break;
@@ -152,6 +191,8 @@ public class TaskCreationActivity extends AppCompatActivity {
             case REGULAR_STRING:
                 switch ((String) periodTypeSpinner.getSelectedItem()) {
                     case BY_DAY_STRING:
+                        if (isEmpty(dayPeriodEditText) || !isDate(dayPeriodDateTextView.getText().toString()))
+                            doneButton.setEnabled(false);
                         break;
                     case BY_WEEK_STRING:
                         break;

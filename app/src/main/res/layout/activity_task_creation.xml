@@ -67,6 +67,33 @@
             android:layout_height="wrap_content"
             android:layout_margin="20dp" />
 
+        <LinearLayout
+            android:id="@+id/day_period_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:animateLayoutChanges="true"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <EditText
+                android:id="@+id/day_period_edit_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:hint="period"
+                android:inputType="number" />
+
+            <TextView
+                android:id="@+id/day_period_date_text_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:gravity="center"
+                android:text="Select starting date" />
+
+        </LinearLayout>
+
     </LinearLayout>
 
 

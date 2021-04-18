@@ -96,6 +96,29 @@ public class KomUtils {
     }
 
     public static boolean isEmpty(EditText editText) {
-        return editText.getText()==null || editText.getText().toString().trim().equals("");
+        return editText.getText() == null || editText.getText().toString().trim().equals("");
+    }
+
+    public static void setEditTextListener(final EditText editText, final EditTextListener listener) {
+        editText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                listener.run(editable.toString());
+            }
+        });
+    }
+
+    public interface EditTextListener {
+        void run(String text);
     }
 }
