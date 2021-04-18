@@ -94,4 +94,8 @@ public class KomUtils {
             button.setEnabled(enableButton);
         }
     }
+
+    public static boolean isEmpty(EditText editText) {
+        return editText.getText()==null || editText.getText().toString().trim().equals("");
+    }
 }
