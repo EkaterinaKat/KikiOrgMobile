@@ -1,5 +1,6 @@
 package com.katyshevtseva.kikiorgmobile.view;
 
+import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -7,15 +8,17 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.kikiorgmobile.R;
 import com.katyshevtseva.kikiorgmobile.core.Core;
 import com.katyshevtseva.kikiorgmobile.core.TaskService;
-import com.katyshevtseva.kikiorgmobile.view.utils.KomUtils;
 import com.katyshevtseva.kikiorgmobile.view.utils.KomUtils.SpinnerListener;
 
+import static com.katyshevtseva.kikiorgmobile.core.CoreUtils.getDateByString;
+import static com.katyshevtseva.kikiorgmobile.core.CoreUtils.getDateString;
 import static com.katyshevtseva.kikiorgmobile.view.utils.KomUtils.adjustSpinner;
 import static com.katyshevtseva.kikiorgmobile.view.utils.KomUtils.isEmpty;
 
@@ -38,7 +41,7 @@ public class TaskCreationActivity extends AppCompatActivity {
     private Spinner typeSpinner;
 
     private LinearLayout irregularLayout;
-    private DatePicker irregularDatePicker;
+    private TextView irregularDateTextView;
 
     private LinearLayout regularLayout;
     private Spinner periodTypeSpinner;
@@ -61,6 +64,12 @@ public class TaskCreationActivity extends AppCompatActivity {
                 saveTask();
             }
         });
+        irregularDateTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openDatePicker();
+            }
+        });
     }
 
     private void initializeControls() {
@@ -69,9 +78,20 @@ public class TaskCreationActivity extends AppCompatActivity {
         typeSpinner = findViewById(R.id.task_type_spinner);
         doneButton = findViewById(R.id.save_task_button);
         irregularLayout = findViewById(R.id.irregular_layout);
-        irregularDatePicker = findViewById(R.id.irregular_date_picker);
+        irregularDateTextView = findViewById(R.id.irregular_date_text_view);
         regularLayout = findViewById(R.id.regular_task_layout);
         periodTypeSpinner = findViewById(R.id.period_type_spinner);
+    }
+
+    public void openDatePicker() {
+        DatePickerDialog datePickerDialog = new DatePickerDialog(this);
+        datePickerDialog.setOnDateSetListener(new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+                irregularDateTextView.setText(getDateString(year, month + 1, day));
+            }
+        });
+        datePickerDialog.show();
     }
 
     private void saveTask() {
@@ -82,7 +102,7 @@ public class TaskCreationActivity extends AppCompatActivity {
                 taskService.saveNewIrregularTask(
                         titleEdit.getText().toString(),
                         descEdit.getText().toString(),
-                        KomUtils.getDateByDatePicker(irregularDatePicker)
+                        getDateByString(irregularDateTextView.getText().toString())
                 );
                 finish();
         }

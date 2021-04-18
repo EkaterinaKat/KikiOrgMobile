@@ -27,7 +27,8 @@
     <Spinner
         android:id="@+id/task_type_spinner"
         android:layout_width="200dp"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp" />
 
     <!-- Настройки нерегулярных задач -->
 
@@ -39,12 +40,13 @@
         android:orientation="vertical"
         android:visibility="gone">
 
-        <DatePicker
-            android:id="@+id/irregular_date_picker"
+        <TextView
+            android:id="@+id/irregular_date_text_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="20dp"
             android:gravity="center"
-            android:spinnersShown="false" />
+            android:text="Select date" />
 
     </LinearLayout>
 
@@ -62,7 +64,8 @@
         <Spinner
             android:id="@+id/period_type_spinner"
             android:layout_width="200dp"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp" />
 
     </LinearLayout>
 
@@ -71,6 +74,7 @@
         android:id="@+id/save_task_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="20dp"
         android:text="save" />
 
 </LinearLayout>
