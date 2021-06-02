@@ -7,10 +7,6 @@ public class RegularTaskDesc {
     private PeriodType periodType;
     private int period;
 
-    public enum PeriodType{
-        DAY, WEEK, MONTH, YEAR
-    }
-
     public RegularTaskDesc(long id, String title, String desc, PeriodType periodType, int period) {
         this.id = id;
         this.title = title;

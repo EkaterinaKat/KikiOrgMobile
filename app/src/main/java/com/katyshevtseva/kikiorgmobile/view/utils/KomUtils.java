@@ -17,14 +17,15 @@ import java.util.Date;
 import java.util.List;
 
 public class KomUtils {
-    public static void adjustSpinner(Context context, Spinner spinner, final String[] items, final SpinnerListener spinnerListener) {
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(context, android.R.layout.simple_spinner_item, items);
+    public static <T> void adjustSpinner(Context context, Spinner spinner,
+                                         final List<T> items, final SpinnerListener<T> spinnerListener) {
+        ArrayAdapter<T> adapter = new ArrayAdapter<>(context, android.R.layout.simple_spinner_item, items);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                spinnerListener.execute(items[position]);
+                spinnerListener.execute(items.get(position));
             }
 
             @Override
@@ -34,8 +35,8 @@ public class KomUtils {
     }
 
     @FunctionalInterface
-    public interface SpinnerListener {
-        void execute(String selectedItem);
+    public interface SpinnerListener<T> {
+        void execute(T selectedItem);
     }
 
     public static Date getDateByDatePicker(DatePicker datePicker) {

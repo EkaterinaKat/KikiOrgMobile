@@ -15,8 +15,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.kikiorgmobile.R;
 import com.katyshevtseva.kikiorgmobile.core.Core;
 import com.katyshevtseva.kikiorgmobile.core.TaskService;
+import com.katyshevtseva.kikiorgmobile.core.model.PeriodType;
+import com.katyshevtseva.kikiorgmobile.core.model.TaskType;
 import com.katyshevtseva.kikiorgmobile.view.utils.KomUtils;
 import com.katyshevtseva.kikiorgmobile.view.utils.KomUtils.SpinnerListener;
+
+import java.util.Arrays;
 
 import static com.katyshevtseva.kikiorgmobile.core.CoreUtils.getDateByString;
 import static com.katyshevtseva.kikiorgmobile.core.CoreUtils.getDateString;
@@ -27,17 +31,6 @@ import static com.katyshevtseva.kikiorgmobile.view.utils.KomUtils.setEditTextLis
 
 public class TaskCreationActivity extends AppCompatActivity {
     private TaskService taskService;
-
-    private static final String REGULAR_STRING = "regular";
-    private static final String IRREGULAR_STRING = "irregular";
-    private static final String[] taskTypes = {"", REGULAR_STRING, IRREGULAR_STRING};
-
-    private static final String BY_DAY_STRING = "by day";
-    private static final String BY_WEEK_STRING = "by week";
-    private static final String BY_MONTH_STRING = "by month";
-    private static final String BY_YEAR_STRING = "by year";
-    private static final String[] periodTypes = {"", BY_DAY_STRING, BY_WEEK_STRING, BY_MONTH_STRING, BY_YEAR_STRING};
-
 
     private EditText titleEdit;
     private EditText descEdit;
@@ -63,8 +56,8 @@ public class TaskCreationActivity extends AppCompatActivity {
         taskService = Core.getTaskService(this);
         initializeControls();
         setDoneButtonAccessibility();
-        adjustSpinner(this, typeSpinner, taskTypes, typeSpinnerListener);
-        adjustSpinner(this, periodTypeSpinner, periodTypes, periodTypeSpinnerListener);
+        adjustSpinner(this, typeSpinner, Arrays.asList(TaskType.values()), typeSpinnerListener);
+        adjustSpinner(this, periodTypeSpinner, Arrays.asList(PeriodType.values()), periodTypeSpinnerListener);
         doneButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -118,24 +111,24 @@ public class TaskCreationActivity extends AppCompatActivity {
     }
 
     private void saveTask() {
-        switch ((String) typeSpinner.getSelectedItem()) {
-            case REGULAR_STRING:
-                switch ((String) periodTypeSpinner.getSelectedItem()) {
-                    case BY_DAY_STRING:
+        switch ((TaskType) typeSpinner.getSelectedItem()) {
+            case REGULAR:
+                switch ((PeriodType) periodTypeSpinner.getSelectedItem()) {
+                    case DAY:
                         taskService.saveNewDayPeriodTask(
                                 titleEdit.getText().toString(),
                                 descEdit.getText().toString(),
                                 getDateByString(dayPeriodDateTextView.getText().toString()),
                                 Integer.parseInt(dayPeriodEditText.getText().toString()));
                         break;
-                    case BY_WEEK_STRING:
+                    case WEEK:
                         break;
-                    case BY_MONTH_STRING:
+                    case MONTH:
                         break;
-                    case BY_YEAR_STRING:
+                    case YEAR:
                 }
                 break;
-            case IRREGULAR_STRING:
+            case IRREGULAR:
                 taskService.saveNewIrregularTask(
                         titleEdit.getText().toString(),
                         descEdit.getText().toString(),
@@ -145,35 +138,35 @@ public class TaskCreationActivity extends AppCompatActivity {
         finish();
     }
 
-    private SpinnerListener typeSpinnerListener = new SpinnerListener() {
+    private SpinnerListener<TaskType> typeSpinnerListener = new SpinnerListener<TaskType>() {
         @Override
-        public void execute(String selectedItem) {
+        public void execute(TaskType selectedItem) {
             irregularLayout.setVisibility(View.GONE);
             regularLayout.setVisibility(View.GONE);
-            switch ((String) typeSpinner.getSelectedItem()) {
-                case REGULAR_STRING:
+            switch ((TaskType) typeSpinner.getSelectedItem()) {
+                case REGULAR:
                     regularLayout.setVisibility(View.VISIBLE);
                     break;
-                case IRREGULAR_STRING:
+                case IRREGULAR:
                     irregularLayout.setVisibility(View.VISIBLE);
             }
             setDoneButtonAccessibility();
         }
     };
 
-    private SpinnerListener periodTypeSpinnerListener = new SpinnerListener() {
+    private SpinnerListener<PeriodType> periodTypeSpinnerListener = new SpinnerListener<PeriodType>() {
         @Override
-        public void execute(String selectedItem) {
+        public void execute(PeriodType selectedItem) {
             dayPeriodLayout.setVisibility(View.GONE);
-            switch ((String) periodTypeSpinner.getSelectedItem()) {
-                case BY_DAY_STRING:
+            switch ((PeriodType) periodTypeSpinner.getSelectedItem()) {
+                case DAY:
                     dayPeriodLayout.setVisibility(View.VISIBLE);
                     break;
-                case BY_WEEK_STRING:
+                case WEEK:
                     break;
-                case BY_MONTH_STRING:
+                case MONTH:
                     break;
-                case BY_YEAR_STRING:
+                case YEAR:
             }
             setDoneButtonAccessibility();
         }
@@ -187,21 +180,21 @@ public class TaskCreationActivity extends AppCompatActivity {
             return;
         }
 
-        switch ((String) typeSpinner.getSelectedItem()) {
-            case REGULAR_STRING:
-                switch ((String) periodTypeSpinner.getSelectedItem()) {
-                    case BY_DAY_STRING:
+        switch ((TaskType) typeSpinner.getSelectedItem()) {
+            case REGULAR:
+                switch ((PeriodType) periodTypeSpinner.getSelectedItem()) {
+                    case DAY:
                         if (isEmpty(dayPeriodEditText) || !isDate(dayPeriodDateTextView.getText().toString()))
                             doneButton.setEnabled(false);
                         break;
-                    case BY_WEEK_STRING:
+                    case WEEK:
                         break;
-                    case BY_MONTH_STRING:
+                    case MONTH:
                         break;
-                    case BY_YEAR_STRING:
+                    case YEAR:
                 }
                 break;
-            case IRREGULAR_STRING:
+            case IRREGULAR:
 
         }
     }
