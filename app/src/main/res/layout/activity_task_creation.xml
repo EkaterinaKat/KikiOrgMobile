@@ -68,7 +68,7 @@
             android:layout_margin="20dp" />
 
         <TextView
-            android:id="@+id/ref_day_text_view"
+            android:id="@+id/ref_date_text_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="20dp"

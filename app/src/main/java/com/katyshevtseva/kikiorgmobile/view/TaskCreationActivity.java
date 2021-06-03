@@ -40,7 +40,7 @@ public class TaskCreationActivity extends AppCompatActivity {
     private LinearLayout regularLayout;
     private Spinner periodTypeSpinner;
     private EditText periodEditText;
-    private TextView refDayTextView;
+    private TextView refDateTextView;
     private Button doneButton;
 
     @Override
@@ -63,7 +63,7 @@ public class TaskCreationActivity extends AppCompatActivity {
         irregularDateTextView = findViewById(R.id.irregular_date_text_view);
         regularLayout = findViewById(R.id.regular_task_layout);
         periodTypeSpinner = findViewById(R.id.period_type_spinner);
-        refDayTextView = findViewById(R.id.ref_day_text_view);
+        refDateTextView = findViewById(R.id.ref_date_text_view);
         periodEditText = findViewById(R.id.period_edit_text);
     }
 
@@ -87,10 +87,10 @@ public class TaskCreationActivity extends AppCompatActivity {
                 openDatePicker(irregularDateTextView);
             }
         });
-        refDayTextView.setOnClickListener(new View.OnClickListener() {
+        refDateTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                openDatePicker(refDayTextView);
+                openDatePicker(refDateTextView);
             }
         });
         setEditTextListener(periodEditText, new EditTextListener() {
@@ -139,7 +139,7 @@ public class TaskCreationActivity extends AppCompatActivity {
                         titleEdit.getText().toString(),
                         descEdit.getText().toString(),
                         (PeriodType) periodTypeSpinner.getSelectedItem(),
-                        getDateByString(refDayTextView.getText().toString()),
+                        getDateByString(refDateTextView.getText().toString()),
                         Integer.parseInt(periodEditText.getText().toString()));
         }
         finish();
@@ -175,7 +175,7 @@ public class TaskCreationActivity extends AppCompatActivity {
                 break;
             case REGULAR:
                 doneButton.setEnabled(
-                        isDate(refDayTextView.getText().toString())
+                        isDate(refDateTextView.getText().toString())
                                 && !isEmpty(periodEditText)
                                 && !periodEditText.getText().toString().equals("0"));
         }
