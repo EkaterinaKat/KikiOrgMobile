@@ -12,4 +12,11 @@ public enum PeriodType {
     public int getCode() {
         return code;
     }
+
+    public static PeriodType findByCode(int code) {
+        for (PeriodType periodType : PeriodType.values())
+            if (periodType.code == code)
+                return periodType;
+        throw new RuntimeException();
+    }
 }

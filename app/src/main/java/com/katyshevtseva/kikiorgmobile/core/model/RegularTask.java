@@ -9,21 +9,23 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class IrregularTask {
+public class RegularTask {
     private long id;
     private String title;
     private String desc;
-    private Date date;
-    private boolean done;
+    private PeriodType periodType;
+    private Date refDate;
+    private int period;
 
     @Override
     public String toString() {
-        return "IrregularTask{" +
+        return "RegularTask{" +
                 "id=" + id +
                 ", title='" + title + '\'' +
                 ", desc='" + desc + '\'' +
-                ", date=" + date +
-                ", done=" + done +
+                ", periodType=" + periodType +
+                ", refDate=" + refDate +
+                ", period=" + period +
                 '}';
     }
 }

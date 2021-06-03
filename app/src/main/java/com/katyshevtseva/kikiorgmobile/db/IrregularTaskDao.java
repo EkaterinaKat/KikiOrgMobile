@@ -21,12 +21,12 @@ class IrregularTaskDao {
         this.database = database;
     }
 
-    void saveNewIrregularTask(IrregularTask irregularTask) {
+    void saveNew(IrregularTask irregularTask) {
         ContentValues values = getContentValues(irregularTask);
         database.insert(DbSchema.IrregularTaskTable.NAME, null, values);
     }
 
-    List<IrregularTask> getAllIrregularTasks() {
+    List<IrregularTask> findAll() {
         List<IrregularTask> tasks = new ArrayList<>();
         try (KomCursorWrapper cursor = getIrregularTaskCursor()) {
             cursor.moveToFirst();
@@ -38,7 +38,7 @@ class IrregularTaskDao {
         return tasks;
     }
 
-    void updateIrregularTask(IrregularTask irregularTask) {
+    void update(IrregularTask irregularTask) {
         ContentValues values = getContentValues(irregularTask);
         String selection = DbSchema.IrregularTaskTable.Cols.ID + " = ?";
         String[] selectionArgs = {"" + irregularTask.getId()};
@@ -49,7 +49,7 @@ class IrregularTaskDao {
                 selectionArgs);
     }
 
-    void deleteIrregularTask(IrregularTask irregularTask) {
+    void delete(IrregularTask irregularTask) {
         String selection = DbSchema.IrregularTaskTable.Cols.ID + " = ?";
         String[] selectionArgs = {"" + irregularTask.getId()};
         database.delete(DbSchema.IrregularTaskTable.NAME, selection, selectionArgs);
@@ -79,16 +79,15 @@ class IrregularTaskDao {
             int id = getInt(getColumnIndex(DbSchema.IrregularTaskTable.Cols.ID));
             String title = getString(getColumnIndex(DbSchema.IrregularTaskTable.Cols.TITLE));
             String desc = getString(getColumnIndex(DbSchema.IrregularTaskTable.Cols.DESC));
-            Date date = null;
+            Date date;
             try {
                 date = DATE_FORMAT.parse(getString(getColumnIndex(DbSchema.IrregularTaskTable.Cols.DATE)));
             } catch (ParseException e) {
-                e.printStackTrace();
+                throw new RuntimeException();
             }
-            boolean done = getInt(getColumnIndex(DbSchema.IrregularTaskTable.Cols.TITLE)) == 1;
+            boolean done = getInt(getColumnIndex(DbSchema.IrregularTaskTable.Cols.DONE)) == 1;
             return new IrregularTask(id, title, desc, date, done);
         }
 
     }
-
 }

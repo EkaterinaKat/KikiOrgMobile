@@ -12,6 +12,7 @@ import com.example.kikiorgmobile.R;
 import com.katyshevtseva.kikiorgmobile.core.Core;
 import com.katyshevtseva.kikiorgmobile.core.TaskService;
 import com.katyshevtseva.kikiorgmobile.core.model.IrregularTask;
+import com.katyshevtseva.kikiorgmobile.core.model.RegularTask;
 
 import java.util.List;
 
@@ -53,6 +54,12 @@ public class MainActivity extends AppCompatActivity {
         for (IrregularTask task : tasks) {
             TextView textView = new TextView(this);
             textView.setText(task.toString());
+            taskPane.addView(textView);
+        }
+        List<RegularTask> tasks1 = taskService.getAllRegularTasks();
+        for (RegularTask task1 : tasks1) {
+            TextView textView = new TextView(this);
+            textView.setText(task1.toString());
             taskPane.addView(textView);
         }
     }
