@@ -1,7 +1,7 @@
 package com.katyshevtseva.kikiorgmobile.core;
 
 
-import com.katyshevtseva.kikiorgmobile.core.dao.IrregularTaskDao;
+import com.katyshevtseva.kikiorgmobile.core.dao.KomDao;
 import com.katyshevtseva.kikiorgmobile.core.model.IrregularTask;
 import com.katyshevtseva.kikiorgmobile.core.model.PeriodType;
 
@@ -10,10 +10,10 @@ import java.util.List;
 
 
 public class TaskService {
-    private IrregularTaskDao irregularTaskDao;
+    private KomDao komDao;
 
-    TaskService(IrregularTaskDao irregularTaskDao) {
-        this.irregularTaskDao = irregularTaskDao;
+    TaskService(KomDao komDao) {
+        this.komDao = komDao;
     }
 
     public void saveNewIrregularTask(String title, String desc, Date date) {
@@ -22,7 +22,7 @@ public class TaskService {
         task.setDesc(desc);
         task.setDate(date);
         task.setDone(false);
-        irregularTaskDao.saveNewIrregularTask(task);
+        komDao.saveNewIrregularTask(task);
     }
 
     public void saveNewRegularTask(String title, String desc, PeriodType periodType, Date startingDate, int period) {
@@ -30,6 +30,6 @@ public class TaskService {
     }
 
     public List<IrregularTask> getAllIrregularTasks() {
-        return irregularTaskDao.getAllIrregularTasks();
+        return komDao.getAllIrregularTasks();
     }
 }
