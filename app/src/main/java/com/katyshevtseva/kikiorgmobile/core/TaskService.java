@@ -5,7 +5,9 @@ import com.katyshevtseva.kikiorgmobile.core.dao.KomDao;
 import com.katyshevtseva.kikiorgmobile.core.model.IrregularTask;
 import com.katyshevtseva.kikiorgmobile.core.model.PeriodType;
 import com.katyshevtseva.kikiorgmobile.core.model.RegularTask;
+import com.katyshevtseva.kikiorgmobile.core.model.Task;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -42,5 +44,12 @@ public class TaskService {
 
     public List<RegularTask> getAllRegularTasks() {
         return komDao.getAllRegularTasks();
+    }
+
+    public List<Task> getAllTasks() {
+        List<Task> tasks = new ArrayList<>();
+        tasks.addAll(komDao.getAllIrregularTasks());
+        tasks.addAll(komDao.getAllRegularTasks());
+        return tasks;
     }
 }

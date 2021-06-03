@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class IrregularTask {
+public class IrregularTask implements Task {
     private long id;
     private String title;
     private String desc;
