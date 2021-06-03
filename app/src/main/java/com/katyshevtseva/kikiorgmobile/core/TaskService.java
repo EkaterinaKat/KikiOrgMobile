@@ -3,6 +3,7 @@ package com.katyshevtseva.kikiorgmobile.core;
 
 import com.katyshevtseva.kikiorgmobile.core.dao.IrregularTaskDao;
 import com.katyshevtseva.kikiorgmobile.core.model.IrregularTask;
+import com.katyshevtseva.kikiorgmobile.core.model.PeriodType;
 
 import java.util.Date;
 import java.util.List;
@@ -24,7 +25,7 @@ public class TaskService {
         irregularTaskDao.saveNewIrregularTask(task);
     }
 
-    public void saveNewDayPeriodTask(String title, String desc, Date startingDate, int period) {
+    public void saveNewRegularTask(String title, String desc, PeriodType periodType, Date startingDate, int period) {
         System.out.println(title + " " + desc + " " + startingDate + " " + period);
     }
 
