@@ -28,4 +28,9 @@ public class RegularTask implements Task {
                 ", period=" + period +
                 '}';
     }
+
+    @Override
+    public TaskType getTaskType() {
+        return TaskType.REGULAR;
+    }
 }

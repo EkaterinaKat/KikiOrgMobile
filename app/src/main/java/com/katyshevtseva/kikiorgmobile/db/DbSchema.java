@@ -23,6 +23,7 @@ class DbSchema {
             static final String PERIOD_TYPE = "period_type";
             static final String REF_DATE = "ref_date";
             static final String PERIOD = "period";
+            static final String ARCHIVED = "archived";
         }
     }
 }

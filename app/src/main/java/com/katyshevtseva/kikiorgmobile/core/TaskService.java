@@ -38,15 +38,7 @@ public class TaskService {
         komDao.saveNewRegularTask(task);
     }
 
-    public List<IrregularTask> getAllIrregularTasks() {
-        return komDao.getAllIrregularTasks();
-    }
-
-    public List<RegularTask> getAllRegularTasks() {
-        return komDao.getAllRegularTasks();
-    }
-
-    public List<Task> getAllTasks() {
+    public List<Task> getAllNotArchivedTasks() {
         List<Task> tasks = new ArrayList<>();
         tasks.addAll(komDao.getAllIrregularTasks());
         tasks.addAll(komDao.getAllRegularTasks());

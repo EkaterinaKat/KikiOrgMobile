@@ -26,4 +26,9 @@ public class IrregularTask implements Task {
                 ", done=" + done +
                 '}';
     }
+
+    @Override
+    public TaskType getTaskType() {
+        return TaskType.IRREGULAR;
+    }
 }

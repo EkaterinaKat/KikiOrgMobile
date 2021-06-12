@@ -33,7 +33,7 @@ public class AdminActivity extends AppCompatActivity {
         });
         RecyclerView taskList = findViewById(R.id.task_list);
         taskList.setLayoutManager(new LinearLayoutManager(this));
-        taskList.setAdapter(new TaskRecycleViewHelper.TaskListAdapter(Core.getTaskService(this).getAllTasks(), this));
+        taskList.setAdapter(new TaskRecycleViewHelper.TaskListAdapter(Core.getTaskService(this).getAllNotArchivedTasks(), this));
     }
 
     private void openNewTaskActivity() {

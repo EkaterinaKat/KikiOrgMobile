@@ -8,7 +8,7 @@ import com.katyshevtseva.kikiorgmobile.db.DbSchema.IrregularTaskTable;
 import com.katyshevtseva.kikiorgmobile.db.DbSchema.RegularTaskTable;
 
 public class DbHelper extends SQLiteOpenHelper {
-    private static final int VERSION = 4;
+    private static final int VERSION = 5;
     private static final String DATABASE_NAME = "kom.db";
 
     DbHelper(Context context) {
@@ -30,7 +30,8 @@ public class DbHelper extends SQLiteOpenHelper {
                 RegularTaskTable.Cols.DESC + " TEXT, " +
                 RegularTaskTable.Cols.PERIOD_TYPE + " INTEGER, " +
                 RegularTaskTable.Cols.REF_DATE + " TEXT, " +
-                RegularTaskTable.Cols.PERIOD + " INTEGER )");
+                RegularTaskTable.Cols.PERIOD + " INTEGER, " +
+                RegularTaskTable.Cols.ARCHIVED + " INTEGER )");
     }
 
     @Override
