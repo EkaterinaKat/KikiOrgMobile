@@ -27,7 +27,7 @@ public class AdminActivity extends AppCompatActivity {
         });
         RecyclerView taskList = findViewById(R.id.task_list);
         taskList.setLayoutManager(new LinearLayoutManager(this));
-        taskList.setAdapter(new TaskRecycleViewHelper.TaskListAdapter(Core.getTaskService(this).getAllNotArchivedTasks(), this));
+        taskList.setAdapter(new TaskRecycleViewHelper.TaskListAdapter(this));
     }
 
     private void openNewTaskActivity() {
