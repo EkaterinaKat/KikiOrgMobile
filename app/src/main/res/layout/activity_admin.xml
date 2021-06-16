@@ -10,12 +10,6 @@
         android:orientation="vertical">
 
         <Button
-            android:id="@+id/back_button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text=".." />
-
-        <Button
             android:id="@+id/new_task_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

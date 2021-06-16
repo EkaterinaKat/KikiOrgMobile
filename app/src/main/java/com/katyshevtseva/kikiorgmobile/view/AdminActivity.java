@@ -19,12 +19,6 @@ public class AdminActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin);
 
-        findViewById(R.id.back_button).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
         findViewById(R.id.new_task_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
