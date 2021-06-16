@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.kikiorgmobile.R;
-import com.katyshevtseva.kikiorgmobile.core.Core;
 import com.katyshevtseva.kikiorgmobile.view.utils.TaskRecycleViewHelper;
 
 public class AdminActivity extends AppCompatActivity {

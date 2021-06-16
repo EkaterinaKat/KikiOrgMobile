@@ -4,7 +4,9 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -20,25 +22,54 @@ import java.util.List;
 public class TaskRecycleViewHelper {
 
     static class TaskHolder extends RecyclerView.ViewHolder {
-        private TextView titleView;
-        private TextView headerView;
-        private TextView descView;
+        private TaskListAdapter taskListAdapter;
+        private Context context;
 
-        TaskHolder(View view) {
+        TaskHolder(View view, TaskListAdapter taskListAdapter, Context context) {
             super(view);
-            titleView = itemView.findViewById(R.id.task_title_view);
-            headerView = itemView.findViewById(R.id.header_text_view);
-            descView = itemView.findViewById(R.id.task_desc_view);
+            this.taskListAdapter = taskListAdapter;
+            this.context = context;
         }
 
         void bind(TaskListItem item) {
-            if (item.getType() == TaskListItemType.HEADER) {
-                headerView.setText(item.getText());
-            } else {
-                titleView.setText(item.getText());
-                descView.setText(item.getDesc());
+            switch (item.getType()) {
+                case HEADER:
+                    ((TextView)itemView.findViewById(R.id.header_text_view)).setText(item.getText());
+                    break;
+                case REGULAR_TASK:
+                    bindRegularTask(item.getRegularTask());
+                    break;
+                case IRREGULAR_TASK:
+                    bindIrregularTask(item.getIrregularTask());
             }
+        }
 
+        private void bindRegularTask(final RegularTask task) {
+            ((TextView)itemView.findViewById(R.id.task_title_view)).setText(task.getTitle());
+            ((TextView)itemView.findViewById(R.id.task_desc_view)).setText(task.getFullDesc());
+            Button archiveButton = itemView.findViewById(R.id.delete_task_button);
+            archiveButton.setText("Archive");
+            archiveButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Core.getTaskService(context).archiveTask(task);
+                    Toast.makeText(context, "Archived!", Toast.LENGTH_LONG).show();
+                    taskListAdapter.updateContent();
+                }
+            });
+        }
+
+        private void bindIrregularTask(final IrregularTask task) {
+            ((TextView)itemView.findViewById(R.id.task_title_view)).setText(task.getTitle());
+            ((TextView)itemView.findViewById(R.id.task_desc_view)).setText(task.getFullDesc());
+            itemView.findViewById(R.id.delete_task_button).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Core.getTaskService(context).deleteTask(task);
+                    Toast.makeText(context, "Deleted!", Toast.LENGTH_LONG).show();
+                    taskListAdapter.updateContent();
+                }
+            });
         }
     }
 
@@ -50,14 +81,14 @@ public class TaskRecycleViewHelper {
         private Context context;
 
         public TaskListAdapter(Context context) {
-            items = getTaskListItems(context);
             this.context = context;
+            updateContent();
         }
 
         @NonNull
         @Override
         public TaskHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            return new TaskHolder(LayoutInflater.from(context).inflate(viewType, parent, false));
+            return new TaskHolder(LayoutInflater.from(context).inflate(viewType, parent, false), this, context);
         }
 
         @Override
@@ -79,6 +110,10 @@ public class TaskRecycleViewHelper {
             return TASK_LAYOUT;
         }
 
+        void updateContent() {
+            items = getTaskListItems(context);
+            notifyDataSetChanged();
+        }
     }
 
     private static List<TaskListItem> getTaskListItems(Context context) {
@@ -100,12 +135,9 @@ public class TaskRecycleViewHelper {
 
     private interface TaskListItem {
         TaskListItemType getType();
-
         String getText();
-
-        long getId();
-
-        String getDesc();
+        RegularTask getRegularTask();
+        IrregularTask getIrregularTask();
     }
 
     private static TaskListItem getHeader(final String text) {
@@ -121,12 +153,12 @@ public class TaskRecycleViewHelper {
             }
 
             @Override
-            public long getId() {
-                return 0;
+            public RegularTask getRegularTask() {
+                return null;
             }
 
             @Override
-            public String getDesc() {
+            public IrregularTask getIrregularTask() {
                 return null;
             }
         };
@@ -145,13 +177,13 @@ public class TaskRecycleViewHelper {
             }
 
             @Override
-            public long getId() {
-                return regularTask.getId();
+            public RegularTask getRegularTask() {
+                return regularTask;
             }
 
             @Override
-            public String getDesc() {
-                return regularTask.getFullDesc();
+            public IrregularTask getIrregularTask() {
+                return null;
             }
         };
     }
@@ -169,13 +201,13 @@ public class TaskRecycleViewHelper {
             }
 
             @Override
-            public long getId() {
-                return irregularTask.getId();
+            public RegularTask getRegularTask() {
+                return null;
             }
 
             @Override
-            public String getDesc() {
-                return irregularTask.getFullDesc();
+            public IrregularTask getIrregularTask() {
+                return irregularTask;
             }
         };
     }

@@ -29,6 +29,7 @@ public class RegularTask {
                 ", periodType=" + periodType +
                 ", refDate=" + refDate +
                 ", period=" + period +
+                ", archived=" + archived +
                 '}';
     }
 

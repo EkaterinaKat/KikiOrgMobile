@@ -30,14 +30,14 @@
         android:id="@+id/edit_button"
         android:layout_width="wrap_content"
         android:layout_height="70dp"
-        android:layout_toStartOf="@id/archive_button"
+        android:layout_toStartOf="@id/delete_task_button"
         android:text="Edit" />
 
     <Button
-        android:id="@+id/archive_button"
+        android:id="@+id/delete_task_button"
         android:layout_width="wrap_content"
         android:layout_height="70dp"
         android:layout_alignParentEnd="true"
-        android:text="Archive" />
+        android:text="Delete" />
 
 </RelativeLayout>
