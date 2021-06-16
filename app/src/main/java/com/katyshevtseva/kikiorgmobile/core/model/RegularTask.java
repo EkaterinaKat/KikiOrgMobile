@@ -9,13 +9,14 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class RegularTask implements Task {
+public class RegularTask {
     private long id;
     private String title;
     private String desc;
     private PeriodType periodType;
     private Date refDate;
     private int period;
+    private boolean archived;
 
     @Override
     public String toString() {
@@ -27,10 +28,5 @@ public class RegularTask implements Task {
                 ", refDate=" + refDate +
                 ", period=" + period +
                 '}';
-    }
-
-    @Override
-    public TaskType getTaskType() {
-        return TaskType.REGULAR;
     }
 }

@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class IrregularTask implements Task {
+public class IrregularTask {
     private long id;
     private String title;
     private String desc;
@@ -25,10 +25,5 @@ public class IrregularTask implements Task {
                 ", date=" + date +
                 ", done=" + done +
                 '}';
-    }
-
-    @Override
-    public TaskType getTaskType() {
-        return TaskType.IRREGULAR;
     }
 }
