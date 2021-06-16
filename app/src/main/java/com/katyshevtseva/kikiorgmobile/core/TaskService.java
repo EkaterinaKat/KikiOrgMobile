@@ -40,7 +40,6 @@ public class TaskService {
     public List<RegularTask> getNotArchivedRegularTasks() {
         List<RegularTask> tasks = new ArrayList<>();
         for (RegularTask task : komDao.getAllRegularTasks()) {
-            System.out.println(task);
             if (!task.isArchived())
                 tasks.add(task);
         }

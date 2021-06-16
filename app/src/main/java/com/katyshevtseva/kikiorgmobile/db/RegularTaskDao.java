@@ -69,7 +69,7 @@ class RegularTaskDao {
         values.put(DbSchema.RegularTaskTable.Cols.PERIOD_TYPE, regularTask.getPeriodType().getCode());
         values.put(DbSchema.RegularTaskTable.Cols.REF_DATE, DATE_FORMAT.format(regularTask.getRefDate()));
         values.put(DbSchema.RegularTaskTable.Cols.PERIOD, regularTask.getPeriod());
-        values.put(DbSchema.RegularTaskTable.Cols.ARCHIVED, regularTask.isArchived()? 1 : 0);
+        values.put(DbSchema.RegularTaskTable.Cols.ARCHIVED, regularTask.isArchived() ? 1 : 0);
         return values;
     }
 
@@ -90,7 +90,7 @@ class RegularTaskDao {
                 throw new RuntimeException();
             }
             int period = getInt(getColumnIndex(DbSchema.RegularTaskTable.Cols.PERIOD));
-            boolean archived = getInt(getColumnIndex(DbSchema.RegularTaskTable.Cols.PERIOD))==1;
+            boolean archived = getInt(getColumnIndex(DbSchema.RegularTaskTable.Cols.ARCHIVED)) == 1;
             return new RegularTask(id, title, desc, periodType, refDate, period, archived);
         }
     }

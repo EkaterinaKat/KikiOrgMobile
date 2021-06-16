@@ -19,7 +19,7 @@ import com.katyshevtseva.kikiorgmobile.core.model.RegularTask;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TaskRecycleViewHelper {
+public class TaskRecycleView {
 
     static class TaskHolder extends RecyclerView.ViewHolder {
         private TaskListAdapter taskListAdapter;
@@ -34,7 +34,7 @@ public class TaskRecycleViewHelper {
         void bind(TaskListItem item) {
             switch (item.getType()) {
                 case HEADER:
-                    ((TextView)itemView.findViewById(R.id.header_text_view)).setText(item.getText());
+                    ((TextView) itemView.findViewById(R.id.header_text_view)).setText(item.getText());
                     break;
                 case REGULAR_TASK:
                     bindRegularTask(item.getRegularTask());
@@ -45,8 +45,8 @@ public class TaskRecycleViewHelper {
         }
 
         private void bindRegularTask(final RegularTask task) {
-            ((TextView)itemView.findViewById(R.id.task_title_view)).setText(task.getTitle());
-            ((TextView)itemView.findViewById(R.id.task_desc_view)).setText(task.getFullDesc());
+            ((TextView) itemView.findViewById(R.id.task_title_view)).setText(task.getTitle());
+            ((TextView) itemView.findViewById(R.id.task_desc_view)).setText(task.getFullDesc());
             Button archiveButton = itemView.findViewById(R.id.delete_task_button);
             archiveButton.setText("Archive");
             archiveButton.setOnClickListener(new View.OnClickListener() {
@@ -60,9 +60,11 @@ public class TaskRecycleViewHelper {
         }
 
         private void bindIrregularTask(final IrregularTask task) {
-            ((TextView)itemView.findViewById(R.id.task_title_view)).setText(task.getTitle());
-            ((TextView)itemView.findViewById(R.id.task_desc_view)).setText(task.getFullDesc());
-            itemView.findViewById(R.id.delete_task_button).setOnClickListener(new View.OnClickListener() {
+            ((TextView) itemView.findViewById(R.id.task_title_view)).setText(task.getTitle());
+            ((TextView) itemView.findViewById(R.id.task_desc_view)).setText(task.getFullDesc());
+            Button deleteButton = itemView.findViewById(R.id.delete_task_button);
+            deleteButton.setText("Delete");
+            deleteButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     Core.getTaskService(context).deleteTask(task);
@@ -110,7 +112,7 @@ public class TaskRecycleViewHelper {
             return TASK_LAYOUT;
         }
 
-        void updateContent() {
+        public void updateContent() {
             items = getTaskListItems(context);
             notifyDataSetChanged();
         }
@@ -135,8 +137,11 @@ public class TaskRecycleViewHelper {
 
     private interface TaskListItem {
         TaskListItemType getType();
+
         String getText();
+
         RegularTask getRegularTask();
+
         IrregularTask getIrregularTask();
     }
 
