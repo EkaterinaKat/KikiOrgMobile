@@ -1,5 +1,7 @@
 package com.katyshevtseva.kikiorgmobile.core.model;
 
+import com.katyshevtseva.kikiorgmobile.core.CoreUtils;
+
 import java.util.Date;
 
 import lombok.AllArgsConstructor;
@@ -28,5 +30,10 @@ public class RegularTask {
                 ", refDate=" + refDate +
                 ", period=" + period +
                 '}';
+    }
+
+    public String getFullDesc() {
+        return String.format("%s\nPeriod: %s %s\nNext date: %s",
+                desc, period, periodType, CoreUtils.READABLE_DATE_FORMAT.format(refDate));
     }
 }

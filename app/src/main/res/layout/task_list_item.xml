@@ -6,13 +6,25 @@
     android:minHeight="70dp"
     android:orientation="horizontal">
 
-    <TextView
-        android:id="@+id/task_title_view"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
-        android:padding="10dp"
-        android:textSize="18sp" />
+        android:orientation="vertical"
+        android:padding="10dp">
+
+        <TextView
+            android:id="@+id/task_title_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/task_desc_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="12sp" />
+    </LinearLayout>
 
     <Button
         android:id="@+id/edit_button"

@@ -1,5 +1,7 @@
 package com.katyshevtseva.kikiorgmobile.core.model;
 
+import com.katyshevtseva.kikiorgmobile.core.CoreUtils;
+
 import java.util.Date;
 
 import lombok.AllArgsConstructor;
@@ -25,5 +27,10 @@ public class IrregularTask {
                 ", date=" + date +
                 ", done=" + done +
                 '}';
+    }
+
+    public String getFullDesc() {
+        return String.format("%s\nDate: %s",
+                desc, CoreUtils.READABLE_DATE_FORMAT.format(date));
     }
 }
