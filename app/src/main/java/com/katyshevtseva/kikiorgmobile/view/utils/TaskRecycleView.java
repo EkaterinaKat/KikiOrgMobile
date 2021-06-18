@@ -12,7 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.kikiorgmobile.R;
-import com.katyshevtseva.kikiorgmobile.core.Core;
+import com.katyshevtseva.kikiorgmobile.core.TaskService;
 import com.katyshevtseva.kikiorgmobile.core.model.IrregularTask;
 import com.katyshevtseva.kikiorgmobile.core.model.RegularTask;
 import com.katyshevtseva.kikiorgmobile.view.TaskCreationActivity;
@@ -25,11 +25,13 @@ public class TaskRecycleView {
     static class TaskHolder extends RecyclerView.ViewHolder {
         private TaskListAdapter taskListAdapter;
         private Context context;
+        private TaskService service;
 
-        TaskHolder(View view, TaskListAdapter taskListAdapter, Context context) {
+        TaskHolder(View view, TaskListAdapter taskListAdapter, Context context, TaskService service) {
             super(view);
             this.taskListAdapter = taskListAdapter;
             this.context = context;
+            this.service = service;
         }
 
         void bind(TaskListItem item) {
@@ -59,7 +61,7 @@ public class TaskRecycleView {
             archiveButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Core.getTaskService(context).archiveTask(task);
+                    service.archiveTask(task);
                     Toast.makeText(context, "Archived!", Toast.LENGTH_LONG).show();
                     taskListAdapter.updateContent();
                 }
@@ -80,7 +82,7 @@ public class TaskRecycleView {
             deleteButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Core.getTaskService(context).deleteTask(task);
+                    service.deleteTask(task);
                     Toast.makeText(context, "Deleted!", Toast.LENGTH_LONG).show();
                     taskListAdapter.updateContent();
                 }
@@ -94,16 +96,19 @@ public class TaskRecycleView {
 
         private List<TaskListItem> items;
         private Context context;
+        private TaskService service;
 
-        public TaskListAdapter(Context context) {
+        public TaskListAdapter(Context context, TaskService service) {
             this.context = context;
+            this.service = service;
             updateContent();
         }
 
         @NonNull
         @Override
         public TaskHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            return new TaskHolder(LayoutInflater.from(context).inflate(viewType, parent, false), this, context);
+            View view = LayoutInflater.from(context).inflate(viewType, parent, false);
+            return new TaskHolder(view, this, context, service);
         }
 
         @Override
@@ -126,19 +131,19 @@ public class TaskRecycleView {
         }
 
         public void updateContent() {
-            items = getTaskListItems(context);
+            items = getTaskListItems(context, service);
             notifyDataSetChanged();
         }
     }
 
-    private static List<TaskListItem> getTaskListItems(Context context) {
+    private static List<TaskListItem> getTaskListItems(Context context, TaskService service) {
         List<TaskListItem> items = new ArrayList<>();
         items.add(getHeader("Irregular tasks"));
-        for (IrregularTask irregularTask : Core.getTaskService(context).getNotDoneIrregularTasks()) {
+        for (IrregularTask irregularTask : service.getNotDoneIrregularTasks()) {
             items.add(toListItem(irregularTask));
         }
         items.add(getHeader("Regular tasks"));
-        for (RegularTask regularTask : Core.getTaskService(context).getNotArchivedRegularTasks()) {
+        for (RegularTask regularTask : service.getNotArchivedRegularTasks()) {
             items.add(toListItem(regularTask));
         }
         return items;

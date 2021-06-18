@@ -39,7 +39,7 @@ import static com.katyshevtseva.kikiorgmobile.view.utils.KomUtils.setEditTextLis
 public class TaskCreationActivity extends AppCompatActivity {
     private static final String EXTRA_TASK_ID = "task_id";
     private static final String EXTRA_TASK_TYPE = "task_type";
-    private TaskService taskService;
+    private TaskService service;
     private Task existing;
 
     private EditText titleEdit;
@@ -66,8 +66,8 @@ public class TaskCreationActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task_creation);
+        service = Core.getTaskService(this);
 
-        taskService = Core.getTaskService(this);
         initializeControls();
         setDoneButtonAccessibility();
         setControlListeners();
@@ -81,7 +81,7 @@ public class TaskCreationActivity extends AppCompatActivity {
         if (id == 0)
             return;
 
-        existing = taskService.findTask(taskType, id);
+        existing = service.findTask(taskType, id);
         titleEdit.setText(existing.getTitle());
         descEdit.setText(existing.getDesc());
         selectSpinnerItemByValue(taskTypeSpinner, existing.getType());
@@ -173,7 +173,7 @@ public class TaskCreationActivity extends AppCompatActivity {
     private void saveTask() {
         switch ((TaskType) taskTypeSpinner.getSelectedItem()) {
             case IRREGULAR:
-                taskService.saveNewIrregularTask(
+                service.saveNewIrregularTask(
                         (IrregularTask) existing,
                         titleEdit.getText().toString(),
                         descEdit.getText().toString(),
@@ -181,7 +181,7 @@ public class TaskCreationActivity extends AppCompatActivity {
                 );
                 break;
             case REGULAR:
-                taskService.saveNewRegularTask(
+                service.saveNewRegularTask(
                         (RegularTask) existing,
                         titleEdit.getText().toString(),
                         descEdit.getText().toString(),

@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.kikiorgmobile.R;
+import com.katyshevtseva.kikiorgmobile.core.Core;
 import com.katyshevtseva.kikiorgmobile.view.utils.TaskRecycleView.TaskListAdapter;
 
 public class AdminActivity extends AppCompatActivity {
@@ -33,7 +34,7 @@ public class AdminActivity extends AppCompatActivity {
         });
         RecyclerView taskList = findViewById(R.id.task_list);
         taskList.setLayoutManager(new LinearLayoutManager(this));
-        taskListAdapter = new TaskListAdapter(this);
+        taskListAdapter = new TaskListAdapter(this, Core.getTaskService(this));
         taskList.setAdapter(taskListAdapter);
     }
 

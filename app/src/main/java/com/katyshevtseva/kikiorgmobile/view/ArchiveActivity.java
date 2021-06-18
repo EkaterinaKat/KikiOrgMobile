@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.kikiorgmobile.R;
 import com.katyshevtseva.kikiorgmobile.core.Core;
+import com.katyshevtseva.kikiorgmobile.core.TaskService;
 import com.katyshevtseva.kikiorgmobile.core.model.RegularTask;
 
 import java.util.List;
@@ -27,17 +28,17 @@ public class ArchiveActivity extends AppCompatActivity {
 
         RecyclerView taskList = findViewById(R.id.archive_task_list);
         taskList.setLayoutManager(new LinearLayoutManager(this));
-        taskList.setAdapter(new TaskListAdapter(this));
+        taskList.setAdapter(new TaskListAdapter(this, Core.getTaskService(this)));
     }
 
     private static class TaskHolder extends RecyclerView.ViewHolder {
         private TaskListAdapter taskListAdapter;
-        private Context context;
+        private TaskService service;
 
-        TaskHolder(View view, TaskListAdapter taskListAdapter, Context context) {
+        TaskHolder(View view, TaskListAdapter taskListAdapter, TaskService service) {
             super(view);
             this.taskListAdapter = taskListAdapter;
-            this.context = context;
+            this.service = service;
         }
 
         void bind(final RegularTask task) {
@@ -46,7 +47,7 @@ public class ArchiveActivity extends AppCompatActivity {
             itemView.findViewById(R.id.resume_button).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Core.getTaskService(context).resumeTask(task);
+                    service.resumeTask(task);
                     taskListAdapter.updateContent();
                 }
             });
@@ -56,9 +57,11 @@ public class ArchiveActivity extends AppCompatActivity {
     private static class TaskListAdapter extends RecyclerView.Adapter<TaskHolder> {
         private List<RegularTask> items;
         private Context context;
+        private TaskService service;
 
-        TaskListAdapter(Context context) {
+        TaskListAdapter(Context context, TaskService service) {
             this.context = context;
+            this.service = service;
             updateContent();
         }
 
@@ -66,7 +69,7 @@ public class ArchiveActivity extends AppCompatActivity {
         @Override
         public TaskHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(context).inflate(R.layout.archivated_task_item, parent, false);
-            return new TaskHolder(view, this, context);
+            return new TaskHolder(view, this, service);
         }
 
         @Override
@@ -81,7 +84,7 @@ public class ArchiveActivity extends AppCompatActivity {
         }
 
         void updateContent() {
-            items = Core.getTaskService(context).getArchivedRegularTasks();
+            items = service.getArchivedRegularTasks();
             notifyDataSetChanged();
         }
     }
