@@ -9,12 +9,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.kikiorgmobile.R;
 import com.katyshevtseva.kikiorgmobile.core.TaskService;
 import com.katyshevtseva.kikiorgmobile.core.model.IrregularTask;
 import com.katyshevtseva.kikiorgmobile.core.model.RegularTask;
+import com.katyshevtseva.kikiorgmobile.view.QuestionDialog;
+import com.katyshevtseva.kikiorgmobile.view.QuestionDialog.AnswerHandler;
 import com.katyshevtseva.kikiorgmobile.view.TaskCreationActivity;
 
 import java.util.ArrayList;
@@ -24,10 +28,10 @@ public class TaskRecycleView {
 
     static class TaskHolder extends RecyclerView.ViewHolder {
         private TaskListAdapter taskListAdapter;
-        private Context context;
+        private AppCompatActivity context;
         private TaskService service;
 
-        TaskHolder(View view, TaskListAdapter taskListAdapter, Context context, TaskService service) {
+        TaskHolder(View view, TaskListAdapter taskListAdapter, AppCompatActivity context, TaskService service) {
             super(view);
             this.taskListAdapter = taskListAdapter;
             this.context = context;
@@ -82,11 +86,23 @@ public class TaskRecycleView {
             deleteButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    service.deleteTask(task);
-                    Toast.makeText(context, "Deleted!", Toast.LENGTH_LONG).show();
-                    taskListAdapter.updateContent();
+                    DialogFragment dlg1 = new QuestionDialog("Delete?", getDeletionDialogAnswerHandler(task));
+                    dlg1.show(context.getSupportFragmentManager(), "dialog1");
                 }
             });
+        }
+
+        private AnswerHandler getDeletionDialogAnswerHandler(final IrregularTask task) {
+            return new AnswerHandler() {
+                @Override
+                public void execute(boolean answer) {
+                    if (answer) {
+                        service.deleteTask(task);
+                        Toast.makeText(context, "Deleted!", Toast.LENGTH_LONG).show();
+                        taskListAdapter.updateContent();
+                    }
+                }
+            };
         }
     }
 
@@ -95,10 +111,10 @@ public class TaskRecycleView {
         private final int HEADER_LAYOUT = R.layout.task_list_header;
 
         private List<TaskListItem> items;
-        private Context context;
+        private AppCompatActivity context;
         private TaskService service;
 
-        public TaskListAdapter(Context context, TaskService service) {
+        public TaskListAdapter(AppCompatActivity context, TaskService service) {
             this.context = context;
             this.service = service;
             updateContent();
