@@ -34,7 +34,7 @@ public class RegularTask implements Task {
     }
 
     public String getFullDesc() {
-        return String.format("%s\nPeriod: %s %s\nNext date: %s",
+        return String.format("%s\n%s %s\n%s",
                 desc, period, periodType, CoreUtils.READABLE_DATE_FORMAT.format(refDate));
     }
 

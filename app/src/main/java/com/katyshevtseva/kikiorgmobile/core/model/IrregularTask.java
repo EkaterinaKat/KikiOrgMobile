@@ -30,7 +30,7 @@ public class IrregularTask implements Task {
     }
 
     public String getFullDesc() {
-        return String.format("%s\nDate: %s",
+        return String.format("%s\n%s",
                 desc, CoreUtils.READABLE_DATE_FORMAT.format(date));
     }
 
