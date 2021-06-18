@@ -122,4 +122,13 @@ public class KomUtils {
     public interface EditTextListener {
         void run(String text);
     }
+
+    public static <T> void selectSpinnerItemByValue(Spinner spinner, T value) {
+        for (int position = 0; position < spinner.getCount(); position++) {
+            if ((spinner.getItemAtPosition(position)).equals(value)) {
+                spinner.setSelection(position);
+                return;
+            }
+        }
+    }
 }

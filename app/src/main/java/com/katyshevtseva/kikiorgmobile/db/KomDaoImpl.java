@@ -58,4 +58,14 @@ public class KomDaoImpl implements KomDao {
     public void deleteRegularTask(RegularTask regularTask) {
         regularTaskDao.delete(regularTask);
     }
+
+    @Override
+    public RegularTask findRegularTaskById(long id) {
+        return regularTaskDao.findById(id);
+    }
+
+    @Override
+    public IrregularTask findIrregularTaskById(long id) {
+        return irregularTaskDao.findById(id);
+    }
 }

@@ -15,6 +15,7 @@ import com.example.kikiorgmobile.R;
 import com.katyshevtseva.kikiorgmobile.core.Core;
 import com.katyshevtseva.kikiorgmobile.core.model.IrregularTask;
 import com.katyshevtseva.kikiorgmobile.core.model.RegularTask;
+import com.katyshevtseva.kikiorgmobile.view.TaskCreationActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,6 +48,12 @@ public class TaskRecycleView {
         private void bindRegularTask(final RegularTask task) {
             ((TextView) itemView.findViewById(R.id.task_title_view)).setText(task.getTitle());
             ((TextView) itemView.findViewById(R.id.task_desc_view)).setText(task.getFullDesc());
+            itemView.findViewById(R.id.edit_task_button).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    context.startActivity(TaskCreationActivity.newIntent(context, task));
+                }
+            });
             Button archiveButton = itemView.findViewById(R.id.delete_task_button);
             archiveButton.setText("Archive");
             archiveButton.setOnClickListener(new View.OnClickListener() {
@@ -62,6 +69,12 @@ public class TaskRecycleView {
         private void bindIrregularTask(final IrregularTask task) {
             ((TextView) itemView.findViewById(R.id.task_title_view)).setText(task.getTitle());
             ((TextView) itemView.findViewById(R.id.task_desc_view)).setText(task.getFullDesc());
+            itemView.findViewById(R.id.edit_task_button).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    context.startActivity(TaskCreationActivity.newIntent(context, task));
+                }
+            });
             Button deleteButton = itemView.findViewById(R.id.delete_task_button);
             deleteButton.setText("Delete");
             deleteButton.setOnClickListener(new View.OnClickListener() {

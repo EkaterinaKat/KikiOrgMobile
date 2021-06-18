@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class IrregularTask {
+public class IrregularTask implements Task {
     private long id;
     private String title;
     private String desc;
@@ -32,5 +32,10 @@ public class IrregularTask {
     public String getFullDesc() {
         return String.format("%s\nDate: %s",
                 desc, CoreUtils.READABLE_DATE_FORMAT.format(date));
+    }
+
+    @Override
+    public TaskType getType() {
+        return TaskType.IRREGULAR;
     }
 }

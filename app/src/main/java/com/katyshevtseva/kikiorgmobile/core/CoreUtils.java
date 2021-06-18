@@ -12,6 +12,10 @@ public abstract class CoreUtils {
         return String.format("%d.%s.%d", day, month < 10 ? "0" + month : month, year);
     }
 
+    public static String getDateString(Date date) {
+        return READABLE_DATE_FORMAT.format(date);
+    }
+
     public static Date getDateByString(String s) {
         try {
             return READABLE_DATE_FORMAT.parse(s);

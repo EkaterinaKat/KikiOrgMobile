@@ -21,4 +21,8 @@ public interface KomDao {
     void updateRegularTask(RegularTask regularTask);
 
     void deleteRegularTask(RegularTask regularTask);
+
+    RegularTask findRegularTaskById(long id);
+
+    IrregularTask findIrregularTaskById(long id);
 }

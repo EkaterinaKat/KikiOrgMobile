@@ -1,6 +1,8 @@
 package com.katyshevtseva.kikiorgmobile.view;
 
 import android.app.DatePickerDialog;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -10,12 +12,16 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.kikiorgmobile.R;
 import com.katyshevtseva.kikiorgmobile.core.Core;
 import com.katyshevtseva.kikiorgmobile.core.TaskService;
+import com.katyshevtseva.kikiorgmobile.core.model.IrregularTask;
 import com.katyshevtseva.kikiorgmobile.core.model.PeriodType;
+import com.katyshevtseva.kikiorgmobile.core.model.RegularTask;
+import com.katyshevtseva.kikiorgmobile.core.model.Task;
 import com.katyshevtseva.kikiorgmobile.core.model.TaskType;
 import com.katyshevtseva.kikiorgmobile.view.utils.KomUtils.EditTextListener;
 import com.katyshevtseva.kikiorgmobile.view.utils.KomUtils.SpinnerListener;
@@ -27,10 +33,14 @@ import static com.katyshevtseva.kikiorgmobile.core.CoreUtils.getDateString;
 import static com.katyshevtseva.kikiorgmobile.core.CoreUtils.isDate;
 import static com.katyshevtseva.kikiorgmobile.view.utils.KomUtils.adjustSpinner;
 import static com.katyshevtseva.kikiorgmobile.view.utils.KomUtils.isEmpty;
+import static com.katyshevtseva.kikiorgmobile.view.utils.KomUtils.selectSpinnerItemByValue;
 import static com.katyshevtseva.kikiorgmobile.view.utils.KomUtils.setEditTextListener;
 
 public class TaskCreationActivity extends AppCompatActivity {
+    private static final String EXTRA_TASK_ID = "task_id";
+    private static final String EXTRA_TASK_TYPE = "task_type";
     private TaskService taskService;
+    private Task existing;
 
     private EditText titleEdit;
     private EditText descEdit;
@@ -43,6 +53,15 @@ public class TaskCreationActivity extends AppCompatActivity {
     private TextView refDateTextView;
     private Button doneButton;
 
+    public static Intent newIntent(Context context, @Nullable Task task) {
+        Intent intent = new Intent(context, TaskCreationActivity.class);
+        if (task != null) {
+            intent.putExtra(EXTRA_TASK_TYPE, task.getType().getCode());
+            intent.putExtra(EXTRA_TASK_ID, task.getId());
+        }
+        return intent;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,6 +71,32 @@ public class TaskCreationActivity extends AppCompatActivity {
         initializeControls();
         setDoneButtonAccessibility();
         setControlListeners();
+        handleIntent();
+    }
+
+    private void handleIntent() {
+        long id = getIntent().getLongExtra(EXTRA_TASK_ID, 0);
+        TaskType taskType = TaskType.findByCode(getIntent().getIntExtra(EXTRA_TASK_TYPE, 1));
+
+        if (id == 0)
+            return;
+
+        existing = taskService.findTask(taskType, id);
+        titleEdit.setText(existing.getTitle());
+        descEdit.setText(existing.getDesc());
+        selectSpinnerItemByValue(taskTypeSpinner, existing.getType());
+        taskTypeSpinner.setEnabled(false);
+        switch (existing.getType()) {
+            case REGULAR:
+                RegularTask regularTask = (RegularTask) existing;
+                selectSpinnerItemByValue(periodTypeSpinner, regularTask.getPeriodType());
+                periodEditText.setText("" + regularTask.getPeriod());
+                refDateTextView.setText(getDateString(regularTask.getRefDate()));
+                break;
+            case IRREGULAR:
+                IrregularTask irregularTask = (IrregularTask) existing;
+                irregularDateTextView.setText(getDateString(irregularTask.getDate()));
+        }
     }
 
     private void initializeControls() {
@@ -129,6 +174,7 @@ public class TaskCreationActivity extends AppCompatActivity {
         switch ((TaskType) taskTypeSpinner.getSelectedItem()) {
             case IRREGULAR:
                 taskService.saveNewIrregularTask(
+                        (IrregularTask) existing,
                         titleEdit.getText().toString(),
                         descEdit.getText().toString(),
                         getDateByString(irregularDateTextView.getText().toString())
@@ -136,6 +182,7 @@ public class TaskCreationActivity extends AppCompatActivity {
                 break;
             case REGULAR:
                 taskService.saveNewRegularTask(
+                        (RegularTask) existing,
                         titleEdit.getText().toString(),
                         descEdit.getText().toString(),
                         (PeriodType) periodTypeSpinner.getSelectedItem(),

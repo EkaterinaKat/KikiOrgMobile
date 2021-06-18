@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class RegularTask {
+public class RegularTask implements Task {
     private long id;
     private String title;
     private String desc;
@@ -36,5 +36,10 @@ public class RegularTask {
     public String getFullDesc() {
         return String.format("%s\nPeriod: %s %s\nNext date: %s",
                 desc, period, periodType, CoreUtils.READABLE_DATE_FORMAT.format(refDate));
+    }
+
+    @Override
+    public TaskType getType() {
+        return TaskType.REGULAR;
     }
 }

@@ -5,6 +5,8 @@ import com.katyshevtseva.kikiorgmobile.core.dao.KomDao;
 import com.katyshevtseva.kikiorgmobile.core.model.IrregularTask;
 import com.katyshevtseva.kikiorgmobile.core.model.PeriodType;
 import com.katyshevtseva.kikiorgmobile.core.model.RegularTask;
+import com.katyshevtseva.kikiorgmobile.core.model.Task;
+import com.katyshevtseva.kikiorgmobile.core.model.TaskType;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -18,23 +20,40 @@ public class TaskService {
         this.komDao = komDao;
     }
 
-    public void saveNewIrregularTask(String title, String desc, Date date) {
-        IrregularTask task = new IrregularTask();
-        task.setTitle(title);
-        task.setDesc(desc);
-        task.setDate(date);
-        task.setDone(false);
-        komDao.saveNewIrregularTask(task);
+    public void saveNewIrregularTask(IrregularTask existing, String title, String desc, Date date) {
+        if (existing == null) {
+            IrregularTask task = new IrregularTask();
+            task.setTitle(title);
+            task.setDesc(desc);
+            task.setDate(date);
+            task.setDone(false);
+            komDao.saveNewIrregularTask(task);
+        } else {
+            existing.setTitle(title);
+            existing.setDesc(desc);
+            existing.setDate(date);
+            komDao.updateIrregularTask(existing);
+        }
     }
 
-    public void saveNewRegularTask(String title, String desc, PeriodType periodType, Date refDate, int period) {
-        RegularTask task = new RegularTask();
-        task.setTitle(title);
-        task.setDesc(desc);
-        task.setPeriodType(periodType);
-        task.setRefDate(refDate);
-        task.setPeriod(period);
-        komDao.saveNewRegularTask(task);
+    public void saveNewRegularTask(RegularTask existing, String title, String desc, PeriodType periodType, Date refDate, int period) {
+        if (existing == null) {
+            RegularTask task = new RegularTask();
+            task.setTitle(title);
+            task.setDesc(desc);
+            task.setPeriodType(periodType);
+            task.setRefDate(refDate);
+            task.setPeriod(period);
+            komDao.saveNewRegularTask(task);
+        } else {
+            existing.setTitle(title);
+            existing.setDesc(desc);
+            existing.setPeriodType(periodType);
+            existing.setRefDate(refDate);
+            existing.setPeriod(period);
+            komDao.updateRegularTask(existing);
+        }
+
     }
 
     public List<RegularTask> getNotArchivedRegularTasks() {
@@ -62,5 +81,15 @@ public class TaskService {
 
     public void deleteTask(IrregularTask irregularTask) {
         komDao.deleteIrregularTask(irregularTask);
+    }
+
+    public Task findTask(TaskType taskType, long id) {
+        switch (taskType) {
+            case REGULAR:
+                return komDao.findRegularTaskById(id);
+            case IRREGULAR:
+                return komDao.findIrregularTaskById(id);
+        }
+        return null;
     }
 }
