@@ -65,6 +65,15 @@ public class TaskService {
         return tasks;
     }
 
+    public List<RegularTask> getArchivedRegularTasks() {
+        List<RegularTask> tasks = new ArrayList<>();
+        for (RegularTask task : komDao.getAllRegularTasks()) {
+            if (task.isArchived())
+                tasks.add(task);
+        }
+        return tasks;
+    }
+
     public List<IrregularTask> getNotDoneIrregularTasks() {
         List<IrregularTask> tasks = new ArrayList<>();
         for (IrregularTask task : komDao.getAllIrregularTasks()) {
@@ -76,6 +85,11 @@ public class TaskService {
 
     public void archiveTask(RegularTask regularTask) {
         regularTask.setArchived(true);
+        komDao.updateRegularTask(regularTask);
+    }
+
+    public void resumeTask(RegularTask regularTask) {
+        regularTask.setArchived(false);
         komDao.updateRegularTask(regularTask);
     }
 

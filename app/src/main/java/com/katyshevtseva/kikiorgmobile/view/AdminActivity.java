@@ -1,5 +1,6 @@
 package com.katyshevtseva.kikiorgmobile.view;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
@@ -22,6 +23,12 @@ public class AdminActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(TaskCreationActivity.newIntent(AdminActivity.this, null));
+            }
+        });
+        findViewById(R.id.archive_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(AdminActivity.this, ArchiveActivity.class));
             }
         });
         RecyclerView taskList = findViewById(R.id.task_list);
