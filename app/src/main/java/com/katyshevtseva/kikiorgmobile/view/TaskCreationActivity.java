@@ -27,6 +27,7 @@ import com.katyshevtseva.kikiorgmobile.view.utils.KomUtils.EditTextListener;
 import com.katyshevtseva.kikiorgmobile.view.utils.KomUtils.SpinnerListener;
 
 import java.util.Arrays;
+import java.util.Date;
 
 import static com.katyshevtseva.kikiorgmobile.core.CoreUtils.getDateByString;
 import static com.katyshevtseva.kikiorgmobile.core.CoreUtils.getDateString;
@@ -75,10 +76,10 @@ public class TaskCreationActivity extends AppCompatActivity {
     }
 
     private void handleIntent() {
-        long id = getIntent().getLongExtra(EXTRA_TASK_ID, 0);
+        long id = getIntent().getLongExtra(EXTRA_TASK_ID, -1);
         TaskType taskType = TaskType.findByCode(getIntent().getIntExtra(EXTRA_TASK_TYPE, 1));
 
-        if (id == 0)
+        if (id == -1)
             return;
 
         existing = service.findTask(taskType, id);
@@ -91,7 +92,7 @@ public class TaskCreationActivity extends AppCompatActivity {
                 RegularTask regularTask = (RegularTask) existing;
                 selectSpinnerItemByValue(periodTypeSpinner, regularTask.getPeriodType());
                 periodEditText.setText("" + regularTask.getPeriod());
-                refDateTextView.setText(getDateString(regularTask.getRefDate()));
+                refDateTextView.setText(getDateString(new Date()));
                 break;
             case IRREGULAR:
                 IrregularTask irregularTask = (IrregularTask) existing;

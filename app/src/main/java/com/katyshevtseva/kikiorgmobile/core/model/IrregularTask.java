@@ -18,17 +18,6 @@ public class IrregularTask implements Task {
     private Date date;
     private boolean done;
 
-    @Override
-    public String toString() {
-        return "IrregularTask{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", desc='" + desc + '\'' +
-                ", date=" + date +
-                ", done=" + done +
-                '}';
-    }
-
     public String getFullDesc() {
         return String.format("%s\n%s",
                 desc, CoreUtils.READABLE_DATE_FORMAT.format(date));

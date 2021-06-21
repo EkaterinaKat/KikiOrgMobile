@@ -42,18 +42,15 @@ public class TaskService {
             task.setTitle(title);
             task.setDesc(desc);
             task.setPeriodType(periodType);
-            task.setRefDate(refDate);
             task.setPeriod(period);
             komDao.saveNewRegularTask(task);
         } else {
             existing.setTitle(title);
             existing.setDesc(desc);
             existing.setPeriodType(periodType);
-            existing.setRefDate(refDate);
             existing.setPeriod(period);
             komDao.updateRegularTask(existing);
         }
-
     }
 
     public List<RegularTask> getNotArchivedRegularTasks() {

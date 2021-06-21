@@ -1,9 +1,5 @@
 package com.katyshevtseva.kikiorgmobile.core.model;
 
-import com.katyshevtseva.kikiorgmobile.core.CoreUtils;
-
-import java.util.Date;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,26 +12,12 @@ public class RegularTask implements Task {
     private String title;
     private String desc;
     private PeriodType periodType;
-    private Date refDate;
     private int period;
     private boolean archived;
 
-    @Override
-    public String toString() {
-        return "RegularTask{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", desc='" + desc + '\'' +
-                ", periodType=" + periodType +
-                ", refDate=" + refDate +
-                ", period=" + period +
-                ", archived=" + archived +
-                '}';
-    }
-
     public String getFullDesc() {
         return String.format("%s\n%s %s\n%s",
-                desc, period, periodType, CoreUtils.READABLE_DATE_FORMAT.format(refDate));
+                desc, period, periodType, "место для даты");
     }
 
     @Override

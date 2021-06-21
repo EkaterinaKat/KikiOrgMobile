@@ -6,11 +6,9 @@ import com.katyshevtseva.kikiorgmobile.core.model.PeriodType;
 import com.katyshevtseva.kikiorgmobile.core.model.RegularTask;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import static com.katyshevtseva.kikiorgmobile.db.AbstractTable.ColumnActualType.BOOLEAN;
-import static com.katyshevtseva.kikiorgmobile.db.AbstractTable.ColumnActualType.DATE;
 import static com.katyshevtseva.kikiorgmobile.db.AbstractTable.ColumnActualType.LONG;
 import static com.katyshevtseva.kikiorgmobile.db.AbstractTable.ColumnActualType.STRING;
 import static com.katyshevtseva.kikiorgmobile.db.RegularTaskDao.TableSchema.Cols.ARCHIVED;
@@ -18,7 +16,6 @@ import static com.katyshevtseva.kikiorgmobile.db.RegularTaskDao.TableSchema.Cols
 import static com.katyshevtseva.kikiorgmobile.db.RegularTaskDao.TableSchema.Cols.ID;
 import static com.katyshevtseva.kikiorgmobile.db.RegularTaskDao.TableSchema.Cols.PERIOD;
 import static com.katyshevtseva.kikiorgmobile.db.RegularTaskDao.TableSchema.Cols.PERIOD_TYPE;
-import static com.katyshevtseva.kikiorgmobile.db.RegularTaskDao.TableSchema.Cols.REF_DATE;
 import static com.katyshevtseva.kikiorgmobile.db.RegularTaskDao.TableSchema.Cols.TITLE;
 
 class RegularTaskDao extends AbstractDao<RegularTask> {
@@ -88,17 +85,6 @@ class RegularTaskDao extends AbstractDao<RegularTask> {
                     regularTask.setPeriodType(PeriodType.findByCode(((Long) value).intValue()));
                 }
             });
-            columns.add(new AbstractColumn<RegularTask>(REF_DATE, DATE) {
-                @Override
-                Object getActualValue(RegularTask regularTask) {
-                    return regularTask.getRefDate();
-                }
-
-                @Override
-                void setActualValue(RegularTask regularTask, Object value) {
-                    regularTask.setRefDate((Date) value);
-                }
-            });
             columns.add(new AbstractColumn<RegularTask>(PERIOD, LONG) {
                 @Override
                 Object getActualValue(RegularTask regularTask) {
@@ -133,7 +119,6 @@ class RegularTaskDao extends AbstractDao<RegularTask> {
             static final String TITLE = "title";
             static final String DESC = "desc";
             static final String PERIOD_TYPE = "period_type";
-            static final String REF_DATE = "ref_date";
             static final String PERIOD = "period";
             static final String ARCHIVED = "archived";
         }

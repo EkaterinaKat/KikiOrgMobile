@@ -5,7 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 public class DbHelper extends SQLiteOpenHelper {
-    private static final int VERSION = 8;
+    private static final int VERSION = 9;
     private static final String DATABASE_NAME = "kom.db";
 
     DbHelper(Context context) {
@@ -26,7 +26,6 @@ public class DbHelper extends SQLiteOpenHelper {
                 RegularTaskDao.TableSchema.Cols.TITLE + " TEXT, " +
                 RegularTaskDao.TableSchema.Cols.DESC + " TEXT, " +
                 RegularTaskDao.TableSchema.Cols.PERIOD_TYPE + " INTEGER, " +
-                RegularTaskDao.TableSchema.Cols.REF_DATE + " TEXT, " +
                 RegularTaskDao.TableSchema.Cols.PERIOD + " INTEGER, " +
                 RegularTaskDao.TableSchema.Cols.ARCHIVED + " INTEGER )");
     }
