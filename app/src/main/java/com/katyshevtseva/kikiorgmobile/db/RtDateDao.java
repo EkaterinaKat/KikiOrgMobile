@@ -14,7 +14,7 @@ import static com.katyshevtseva.kikiorgmobile.db.RtDateDao.TableSchema.Cols.VALU
 
 class RtDateDao extends AbstractDao<RtDate> {
 
-    public RtDateDao(SQLiteDatabase database) {
+    RtDateDao(SQLiteDatabase database) {
         super(database, new RtDateTable());
     }
 
@@ -27,11 +27,6 @@ class RtDateDao extends AbstractDao<RtDate> {
         @Override
         RtDate getNewEmptyObject() {
             return new RtDate();
-        }
-
-        @Override
-        long getId(RtDate date) {
-            return date.getId();
         }
 
         private static List<AbstractColumn<RtDate>> createColumns() {
@@ -83,6 +78,4 @@ class RtDateDao extends AbstractDao<RtDate> {
             static final String VALUE = "value";
         }
     }
-
-
 }

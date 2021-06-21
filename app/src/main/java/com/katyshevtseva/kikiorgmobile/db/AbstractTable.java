@@ -10,8 +10,6 @@ import lombok.RequiredArgsConstructor;
 import static com.katyshevtseva.kikiorgmobile.db.DbConstants.DATE_FORMAT;
 
 // T - тип хранимого в таблице объекта
-// F - настоящий тип свойства объекта
-// идентификатор таблицы должен обязательно называться id
 
 @RequiredArgsConstructor
 abstract class AbstractTable<T> {
@@ -20,17 +18,7 @@ abstract class AbstractTable<T> {
     @Getter
     private final List<AbstractColumn<T>> columns;
 
-//    T constructObjectFromActualValues(List<Object> values){
-//        T t = getNewEmptyObject();
-//        for (AbstractColumn<T> column: columns){
-//            column.setActualValue(t, values.);
-//        }
-//        return t;
-//    }
-
     abstract T getNewEmptyObject();
-
-    abstract long getId(T t);
 
     abstract static class AbstractColumn<T> {
         @Getter

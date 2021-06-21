@@ -1,5 +1,8 @@
 package com.katyshevtseva.kikiorgmobile.core.model;
 
+import java.util.Date;
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,6 +17,7 @@ public class RegularTask implements Task {
     private PeriodType periodType;
     private int period;
     private boolean archived;
+    private List<Date> dates;
 
     public String getFullDesc() {
         return String.format("%s\n%s %s\n%s",

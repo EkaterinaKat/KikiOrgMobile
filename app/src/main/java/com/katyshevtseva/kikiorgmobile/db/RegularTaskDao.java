@@ -34,11 +34,6 @@ class RegularTaskDao extends AbstractDao<RegularTask> {
             return new RegularTask();
         }
 
-        @Override
-        long getId(RegularTask regularTask) {
-            return regularTask.getId();
-        }
-
         private static List<AbstractColumn<RegularTask>> createColumns() {
             List<AbstractColumn<RegularTask>> columns = new ArrayList<>();
             columns.add(new AbstractColumn<RegularTask>(ID, LONG) {

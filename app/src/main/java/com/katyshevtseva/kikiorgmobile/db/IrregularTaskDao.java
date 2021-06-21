@@ -35,11 +35,6 @@ class IrregularTaskDao extends AbstractDao<IrregularTask> {
             return new IrregularTask();
         }
 
-        @Override
-        long getId(IrregularTask irregularTask) {
-            return irregularTask.getId();
-        }
-
         private static List<AbstractColumn<IrregularTask>> createColumns() {
             List<AbstractColumn<IrregularTask>> columns = new ArrayList<>();
             columns.add(new AbstractColumn<IrregularTask>(ID, LONG) {

@@ -34,9 +34,9 @@ abstract class AbstractDao<T> {
         return items;
     }
 
-    T findById(long id) {
-        Cursor cursor = database.query(table.getName(), null, "id=?",
-                new String[]{"" + id}, null, null, null, null);
+    T findFirst(String columnName, String value) {
+        Cursor cursor = database.query(table.getName(), null, columnName + "=?",
+                new String[]{"" + value}, null, null, null, null);
 
         try (KomCursorWrapper cursorWrapper = new KomCursorWrapper(cursor)) {
             cursorWrapper.moveToFirst();
@@ -44,13 +44,27 @@ abstract class AbstractDao<T> {
                 return cursorWrapper.getT();
             }
         }
-        throw new RuntimeException("Сущность не найдена по id");
+        return null;
     }
 
-    void update(T t) {
+    List<T> find(String columnName, String value) {
+        List<T> result = new ArrayList<>();
+        Cursor cursor = database.query(table.getName(), null, columnName + "=?",
+                new String[]{"" + value}, null, null, null, null);
+
+        try (KomCursorWrapper cursorWrapper = new KomCursorWrapper(cursor)) {
+            cursorWrapper.moveToFirst();
+            if (!cursorWrapper.isAfterLast()) {
+                result.add(cursorWrapper.getT());
+            }
+        }
+        return result;
+    }
+
+    void update(T t, String columnName, String value) {
         ContentValues values = getContentValues(t);
-        String selection = "id=?";
-        String[] selectionArgs = {"" + table.getId(t)};
+        String selection = columnName + "=?";
+        String[] selectionArgs = {value};
         database.update(
                 table.getName(),
                 values,
@@ -58,9 +72,9 @@ abstract class AbstractDao<T> {
                 selectionArgs);
     }
 
-    void delete(T t) {
-        String selection = "id=?";
-        String[] selectionArgs = {"" + table.getId(t)};
+    void delete(String columnName, String value) {
+        String selection = columnName + "=?";
+        String[] selectionArgs = {value};
         database.delete(table.getName(), selection, selectionArgs);
     }
 
