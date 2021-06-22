@@ -23,6 +23,7 @@ import com.katyshevtseva.kikiorgmobile.core.model.PeriodType;
 import com.katyshevtseva.kikiorgmobile.core.model.RegularTask;
 import com.katyshevtseva.kikiorgmobile.core.model.Task;
 import com.katyshevtseva.kikiorgmobile.core.model.TaskType;
+import com.katyshevtseva.kikiorgmobile.view.utils.FragmentUpdateListener;
 import com.katyshevtseva.kikiorgmobile.view.utils.KomUtils.EditTextListener;
 import com.katyshevtseva.kikiorgmobile.view.utils.KomUtils.SpinnerListener;
 
@@ -36,7 +37,7 @@ import static com.katyshevtseva.kikiorgmobile.view.utils.KomUtils.isEmpty;
 import static com.katyshevtseva.kikiorgmobile.view.utils.KomUtils.selectSpinnerItemByValue;
 import static com.katyshevtseva.kikiorgmobile.view.utils.KomUtils.setEditTextListener;
 
-public class TaskCreationActivity extends AppCompatActivity {
+public class TaskCreationActivity extends AppCompatActivity implements FragmentUpdateListener {
     private static final String EXTRA_TASK_ID = "task_id";
     private static final String EXTRA_TASK_TYPE = "task_type";
     private TaskService service;
@@ -220,5 +221,10 @@ public class TaskCreationActivity extends AppCompatActivity {
                                 && !isEmpty(periodEditText)
                                 && !periodEditText.getText().toString().equals("0"));
         }
+    }
+
+    @Override
+    public void onUpdate() {
+        setDoneButtonAccessibility();
     }
 }

@@ -1,6 +1,7 @@
 package com.katyshevtseva.kikiorgmobile.view;
 
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +15,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.kikiorgmobile.R;
 import com.katyshevtseva.kikiorgmobile.core.DateUtils;
+import com.katyshevtseva.kikiorgmobile.view.utils.FragmentUpdateListener;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -22,6 +24,7 @@ import java.util.List;
 public class DatesSelectFragment extends Fragment {
     private LinearLayout datesPane;
     private List<Date> dates = new ArrayList<>();
+    private FragmentUpdateListener updateListener;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -29,6 +32,12 @@ public class DatesSelectFragment extends Fragment {
         datesPane = view.findViewById(R.id.dates_layout);
         updatePane();
         return view;
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        updateListener = (FragmentUpdateListener) context;
     }
 
     void setDates(List<Date> dates) {
@@ -45,6 +54,8 @@ public class DatesSelectFragment extends Fragment {
     }
 
     private void updatePane() {
+        updateListener.onUpdate();
+
         if (datesPane == null)
             return;
 
