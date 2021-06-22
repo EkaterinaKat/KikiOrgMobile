@@ -2,6 +2,7 @@ package com.katyshevtseva.kikiorgmobile.core.model;
 
 import com.katyshevtseva.kikiorgmobile.core.DateUtils;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -23,7 +24,21 @@ public class RegularTask implements Task {
 
     public String getFullDesc() {
         return String.format("%s\n%s %s\n%s",
-                desc, period, periodType, DateUtils.getDateString(dates));
+                desc, period, periodType, getLoppedDateListString());
+    }
+
+    private String getLoppedDateListString() {
+        boolean dateListIsTooBig = dates.size() > 5;
+        List<Date> loppedList = dateListIsTooBig ? dates.subList(0, 5) : new ArrayList<>(dates);
+
+        StringBuilder stringBuilder = new StringBuilder();
+        for (Date date : loppedList) {
+            stringBuilder.append(DateUtils.getDateString(date)).append("\n");
+        }
+
+        if (dateListIsTooBig)
+            stringBuilder.append("...");
+        return stringBuilder.toString();
     }
 
     @Override

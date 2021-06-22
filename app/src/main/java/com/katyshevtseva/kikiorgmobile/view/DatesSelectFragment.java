@@ -35,7 +35,7 @@ public class DatesSelectFragment extends Fragment {
     }
 
     @Override
-    public void onAttach(Context context) {
+    public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         updateListener = (FragmentUpdateListener) context;
     }
@@ -54,7 +54,8 @@ public class DatesSelectFragment extends Fragment {
     }
 
     private void updatePane() {
-        updateListener.onUpdate();
+        if (updateListener != null)
+            updateListener.onUpdate();
 
         if (datesPane == null)
             return;
