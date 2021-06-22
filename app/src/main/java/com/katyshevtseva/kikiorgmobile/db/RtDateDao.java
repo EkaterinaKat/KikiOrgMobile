@@ -21,7 +21,7 @@ class RtDateDao extends AbstractDao<RtDate> {
     private static class RtDateTable extends AbstractTable<RtDate> {
 
         RtDateTable() {
-            super(TableSchema.NAME, createColumns());
+            super(TableSchema.NAME, createIdColumn(), createColumns());
         }
 
         @Override
@@ -29,9 +29,8 @@ class RtDateDao extends AbstractDao<RtDate> {
             return new RtDate();
         }
 
-        private static List<AbstractColumn<RtDate>> createColumns() {
-            List<AbstractColumn<RtDate>> columns = new ArrayList<>();
-            columns.add(new AbstractColumn<RtDate>(ID, LONG) {
+        private static AbstractColumn<RtDate> createIdColumn() {
+            return new AbstractColumn<RtDate>(ID, LONG) {
                 @Override
                 Object getActualValue(RtDate rtDate) {
                     return rtDate.getId();
@@ -41,7 +40,11 @@ class RtDateDao extends AbstractDao<RtDate> {
                 void setActualValue(RtDate rtDate, Object value) {
                     rtDate.setId((Long) value);
                 }
-            });
+            };
+        }
+
+        private static List<AbstractColumn<RtDate>> createColumns() {
+            List<AbstractColumn<RtDate>> columns = new ArrayList<>();
             columns.add(new AbstractColumn<RtDate>(TASK_ID, LONG) {
                 @Override
                 Object getActualValue(RtDate rtDate) {

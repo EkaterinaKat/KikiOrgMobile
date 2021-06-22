@@ -54,7 +54,7 @@ public class KomDaoImpl implements KomDao {
     public void saveNewRegularTask(RegularTask regularTask) {
         regularTaskDao.saveNew(regularTask);
         for (Date date : regularTask.getDates()) {
-            rtDateDao.saveNew(RtDate.builder().regularTaskId(regularTask.getId()).value(date).build());
+            rtDateDao.saveNew(RtDate.builder().regularTaskId(regularTaskDao.getLastInsertedId()).value(date).build());
         }
     }
 

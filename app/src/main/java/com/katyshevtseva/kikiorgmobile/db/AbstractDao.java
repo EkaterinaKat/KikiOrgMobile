@@ -14,7 +14,7 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 abstract class AbstractDao<T> {
-    private final SQLiteDatabase database;
+    protected final SQLiteDatabase database;
     private final AbstractTable<T> table;
 
     void saveNew(T t) {
@@ -54,8 +54,9 @@ abstract class AbstractDao<T> {
 
         try (KomCursorWrapper cursorWrapper = new KomCursorWrapper(cursor)) {
             cursorWrapper.moveToFirst();
-            if (!cursorWrapper.isAfterLast()) {
+            while (!cursorWrapper.isAfterLast()) {
                 result.add(cursorWrapper.getT());
+                cursor.moveToNext();
             }
         }
         return result;
@@ -86,7 +87,7 @@ abstract class AbstractDao<T> {
 
     private ContentValues getContentValues(T t) {
         ContentValues values = new ContentValues();
-        for (AbstractColumn<T> column : table.getColumns()) {
+        for (AbstractColumn<T> column : table.getContentColumns()) {
             values.put(column.getName(), column.getDbValueByActualValue(t));
         }
         return values;
@@ -99,7 +100,7 @@ abstract class AbstractDao<T> {
 
         T getT() {
             T t = table.getNewEmptyObject();
-            for (AbstractColumn<T> column : table.getColumns()) {
+            for (AbstractColumn<T> column : table.getAllColumns()) {
                 switch (column.getDbType()) {
                     case STRING:
                         column.setActualValue(t, column.getActualValueByDbValue(getString(getColumnIndex(column.getName()))));
@@ -110,6 +111,5 @@ abstract class AbstractDao<T> {
             }
             return t;
         }
-
     }
 }

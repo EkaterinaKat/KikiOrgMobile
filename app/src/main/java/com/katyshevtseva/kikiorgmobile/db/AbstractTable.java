@@ -2,6 +2,7 @@ package com.katyshevtseva.kikiorgmobile.db;
 
 
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.List;
 
 import lombok.Getter;
@@ -9,14 +10,19 @@ import lombok.RequiredArgsConstructor;
 
 import static com.katyshevtseva.kikiorgmobile.db.DbConstants.DATE_FORMAT;
 
-// T - тип хранимого в таблице объекта
-
 @RequiredArgsConstructor
 abstract class AbstractTable<T> {
     @Getter
     private final String name;
+    private final AbstractColumn<T> idColumn;
     @Getter
-    private final List<AbstractColumn<T>> columns;
+    private final List<AbstractColumn<T>> contentColumns;
+
+    List<AbstractColumn<T>> getAllColumns() {
+        List<AbstractColumn<T>> columns = new ArrayList<>(contentColumns);
+        columns.add(idColumn);
+        return columns;
+    }
 
     abstract T getNewEmptyObject();
 

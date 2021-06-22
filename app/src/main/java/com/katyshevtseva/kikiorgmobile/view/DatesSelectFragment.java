@@ -45,6 +45,9 @@ public class DatesSelectFragment extends Fragment {
     }
 
     private void updatePane() {
+        if (datesPane == null)
+            return;
+
         datesPane.removeAllViews();
         for (Date date : dates) {
             datesPane.addView(getDateTextView(date));

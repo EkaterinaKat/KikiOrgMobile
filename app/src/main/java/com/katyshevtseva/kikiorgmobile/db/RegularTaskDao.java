@@ -1,5 +1,6 @@
 package com.katyshevtseva.kikiorgmobile.db;
 
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.katyshevtseva.kikiorgmobile.core.model.PeriodType;
@@ -23,10 +24,20 @@ class RegularTaskDao extends AbstractDao<RegularTask> {
         super(database, new RegularTaskTable());
     }
 
+    long getLastInsertedId() {
+        String sql = String.format("SELECT ROWID from %s order by ROWID DESC limit 1", TableSchema.NAME);
+        Cursor cursor = database.rawQuery(sql, null);
+        if (cursor != null && cursor.moveToFirst()) {
+            return cursor.getLong(0);
+        }
+        cursor.close();
+        throw new RuntimeException();
+    }
+
     private static class RegularTaskTable extends AbstractTable<RegularTask> {
 
         RegularTaskTable() {
-            super(TableSchema.NAME, createColumns());
+            super(TableSchema.NAME, createIdColumn(), createColumns());
         }
 
         @Override
@@ -34,9 +45,8 @@ class RegularTaskDao extends AbstractDao<RegularTask> {
             return new RegularTask();
         }
 
-        private static List<AbstractColumn<RegularTask>> createColumns() {
-            List<AbstractColumn<RegularTask>> columns = new ArrayList<>();
-            columns.add(new AbstractColumn<RegularTask>(ID, LONG) {
+        private static AbstractColumn<RegularTask> createIdColumn() {
+            return new AbstractColumn<RegularTask>(ID, LONG) {
                 @Override
                 Object getActualValue(RegularTask regularTask) {
                     return regularTask.getId();
@@ -46,7 +56,11 @@ class RegularTaskDao extends AbstractDao<RegularTask> {
                 void setActualValue(RegularTask regularTask, Object value) {
                     regularTask.setId((Long) value);
                 }
-            });
+            };
+        }
+
+        private static List<AbstractColumn<RegularTask>> createColumns() {
+            List<AbstractColumn<RegularTask>> columns = new ArrayList<>();
             columns.add(new AbstractColumn<RegularTask>(TITLE, STRING) {
                 @Override
                 Object getActualValue(RegularTask regularTask) {

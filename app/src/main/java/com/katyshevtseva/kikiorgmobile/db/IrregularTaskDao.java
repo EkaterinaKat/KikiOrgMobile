@@ -27,7 +27,7 @@ class IrregularTaskDao extends AbstractDao<IrregularTask> {
     private static class IrregularTaskTable extends AbstractTable<IrregularTask> {
 
         IrregularTaskTable() {
-            super(TableSchema.NAME, createColumns());
+            super(TableSchema.NAME, createIdColumn(), createColumns());
         }
 
         @Override
@@ -35,9 +35,8 @@ class IrregularTaskDao extends AbstractDao<IrregularTask> {
             return new IrregularTask();
         }
 
-        private static List<AbstractColumn<IrregularTask>> createColumns() {
-            List<AbstractColumn<IrregularTask>> columns = new ArrayList<>();
-            columns.add(new AbstractColumn<IrregularTask>(ID, LONG) {
+        private static AbstractColumn<IrregularTask> createIdColumn() {
+            return new AbstractColumn<IrregularTask>(ID, LONG) {
                 @Override
                 Object getActualValue(IrregularTask irregularTask) {
                     return irregularTask.getId();
@@ -47,7 +46,11 @@ class IrregularTaskDao extends AbstractDao<IrregularTask> {
                 void setActualValue(IrregularTask irregularTask, Object value) {
                     irregularTask.setId((Long) value);
                 }
-            });
+            };
+        }
+
+        private static List<AbstractColumn<IrregularTask>> createColumns() {
+            List<AbstractColumn<IrregularTask>> columns = new ArrayList<>();
             columns.add(new AbstractColumn<IrregularTask>(TITLE, STRING) {
                 @Override
                 Object getActualValue(IrregularTask irregularTask) {
