@@ -36,19 +36,22 @@ public class TaskService {
         }
     }
 
-    public void saveNewRegularTask(RegularTask existing, String title, String desc, PeriodType periodType, Date refDate, int period) {
+    public void saveNewRegularTask(RegularTask existing, String title, String desc,
+                                   PeriodType periodType, List<Date> dates, int period) {
         if (existing == null) {
             RegularTask task = new RegularTask();
             task.setTitle(title);
             task.setDesc(desc);
             task.setPeriodType(periodType);
             task.setPeriod(period);
+            task.setDates(dates);
             komDao.saveNewRegularTask(task);
         } else {
             existing.setTitle(title);
             existing.setDesc(desc);
             existing.setPeriodType(periodType);
             existing.setPeriod(period);
+            existing.setDates(dates);
             komDao.updateRegularTask(existing);
         }
     }

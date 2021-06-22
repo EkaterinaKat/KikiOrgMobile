@@ -45,7 +45,7 @@
         android:visibility="gone">
 
         <TextView
-            android:id="@+id/irregular_date_text_view"
+            android:id="@+id/it_date_text_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="20dp"
@@ -71,13 +71,11 @@
             android:layout_height="wrap_content"
             android:layout_margin="20dp" />
 
-        <TextView
-            android:id="@+id/ref_date_text_view"
-            android:layout_width="match_parent"
+        <LinearLayout
+            android:id="@+id/rt_dates_container"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="20dp"
-            android:gravity="center"
-            android:text="Select ref date" />
+            android:orientation="vertical"/>
 
         <EditText
             android:id="@+id/period_edit_text"

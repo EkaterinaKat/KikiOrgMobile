@@ -27,11 +27,10 @@ import com.katyshevtseva.kikiorgmobile.view.utils.KomUtils.EditTextListener;
 import com.katyshevtseva.kikiorgmobile.view.utils.KomUtils.SpinnerListener;
 
 import java.util.Arrays;
-import java.util.Date;
 
-import static com.katyshevtseva.kikiorgmobile.core.CoreUtils.getDateByString;
-import static com.katyshevtseva.kikiorgmobile.core.CoreUtils.getDateString;
-import static com.katyshevtseva.kikiorgmobile.core.CoreUtils.isDate;
+import static com.katyshevtseva.kikiorgmobile.core.DateUtils.getDateByString;
+import static com.katyshevtseva.kikiorgmobile.core.DateUtils.getDateString;
+import static com.katyshevtseva.kikiorgmobile.core.DateUtils.isDate;
 import static com.katyshevtseva.kikiorgmobile.view.utils.KomUtils.adjustSpinner;
 import static com.katyshevtseva.kikiorgmobile.view.utils.KomUtils.isEmpty;
 import static com.katyshevtseva.kikiorgmobile.view.utils.KomUtils.selectSpinnerItemByValue;
@@ -42,6 +41,7 @@ public class TaskCreationActivity extends AppCompatActivity {
     private static final String EXTRA_TASK_TYPE = "task_type";
     private TaskService service;
     private Task existing;
+    private DatesSelectFragment datesFragment = new DatesSelectFragment();
 
     private EditText titleEdit;
     private EditText descEdit;
@@ -51,7 +51,6 @@ public class TaskCreationActivity extends AppCompatActivity {
     private LinearLayout regularLayout;
     private Spinner periodTypeSpinner;
     private EditText periodEditText;
-    private TextView rtDateTextView;
     private Button doneButton;
 
     public static Intent newIntent(Context context, @Nullable Task task) {
@@ -92,7 +91,7 @@ public class TaskCreationActivity extends AppCompatActivity {
                 RegularTask regularTask = (RegularTask) existing;
                 selectSpinnerItemByValue(periodTypeSpinner, regularTask.getPeriodType());
                 periodEditText.setText("" + regularTask.getPeriod());
-                rtDateTextView.setText(getDateString(new Date()));
+                datesFragment.setDates(regularTask.getDates());
                 break;
             case IRREGULAR:
                 IrregularTask irregularTask = (IrregularTask) existing;
@@ -109,8 +108,8 @@ public class TaskCreationActivity extends AppCompatActivity {
         itDateTextView = findViewById(R.id.it_date_text_view);
         regularLayout = findViewById(R.id.regular_task_layout);
         periodTypeSpinner = findViewById(R.id.period_type_spinner);
-        rtDateTextView = findViewById(R.id.rt_date_text_view);
         periodEditText = findViewById(R.id.period_edit_text);
+        getSupportFragmentManager().beginTransaction().add(R.id.rt_dates_container, datesFragment).commit();
     }
 
     private void setControlListeners() {
@@ -131,12 +130,6 @@ public class TaskCreationActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 openDatePicker(itDateTextView);
-            }
-        });
-        rtDateTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                openDatePicker(rtDateTextView);
             }
         });
         setEditTextListener(periodEditText, new EditTextListener() {
@@ -187,7 +180,7 @@ public class TaskCreationActivity extends AppCompatActivity {
                         titleEdit.getText().toString(),
                         descEdit.getText().toString(),
                         (PeriodType) periodTypeSpinner.getSelectedItem(),
-                        getDateByString(rtDateTextView.getText().toString()),
+                        datesFragment.getDates(),
                         Integer.parseInt(periodEditText.getText().toString()));
         }
         finish();
@@ -223,7 +216,7 @@ public class TaskCreationActivity extends AppCompatActivity {
                 break;
             case REGULAR:
                 doneButton.setEnabled(
-                        isDate(rtDateTextView.getText().toString())
+                        !datesFragment.isEmpty()
                                 && !isEmpty(periodEditText)
                                 && !periodEditText.getText().toString().equals("0"));
         }

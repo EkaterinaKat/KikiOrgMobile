@@ -1,6 +1,6 @@
 package com.katyshevtseva.kikiorgmobile.core.model;
 
-import com.katyshevtseva.kikiorgmobile.core.CoreUtils;
+import com.katyshevtseva.kikiorgmobile.core.DateUtils;
 
 import java.util.Date;
 
@@ -20,7 +20,7 @@ public class IrregularTask implements Task {
 
     public String getFullDesc() {
         return String.format("%s\n%s",
-                desc, CoreUtils.READABLE_DATE_FORMAT.format(date));
+                desc, DateUtils.READABLE_DATE_FORMAT.format(date));
     }
 
     @Override

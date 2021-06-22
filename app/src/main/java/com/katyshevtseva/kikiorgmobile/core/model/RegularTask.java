@@ -1,5 +1,7 @@
 package com.katyshevtseva.kikiorgmobile.core.model;
 
+import com.katyshevtseva.kikiorgmobile.core.DateUtils;
+
 import java.util.Date;
 import java.util.List;
 
@@ -21,7 +23,7 @@ public class RegularTask implements Task {
 
     public String getFullDesc() {
         return String.format("%s\n%s %s\n%s",
-                desc, period, periodType, "место для даты");
+                desc, period, periodType, DateUtils.getDateString(dates));
     }
 
     @Override
