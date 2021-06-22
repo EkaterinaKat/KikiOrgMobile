@@ -47,11 +47,11 @@ public class TaskCreationActivity extends AppCompatActivity {
     private EditText descEdit;
     private Spinner taskTypeSpinner;
     private LinearLayout irregularLayout;
-    private TextView irregularDateTextView;
+    private TextView itDateTextView;
     private LinearLayout regularLayout;
     private Spinner periodTypeSpinner;
     private EditText periodEditText;
-    private TextView refDateTextView;
+    private TextView rtDateTextView;
     private Button doneButton;
 
     public static Intent newIntent(Context context, @Nullable Task task) {
@@ -92,11 +92,11 @@ public class TaskCreationActivity extends AppCompatActivity {
                 RegularTask regularTask = (RegularTask) existing;
                 selectSpinnerItemByValue(periodTypeSpinner, regularTask.getPeriodType());
                 periodEditText.setText("" + regularTask.getPeriod());
-                refDateTextView.setText(getDateString(new Date()));
+                rtDateTextView.setText(getDateString(new Date()));
                 break;
             case IRREGULAR:
                 IrregularTask irregularTask = (IrregularTask) existing;
-                irregularDateTextView.setText(getDateString(irregularTask.getDate()));
+                itDateTextView.setText(getDateString(irregularTask.getDate()));
         }
     }
 
@@ -106,10 +106,10 @@ public class TaskCreationActivity extends AppCompatActivity {
         taskTypeSpinner = findViewById(R.id.task_type_spinner);
         doneButton = findViewById(R.id.save_task_button);
         irregularLayout = findViewById(R.id.irregular_layout);
-        irregularDateTextView = findViewById(R.id.irregular_date_text_view);
+        itDateTextView = findViewById(R.id.it_date_text_view);
         regularLayout = findViewById(R.id.regular_task_layout);
         periodTypeSpinner = findViewById(R.id.period_type_spinner);
-        refDateTextView = findViewById(R.id.ref_date_text_view);
+        rtDateTextView = findViewById(R.id.rt_date_text_view);
         periodEditText = findViewById(R.id.period_edit_text);
     }
 
@@ -127,16 +127,16 @@ public class TaskCreationActivity extends AppCompatActivity {
                 saveTask();
             }
         });
-        irregularDateTextView.setOnClickListener(new View.OnClickListener() {
+        itDateTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                openDatePicker(irregularDateTextView);
+                openDatePicker(itDateTextView);
             }
         });
-        refDateTextView.setOnClickListener(new View.OnClickListener() {
+        rtDateTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                openDatePicker(refDateTextView);
+                openDatePicker(rtDateTextView);
             }
         });
         setEditTextListener(periodEditText, new EditTextListener() {
@@ -178,7 +178,7 @@ public class TaskCreationActivity extends AppCompatActivity {
                         (IrregularTask) existing,
                         titleEdit.getText().toString(),
                         descEdit.getText().toString(),
-                        getDateByString(irregularDateTextView.getText().toString())
+                        getDateByString(itDateTextView.getText().toString())
                 );
                 break;
             case REGULAR:
@@ -187,7 +187,7 @@ public class TaskCreationActivity extends AppCompatActivity {
                         titleEdit.getText().toString(),
                         descEdit.getText().toString(),
                         (PeriodType) periodTypeSpinner.getSelectedItem(),
-                        getDateByString(refDateTextView.getText().toString()),
+                        getDateByString(rtDateTextView.getText().toString()),
                         Integer.parseInt(periodEditText.getText().toString()));
         }
         finish();
@@ -219,11 +219,11 @@ public class TaskCreationActivity extends AppCompatActivity {
 
         switch ((TaskType) taskTypeSpinner.getSelectedItem()) {
             case IRREGULAR:
-                doneButton.setEnabled(isDate(irregularDateTextView.getText().toString()));
+                doneButton.setEnabled(isDate(itDateTextView.getText().toString()));
                 break;
             case REGULAR:
                 doneButton.setEnabled(
-                        isDate(refDateTextView.getText().toString())
+                        isDate(rtDateTextView.getText().toString())
                                 && !isEmpty(periodEditText)
                                 && !periodEditText.getText().toString().equals("0"));
         }
