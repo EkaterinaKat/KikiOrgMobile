@@ -16,7 +16,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-public class KomUtils {
+public class ViewUtils {
     public static <T> void adjustSpinner(Context context, Spinner spinner,
                                          final List<T> items, final SpinnerListener<T> spinnerListener) {
         ArrayAdapter<T> adapter = new ArrayAdapter<>(context, android.R.layout.simple_spinner_item, items);
@@ -34,7 +34,6 @@ public class KomUtils {
         });
     }
 
-    @FunctionalInterface
     public interface SpinnerListener<T> {
         void execute(T selectedItem);
     }

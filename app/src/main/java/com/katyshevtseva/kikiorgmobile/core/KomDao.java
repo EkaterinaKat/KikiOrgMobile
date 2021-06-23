@@ -1,4 +1,4 @@
-package com.katyshevtseva.kikiorgmobile.core.dao;
+package com.katyshevtseva.kikiorgmobile.core;
 
 import com.katyshevtseva.kikiorgmobile.core.model.IrregularTask;
 import com.katyshevtseva.kikiorgmobile.core.model.RegularTask;
@@ -22,7 +22,7 @@ public interface KomDao {
 
     void deleteRegularTask(RegularTask regularTask);
 
-    RegularTask findRegularTaskById(long id);
+    RegularTask getRegularTaskById(long id);
 
-    IrregularTask findIrregularTaskById(long id);
+    IrregularTask getIrregularTaskById(long id);
 }

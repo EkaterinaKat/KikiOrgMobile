@@ -13,8 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.kikiorgmobile.R;
-import com.katyshevtseva.kikiorgmobile.core.Core;
-import com.katyshevtseva.kikiorgmobile.core.TaskService;
+import com.katyshevtseva.kikiorgmobile.core.Service;
 import com.katyshevtseva.kikiorgmobile.core.model.RegularTask;
 
 import java.util.List;
@@ -28,14 +27,14 @@ public class ArchiveActivity extends AppCompatActivity {
 
         RecyclerView taskList = findViewById(R.id.archive_task_list);
         taskList.setLayoutManager(new LinearLayoutManager(this));
-        taskList.setAdapter(new TaskListAdapter(this, Core.getTaskService(this)));
+        taskList.setAdapter(new TaskListAdapter(this, new Service(this)));
     }
 
     private static class TaskHolder extends RecyclerView.ViewHolder {
         private TaskListAdapter taskListAdapter;
-        private TaskService service;
+        private Service service;
 
-        TaskHolder(View view, TaskListAdapter taskListAdapter, TaskService service) {
+        TaskHolder(View view, TaskListAdapter taskListAdapter, Service service) {
             super(view);
             this.taskListAdapter = taskListAdapter;
             this.service = service;
@@ -57,9 +56,9 @@ public class ArchiveActivity extends AppCompatActivity {
     private static class TaskListAdapter extends RecyclerView.Adapter<TaskHolder> {
         private List<RegularTask> items;
         private Context context;
-        private TaskService service;
+        private Service service;
 
-        TaskListAdapter(Context context, TaskService service) {
+        TaskListAdapter(Context context, Service service) {
             this.context = context;
             this.service = service;
             updateContent();

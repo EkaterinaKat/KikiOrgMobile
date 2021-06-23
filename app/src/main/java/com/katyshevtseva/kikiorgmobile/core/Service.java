@@ -1,24 +1,26 @@
 package com.katyshevtseva.kikiorgmobile.core;
 
 
-import com.katyshevtseva.kikiorgmobile.core.dao.KomDao;
+import android.content.Context;
+
 import com.katyshevtseva.kikiorgmobile.core.model.IrregularTask;
 import com.katyshevtseva.kikiorgmobile.core.model.PeriodType;
 import com.katyshevtseva.kikiorgmobile.core.model.RegularTask;
 import com.katyshevtseva.kikiorgmobile.core.model.Task;
 import com.katyshevtseva.kikiorgmobile.core.model.TaskType;
 import com.katyshevtseva.kikiorgmobile.core.model.TimeOfDay;
+import com.katyshevtseva.kikiorgmobile.db.KomDaoImpl;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 
-public class TaskService {
+public class Service {
     private KomDao komDao;
 
-    TaskService(KomDao komDao) {
-        this.komDao = komDao;
+    public Service(Context context) {
+        this.komDao = new KomDaoImpl(context);
     }
 
     public void saveNewIrregularTask(IrregularTask existing, String title, String desc, TimeOfDay timeOfDay, Date date) {
@@ -105,9 +107,9 @@ public class TaskService {
     public Task findTask(TaskType taskType, long id) {
         switch (taskType) {
             case REGULAR:
-                return komDao.findRegularTaskById(id);
+                return komDao.getRegularTaskById(id);
             case IRREGULAR:
-                return komDao.findIrregularTaskById(id);
+                return komDao.getIrregularTaskById(id);
         }
         return null;
     }

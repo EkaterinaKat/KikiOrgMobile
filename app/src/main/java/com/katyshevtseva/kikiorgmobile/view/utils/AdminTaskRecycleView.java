@@ -14,7 +14,7 @@ import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.kikiorgmobile.R;
-import com.katyshevtseva.kikiorgmobile.core.TaskService;
+import com.katyshevtseva.kikiorgmobile.core.Service;
 import com.katyshevtseva.kikiorgmobile.core.model.IrregularTask;
 import com.katyshevtseva.kikiorgmobile.core.model.RegularTask;
 import com.katyshevtseva.kikiorgmobile.view.QuestionDialog;
@@ -24,14 +24,14 @@ import com.katyshevtseva.kikiorgmobile.view.TaskCreationActivity;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TaskRecycleView {
+public class AdminTaskRecycleView {
 
     static class TaskHolder extends RecyclerView.ViewHolder {
         private TaskListAdapter taskListAdapter;
         private AppCompatActivity context;
-        private TaskService service;
+        private Service service;
 
-        TaskHolder(View view, TaskListAdapter taskListAdapter, AppCompatActivity context, TaskService service) {
+        TaskHolder(View view, TaskListAdapter taskListAdapter, AppCompatActivity context, Service service) {
             super(view);
             this.taskListAdapter = taskListAdapter;
             this.context = context;
@@ -112,9 +112,9 @@ public class TaskRecycleView {
 
         private List<TaskListItem> items;
         private AppCompatActivity context;
-        private TaskService service;
+        private Service service;
 
-        public TaskListAdapter(AppCompatActivity context, TaskService service) {
+        public TaskListAdapter(AppCompatActivity context, Service service) {
             this.context = context;
             this.service = service;
             updateContent();
@@ -152,7 +152,7 @@ public class TaskRecycleView {
         }
     }
 
-    private static List<TaskListItem> getTaskListItems(Context context, TaskService service) {
+    private static List<TaskListItem> getTaskListItems(Context context, Service service) {
         List<TaskListItem> items = new ArrayList<>();
         items.add(getHeader("Irregular tasks"));
         for (IrregularTask irregularTask : service.getNotDoneIrregularTasks()) {

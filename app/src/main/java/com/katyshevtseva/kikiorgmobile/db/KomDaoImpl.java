@@ -3,7 +3,7 @@ package com.katyshevtseva.kikiorgmobile.db;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.katyshevtseva.kikiorgmobile.core.dao.KomDao;
+import com.katyshevtseva.kikiorgmobile.core.KomDao;
 import com.katyshevtseva.kikiorgmobile.core.model.IrregularTask;
 import com.katyshevtseva.kikiorgmobile.core.model.RegularTask;
 
@@ -44,7 +44,7 @@ public class KomDaoImpl implements KomDao {
     }
 
     @Override
-    public IrregularTask findIrregularTaskById(long id) {
+    public IrregularTask getIrregularTaskById(long id) {
         return irregularTaskDao.findFirst(IrregularTaskDao.TableSchema.Cols.ID, "" + id);
     }
 
@@ -83,7 +83,7 @@ public class KomDaoImpl implements KomDao {
     }
 
     @Override
-    public RegularTask findRegularTaskById(long id) {
+    public RegularTask getRegularTaskById(long id) {
         RegularTask task = regularTaskDao.findFirst(RegularTaskDao.TableSchema.Cols.ID, "" + id);
         task.setDates(findDatesByRegularTask(task));
         return task;

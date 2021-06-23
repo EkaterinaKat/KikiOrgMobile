@@ -16,8 +16,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.kikiorgmobile.R;
-import com.katyshevtseva.kikiorgmobile.core.Core;
-import com.katyshevtseva.kikiorgmobile.core.TaskService;
+import com.katyshevtseva.kikiorgmobile.core.Service;
 import com.katyshevtseva.kikiorgmobile.core.model.IrregularTask;
 import com.katyshevtseva.kikiorgmobile.core.model.PeriodType;
 import com.katyshevtseva.kikiorgmobile.core.model.RegularTask;
@@ -25,23 +24,23 @@ import com.katyshevtseva.kikiorgmobile.core.model.Task;
 import com.katyshevtseva.kikiorgmobile.core.model.TaskType;
 import com.katyshevtseva.kikiorgmobile.core.model.TimeOfDay;
 import com.katyshevtseva.kikiorgmobile.view.utils.FragmentUpdateListener;
-import com.katyshevtseva.kikiorgmobile.view.utils.KomUtils.EditTextListener;
-import com.katyshevtseva.kikiorgmobile.view.utils.KomUtils.SpinnerListener;
+import com.katyshevtseva.kikiorgmobile.view.utils.ViewUtils.EditTextListener;
+import com.katyshevtseva.kikiorgmobile.view.utils.ViewUtils.SpinnerListener;
 
 import java.util.Arrays;
 
 import static com.katyshevtseva.kikiorgmobile.core.DateUtils.getDateByString;
 import static com.katyshevtseva.kikiorgmobile.core.DateUtils.getDateString;
 import static com.katyshevtseva.kikiorgmobile.core.DateUtils.isDate;
-import static com.katyshevtseva.kikiorgmobile.view.utils.KomUtils.adjustSpinner;
-import static com.katyshevtseva.kikiorgmobile.view.utils.KomUtils.isEmpty;
-import static com.katyshevtseva.kikiorgmobile.view.utils.KomUtils.selectSpinnerItemByValue;
-import static com.katyshevtseva.kikiorgmobile.view.utils.KomUtils.setEditTextListener;
+import static com.katyshevtseva.kikiorgmobile.view.utils.ViewUtils.adjustSpinner;
+import static com.katyshevtseva.kikiorgmobile.view.utils.ViewUtils.isEmpty;
+import static com.katyshevtseva.kikiorgmobile.view.utils.ViewUtils.selectSpinnerItemByValue;
+import static com.katyshevtseva.kikiorgmobile.view.utils.ViewUtils.setEditTextListener;
 
 public class TaskCreationActivity extends AppCompatActivity implements FragmentUpdateListener {
     private static final String EXTRA_TASK_ID = "task_id";
     private static final String EXTRA_TASK_TYPE = "task_type";
-    private TaskService service;
+    private Service service;
     private Task existing;
     private DatesSelectFragment datesFragment = new DatesSelectFragment();
 
@@ -69,7 +68,7 @@ public class TaskCreationActivity extends AppCompatActivity implements FragmentU
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task_creation);
-        service = Core.getTaskService(this);
+        service = new Service(this);
 
         initializeControls();
         setDoneButtonAccessibility();
