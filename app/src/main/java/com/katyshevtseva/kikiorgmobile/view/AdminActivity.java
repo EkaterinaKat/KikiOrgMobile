@@ -32,7 +32,7 @@ public class AdminActivity extends AppCompatActivity {
                 startActivity(new Intent(AdminActivity.this, ArchiveActivity.class));
             }
         });
-        RecyclerView taskList = findViewById(R.id.task_list);
+        RecyclerView taskList = findViewById(R.id.admin_task_list);
         taskList.setLayoutManager(new LinearLayoutManager(this));
         taskListAdapter = new TaskListAdapter(this, new Service(this));
         taskList.setAdapter(taskListAdapter);

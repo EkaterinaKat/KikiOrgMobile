@@ -3,9 +3,12 @@ package com.katyshevtseva.kikiorgmobile.core;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+
+import static com.katyshevtseva.kikiorgmobile.core.DateUtils.TimeUnit.DAY;
 
 public abstract class DateUtils {
     public static final DateFormat READABLE_DATE_FORMAT = new SimpleDateFormat("dd.MM.yyyy");
@@ -72,5 +75,34 @@ public abstract class DateUtils {
                 return getDateString(date) + " (Сб)";
         }
         throw new RuntimeException();
+    }
+
+    public static Date getProperDate() {
+        LocalDateTime now = LocalDateTime.now();
+        int hour = now.getHour();
+        if (hour > 6)
+            return new Date();
+        return shiftDate(new Date(), DAY, -1);
+    }
+
+    private static Date shiftDate(Date date, TimeUnit unit, int numOfUnits) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.add(unit.getIntRepresentationForCalendar(), numOfUnits);
+        return calendar.getTime();
+    }
+
+    public enum TimeUnit {
+        DAY(Calendar.DATE), MONTH(Calendar.MONTH), YEAR(Calendar.YEAR);
+
+        private int intRepresentationForCalendar;
+
+        TimeUnit(int intRepresentationForCalendar) {
+            this.intRepresentationForCalendar = intRepresentationForCalendar;
+        }
+
+        public int getIntRepresentationForCalendar() {
+            return intRepresentationForCalendar;
+        }
     }
 }
