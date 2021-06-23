@@ -17,14 +17,15 @@ public class RegularTask implements Task {
     private long id;
     private String title;
     private String desc;
+    private TimeOfDay timeOfDay;
     private PeriodType periodType;
     private int period;
     private boolean archived;
     private List<Date> dates;
 
     public String getFullDesc() {
-        return String.format("%s\n%s %s\n%s",
-                desc, period, periodType, getLoppedDateListString());
+        return String.format("%s\n%s\n%s %s\n%s",
+                desc, timeOfDay, period, periodType, getLoppedDateListString());
     }
 
     private String getLoppedDateListString() {

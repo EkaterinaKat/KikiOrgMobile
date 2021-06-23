@@ -8,4 +8,6 @@ public interface Task {
     String getTitle();
 
     String getDesc();
+
+    TimeOfDay getTimeOfDay();
 }

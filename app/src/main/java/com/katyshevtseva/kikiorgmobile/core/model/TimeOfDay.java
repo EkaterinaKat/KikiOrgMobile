@@ -1,0 +1,25 @@
+package com.katyshevtseva.kikiorgmobile.core.model;
+
+public enum TimeOfDay {
+    MORNING(1), AFTERNOON(2), EVENING(3);
+
+    private int code;
+
+    TimeOfDay(int code) {
+        this.code = code;
+    }
+
+    public int getCode() {
+        return code;
+    }
+
+    public static TimeOfDay findByCode(int code) {
+        if (code == 0)
+            return MORNING; //todo затычка
+
+        for (TimeOfDay timeOfDay : TimeOfDay.values())
+            if (timeOfDay.code == code)
+                return timeOfDay;
+        throw new RuntimeException();
+    }
+}

@@ -15,12 +15,13 @@ public class IrregularTask implements Task {
     private long id;
     private String title;
     private String desc;
+    private TimeOfDay timeOfDay;
     private Date date;
     private boolean done;
 
     public String getFullDesc() {
-        return String.format("%s\n%s",
-                desc, DateUtils.READABLE_DATE_FORMAT.format(date));
+        return String.format("%s\n%s\n%s",
+                desc, timeOfDay, DateUtils.READABLE_DATE_FORMAT.format(date));
     }
 
     @Override

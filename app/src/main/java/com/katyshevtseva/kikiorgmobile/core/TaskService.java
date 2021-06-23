@@ -7,6 +7,7 @@ import com.katyshevtseva.kikiorgmobile.core.model.PeriodType;
 import com.katyshevtseva.kikiorgmobile.core.model.RegularTask;
 import com.katyshevtseva.kikiorgmobile.core.model.Task;
 import com.katyshevtseva.kikiorgmobile.core.model.TaskType;
+import com.katyshevtseva.kikiorgmobile.core.model.TimeOfDay;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -20,28 +21,31 @@ public class TaskService {
         this.komDao = komDao;
     }
 
-    public void saveNewIrregularTask(IrregularTask existing, String title, String desc, Date date) {
+    public void saveNewIrregularTask(IrregularTask existing, String title, String desc, TimeOfDay timeOfDay, Date date) {
         if (existing == null) {
             IrregularTask task = new IrregularTask();
             task.setTitle(title);
             task.setDesc(desc);
             task.setDate(date);
             task.setDone(false);
+            task.setTimeOfDay(timeOfDay);
             komDao.saveNewIrregularTask(task);
         } else {
             existing.setTitle(title);
             existing.setDesc(desc);
+            existing.setTimeOfDay(timeOfDay);
             existing.setDate(date);
             komDao.updateIrregularTask(existing);
         }
     }
 
-    public void saveNewRegularTask(RegularTask existing, String title, String desc,
+    public void saveNewRegularTask(RegularTask existing, String title, String desc, TimeOfDay timeOfDay,
                                    PeriodType periodType, List<Date> dates, int period) {
         if (existing == null) {
             RegularTask task = new RegularTask();
             task.setTitle(title);
             task.setDesc(desc);
+            task.setTimeOfDay(timeOfDay);
             task.setPeriodType(periodType);
             task.setPeriod(period);
             task.setDates(dates);
@@ -49,6 +53,7 @@ public class TaskService {
         } else {
             existing.setTitle(title);
             existing.setDesc(desc);
+            existing.setTimeOfDay(timeOfDay);
             existing.setPeriodType(periodType);
             existing.setPeriod(period);
             existing.setDates(dates);

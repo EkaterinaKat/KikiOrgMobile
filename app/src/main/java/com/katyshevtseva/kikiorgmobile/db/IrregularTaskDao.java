@@ -3,6 +3,7 @@ package com.katyshevtseva.kikiorgmobile.db;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.katyshevtseva.kikiorgmobile.core.model.IrregularTask;
+import com.katyshevtseva.kikiorgmobile.core.model.TimeOfDay;
 import com.katyshevtseva.kikiorgmobile.db.IrregularTaskDao.TableSchema.Cols;
 
 import java.util.ArrayList;
@@ -16,6 +17,7 @@ import static com.katyshevtseva.kikiorgmobile.db.AbstractTable.ColumnActualType.
 import static com.katyshevtseva.kikiorgmobile.db.IrregularTaskDao.TableSchema.Cols.DESC;
 import static com.katyshevtseva.kikiorgmobile.db.IrregularTaskDao.TableSchema.Cols.DONE;
 import static com.katyshevtseva.kikiorgmobile.db.IrregularTaskDao.TableSchema.Cols.ID;
+import static com.katyshevtseva.kikiorgmobile.db.IrregularTaskDao.TableSchema.Cols.TIME_OF_DAY;
 import static com.katyshevtseva.kikiorgmobile.db.IrregularTaskDao.TableSchema.Cols.TITLE;
 
 class IrregularTaskDao extends AbstractDao<IrregularTask> {
@@ -95,6 +97,17 @@ class IrregularTaskDao extends AbstractDao<IrregularTask> {
                     irregularTask.setDone((Boolean) value);
                 }
             });
+            columns.add(new AbstractColumn<IrregularTask>(TIME_OF_DAY, LONG) {
+                @Override
+                Object getActualValue(IrregularTask irregularTask) {
+                    return irregularTask.getTimeOfDay().getCode();
+                }
+
+                @Override
+                void setActualValue(IrregularTask irregularTask, Object value) {
+                    irregularTask.setTimeOfDay(TimeOfDay.findByCode(((Long) value).intValue()));
+                }
+            });
             return columns;
         }
     }
@@ -106,6 +119,7 @@ class IrregularTaskDao extends AbstractDao<IrregularTask> {
             static final String ID = "id";
             static final String TITLE = "title";
             static final String DESC = "desc";
+            static final String TIME_OF_DAY = "time_of_day";
             static final String DATE = "date";
             static final String DONE = "done";
         }

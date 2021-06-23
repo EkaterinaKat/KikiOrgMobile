@@ -5,6 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.katyshevtseva.kikiorgmobile.core.model.PeriodType;
 import com.katyshevtseva.kikiorgmobile.core.model.RegularTask;
+import com.katyshevtseva.kikiorgmobile.core.model.TimeOfDay;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +18,7 @@ import static com.katyshevtseva.kikiorgmobile.db.RegularTaskDao.TableSchema.Cols
 import static com.katyshevtseva.kikiorgmobile.db.RegularTaskDao.TableSchema.Cols.ID;
 import static com.katyshevtseva.kikiorgmobile.db.RegularTaskDao.TableSchema.Cols.PERIOD;
 import static com.katyshevtseva.kikiorgmobile.db.RegularTaskDao.TableSchema.Cols.PERIOD_TYPE;
+import static com.katyshevtseva.kikiorgmobile.db.RegularTaskDao.TableSchema.Cols.TIME_OF_DAY;
 import static com.katyshevtseva.kikiorgmobile.db.RegularTaskDao.TableSchema.Cols.TITLE;
 
 class RegularTaskDao extends AbstractDao<RegularTask> {
@@ -116,6 +118,17 @@ class RegularTaskDao extends AbstractDao<RegularTask> {
                     regularTask.setArchived((boolean) value);
                 }
             });
+            columns.add(new AbstractColumn<RegularTask>(TIME_OF_DAY, LONG) {
+                @Override
+                Object getActualValue(RegularTask regularTask) {
+                    return regularTask.getTimeOfDay().getCode();
+                }
+
+                @Override
+                void setActualValue(RegularTask regularTask, Object value) {
+                    regularTask.setTimeOfDay(TimeOfDay.findByCode(((Long) value).intValue()));
+                }
+            });
             return columns;
         }
     }
@@ -127,6 +140,7 @@ class RegularTaskDao extends AbstractDao<RegularTask> {
             static final String ID = "id";
             static final String TITLE = "title";
             static final String DESC = "desc";
+            static final String TIME_OF_DAY = "time_of_day";
             static final String PERIOD_TYPE = "period_type";
             static final String PERIOD = "period";
             static final String ARCHIVED = "archived";
