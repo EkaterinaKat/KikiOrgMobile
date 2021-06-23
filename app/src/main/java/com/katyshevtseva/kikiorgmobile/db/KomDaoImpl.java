@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import static com.katyshevtseva.kikiorgmobile.db.DbConstants.DATE_FORMAT;
+
 public class KomDaoImpl implements KomDao {
     private IrregularTaskDao irregularTaskDao;
     private RegularTaskDao regularTaskDao;
@@ -31,6 +33,11 @@ public class KomDaoImpl implements KomDao {
     @Override
     public List<IrregularTask> getAllIrregularTasks() {
         return irregularTaskDao.findAll();
+    }
+
+    @Override
+    public List<IrregularTask> getIrregularTasksByDate(Date date) {
+        return irregularTaskDao.find(IrregularTaskDao.TableSchema.Cols.DATE, DATE_FORMAT.format(date));
     }
 
     @Override
@@ -65,6 +72,19 @@ public class KomDaoImpl implements KomDao {
             task.setDates(findDatesByRegularTask(task));
         }
         return tasks;
+    }
+
+    @Override
+    public List<RegularTask> getRegularTasksByDate(Date date) {
+        List<RtDate> rtDates = rtDateDao.find(RtDateDao.TableSchema.Cols.VALUE, DATE_FORMAT.format(date));
+        List<RegularTask> regularTasks = new ArrayList<>();
+        for (RtDate rtDate : rtDates) {
+            regularTasks.addAll(regularTaskDao.find(RegularTaskDao.TableSchema.Cols.ID, "" + rtDate.getRegularTaskId()));
+        }
+        for (RegularTask task : regularTasks) {
+            task.setDates(findDatesByRegularTask(task));
+        }
+        return regularTasks;
     }
 
     @Override

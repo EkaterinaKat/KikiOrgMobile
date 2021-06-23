@@ -53,7 +53,7 @@ public class AdminTaskRecycleView {
 
         private void bindRegularTask(final RegularTask task) {
             ((TextView) itemView.findViewById(R.id.task_title_view)).setText(task.getTitle());
-            ((TextView) itemView.findViewById(R.id.task_desc_view)).setText(task.getFullDesc());
+            ((TextView) itemView.findViewById(R.id.task_desc_view)).setText(task.getAdminTaskListDesk());
             itemView.findViewById(R.id.edit_task_button).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -74,7 +74,7 @@ public class AdminTaskRecycleView {
 
         private void bindIrregularTask(final IrregularTask task) {
             ((TextView) itemView.findViewById(R.id.task_title_view)).setText(task.getTitle());
-            ((TextView) itemView.findViewById(R.id.task_desc_view)).setText(task.getFullDesc());
+            ((TextView) itemView.findViewById(R.id.task_desc_view)).setText(task.getAdminTaskListDesk());
             itemView.findViewById(R.id.edit_task_button).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -107,7 +107,7 @@ public class AdminTaskRecycleView {
     }
 
     public static class TaskListAdapter extends RecyclerView.Adapter<TaskHolder> {
-        private final int TASK_LAYOUT = R.layout.task_list_item;
+        private final int TASK_LAYOUT = R.layout.admin_task_list_item;
         private final int HEADER_LAYOUT = R.layout.task_list_header;
 
         private List<TaskListItem> items;

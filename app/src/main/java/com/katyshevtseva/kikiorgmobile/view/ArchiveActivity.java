@@ -42,7 +42,7 @@ public class ArchiveActivity extends AppCompatActivity {
 
         void bind(final RegularTask task) {
             ((TextView) itemView.findViewById(R.id.archive_task_title_view)).setText(task.getTitle());
-            ((TextView) itemView.findViewById(R.id.archive_task_desc_view)).setText(task.getFullDesc());
+            ((TextView) itemView.findViewById(R.id.archive_task_desc_view)).setText(task.getAdminTaskListDesk());
             itemView.findViewById(R.id.resume_button).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

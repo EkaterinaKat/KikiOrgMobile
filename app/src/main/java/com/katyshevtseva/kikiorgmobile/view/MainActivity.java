@@ -8,25 +8,27 @@ import android.widget.DatePicker;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.kikiorgmobile.R;
 import com.katyshevtseva.kikiorgmobile.core.DateUtils;
 import com.katyshevtseva.kikiorgmobile.core.DateUtils.TimeUnit;
 import com.katyshevtseva.kikiorgmobile.core.Service;
+import com.katyshevtseva.kikiorgmobile.view.utils.MainTaskRecycleView.TaskListAdapter;
 
 import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
-    private Service service;
     private Date date;
     private TextView dateView;
+    private TaskListAdapter taskListAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        service = new Service(this);
         date = DateUtils.getProperDate();
         dateView = findViewById(R.id.main_date_text_view);
         findViewById(R.id.admin_button).setOnClickListener(new View.OnClickListener() {
@@ -55,6 +57,12 @@ public class MainActivity extends AppCompatActivity {
                 openDatePicker();
             }
         });
+
+        RecyclerView taskList = findViewById(R.id.main_task_list);
+        taskList.setLayoutManager(new LinearLayoutManager(this));
+        taskListAdapter = new TaskListAdapter(this, new Service(this), date);
+        taskList.setAdapter(taskListAdapter);
+
         updateTaskPane();
     }
 
@@ -66,6 +74,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void updateTaskPane() {
         dateView.setText(DateUtils.getDateStringWithWeekDay(date));
+        taskListAdapter.setDate(date);
     }
 
     public void openDatePicker() {

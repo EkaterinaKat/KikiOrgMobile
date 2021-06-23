@@ -23,7 +23,7 @@ public class RegularTask implements Task {
     private boolean archived;
     private List<Date> dates;
 
-    public String getFullDesc() {
+    public String getAdminTaskListDesk() {
         return String.format("%s\n%s\n%s %s\n%s",
                 desc, timeOfDay, period, periodType, getLoppedDateListString());
     }

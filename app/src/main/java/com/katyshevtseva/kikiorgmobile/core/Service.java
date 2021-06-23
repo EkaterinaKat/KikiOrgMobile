@@ -12,6 +12,8 @@ import com.katyshevtseva.kikiorgmobile.core.model.TimeOfDay;
 import com.katyshevtseva.kikiorgmobile.db.KomDaoImpl;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -112,5 +114,23 @@ public class Service {
                 return komDao.getIrregularTaskById(id);
         }
         return null;
+    }
+
+    public List<Task> getTasksByDate(Date date) {
+        List<Task> tasks = new ArrayList<>();
+
+        for (IrregularTask irregularTask : komDao.getIrregularTasksByDate(date)) {
+            if (!irregularTask.isDone())
+                tasks.add(irregularTask);
+        }
+        tasks.addAll(komDao.getRegularTasksByDate(date));
+        Collections.sort(tasks, new Comparator<Task>() {
+            @Override
+            public int compare(Task task, Task t1) {
+                return task.getTimeOfDay().getCode().compareTo(t1.getTimeOfDay().getCode());
+            }
+        });
+
+        return tasks;
     }
 }

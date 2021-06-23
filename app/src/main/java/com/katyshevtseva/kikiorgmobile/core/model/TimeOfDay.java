@@ -9,7 +9,7 @@ public enum TimeOfDay {
         this.code = code;
     }
 
-    public int getCode() {
+    public Integer getCode() {
         return code;
     }
 
