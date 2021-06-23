@@ -21,7 +21,7 @@ public class IrregularTask implements Task {
 
     public String getFullDesc() {
         return String.format("%s\n%s\n%s",
-                desc, timeOfDay, DateUtils.READABLE_DATE_FORMAT.format(date));
+                desc, timeOfDay, DateUtils.getDateStringWithWeekDay(date));
     }
 
     @Override

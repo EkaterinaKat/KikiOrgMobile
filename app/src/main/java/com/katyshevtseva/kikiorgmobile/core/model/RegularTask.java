@@ -34,7 +34,7 @@ public class RegularTask implements Task {
 
         StringBuilder stringBuilder = new StringBuilder();
         for (Date date : loppedList) {
-            stringBuilder.append(DateUtils.getDateString(date)).append("\n");
+            stringBuilder.append(DateUtils.getDateStringWithWeekDay(date)).append("\n");
         }
 
         if (dateListIsTooBig)

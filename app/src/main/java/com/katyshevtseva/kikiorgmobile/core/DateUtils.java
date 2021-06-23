@@ -3,6 +3,7 @@ package com.katyshevtseva.kikiorgmobile.core;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -49,5 +50,27 @@ public abstract class DateUtils {
             stringBuilder.append(getDateString(date)).append("\n");
         }
         return stringBuilder.toString();
+    }
+
+    public static String getDateStringWithWeekDay(Date date) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        switch (calendar.get(Calendar.DAY_OF_WEEK)) {
+            case 1:
+                return getDateString(date) + " (Вс)";
+            case 2:
+                return getDateString(date) + " (Пн)";
+            case 3:
+                return getDateString(date) + " (Вт)";
+            case 4:
+                return getDateString(date) + " (Ср)";
+            case 5:
+                return getDateString(date) + " (Чт)";
+            case 6:
+                return getDateString(date) + " (Пт)";
+            case 7:
+                return getDateString(date) + " (Сб)";
+        }
+        throw new RuntimeException();
     }
 }
