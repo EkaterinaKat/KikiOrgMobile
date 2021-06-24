@@ -28,9 +28,11 @@
 
         <Button
             android:id="@+id/done_button"
+            style="?android:attr/buttonBarButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Done" />
+            android:text="Done"
+            android:textColor="@color/black" />
     </LinearLayout>
 
 </LinearLayout>

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    style="?android:attr/buttonBarStyle"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.katyshevtseva.kikiorgmobile.view.MainActivity">
@@ -11,6 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_margin="10dp"
+        android:textColor="@color/black"
         android:textSize="30sp" />
 
     <androidx.recyclerview.widget.RecyclerView
@@ -26,24 +28,30 @@
 
         <Button
             android:id="@+id/prev_date_button"
+            style="?android:attr/buttonBarButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="prev" />
+            android:text="prev"
+            android:textColor="@color/black" />
 
         <Button
             android:id="@+id/admin_button"
+            style="?android:attr/buttonBarButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Admin" />
+            android:text="Admin"
+            android:textColor="@color/black" />
 
         <Button
             android:id="@+id/next_date_button"
+            style="?android:attr/buttonBarButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="next" />
+            android:text="next"
+            android:textColor="@color/black" />
     </LinearLayout>
 
 
