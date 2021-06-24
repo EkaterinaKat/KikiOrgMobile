@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.DatePicker;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -70,12 +69,9 @@ public class DatesSelectFragment extends Fragment {
     private TextView getDateTextView(final Date date) {
         TextView textView = new TextView(getActivity());
         textView.setText(DateUtils.getDateString(date));
-        textView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dates.remove(date);
-                updatePane();
-            }
+        textView.setOnClickListener(view -> {
+            dates.remove(date);
+            updatePane();
         });
         return textView;
     }
@@ -83,23 +79,15 @@ public class DatesSelectFragment extends Fragment {
     private TextView getAddDateButton() {
         TextView textView = new TextView(getActivity());
         textView.setText("Add Date");
-        textView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                openDatePicker();
-            }
-        });
+        textView.setOnClickListener(view -> openDatePicker());
         return textView;
     }
 
     private void openDatePicker() {
         DatePickerDialog datePickerDialog = new DatePickerDialog(getActivity());
-        datePickerDialog.setOnDateSetListener(new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker datePicker, int year, int month, int day) {
-                dates.add(DateUtils.parse(year, month + 1, day));
-                updatePane();
-            }
+        datePickerDialog.setOnDateSetListener((datePicker, year, month, day) -> {
+            dates.add(DateUtils.parse(year, month + 1, day));
+            updatePane();
         });
         datePickerDialog.show();
     }

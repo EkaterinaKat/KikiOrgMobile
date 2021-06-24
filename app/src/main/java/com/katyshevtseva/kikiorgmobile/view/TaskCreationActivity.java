@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
@@ -24,7 +23,6 @@ import com.katyshevtseva.kikiorgmobile.core.model.Task;
 import com.katyshevtseva.kikiorgmobile.core.model.TaskType;
 import com.katyshevtseva.kikiorgmobile.core.model.TimeOfDay;
 import com.katyshevtseva.kikiorgmobile.view.utils.FragmentUpdateListener;
-import com.katyshevtseva.kikiorgmobile.view.utils.ViewUtils.EditTextListener;
 import com.katyshevtseva.kikiorgmobile.view.utils.ViewUtils.SpinnerListener;
 
 import java.util.Arrays;
@@ -118,58 +116,22 @@ public class TaskCreationActivity extends AppCompatActivity implements FragmentU
 
     private void setControlListeners() {
         adjustSpinner(this, taskTypeSpinner, Arrays.asList(TaskType.values()), taskTypeSpinnerListener);
-        adjustSpinner(this, periodTypeSpinner, Arrays.asList(PeriodType.values()), new SpinnerListener<PeriodType>() {
-            @Override
-            public void execute(PeriodType selectedItem) {
-                setDoneButtonAccessibility();
-            }
-        });
-        adjustSpinner(this, timeOfDaySpinner, Arrays.asList(TimeOfDay.values()), new SpinnerListener<TimeOfDay>() {
-            @Override
-            public void execute(TimeOfDay timeOfDay) {
-                setDoneButtonAccessibility();
-            }
-        });
-        doneButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                saveTask();
-            }
-        });
-        itDateTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                openDatePicker(itDateTextView);
-            }
-        });
-        setEditTextListener(periodEditText, new EditTextListener() {
-            @Override
-            public void run(String text) {
-                setDoneButtonAccessibility();
-            }
-        });
-        setEditTextListener(titleEdit, new EditTextListener() {
-            @Override
-            public void run(String text) {
-                setDoneButtonAccessibility();
-            }
-        });
-        setEditTextListener(descEdit, new EditTextListener() {
-            @Override
-            public void run(String text) {
-                setDoneButtonAccessibility();
-            }
-        });
+        adjustSpinner(this, periodTypeSpinner, Arrays.asList(PeriodType.values()),
+                selectedItem -> setDoneButtonAccessibility());
+        adjustSpinner(this, timeOfDaySpinner, Arrays.asList(TimeOfDay.values()),
+                timeOfDay -> setDoneButtonAccessibility());
+        doneButton.setOnClickListener(view -> saveTask());
+        itDateTextView.setOnClickListener(view -> openDatePicker(itDateTextView));
+        setEditTextListener(periodEditText, text -> setDoneButtonAccessibility());
+        setEditTextListener(titleEdit, text -> setDoneButtonAccessibility());
+        setEditTextListener(descEdit, text -> setDoneButtonAccessibility());
     }
 
     public void openDatePicker(final TextView textViewToChange) {
         DatePickerDialog datePickerDialog = new DatePickerDialog(this);
-        datePickerDialog.setOnDateSetListener(new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker datePicker, int year, int month, int day) {
-                textViewToChange.setText(getDateString(year, month + 1, day));
-                setDoneButtonAccessibility();
-            }
+        datePickerDialog.setOnDateSetListener((datePicker, year, month, day) -> {
+            textViewToChange.setText(getDateString(year, month + 1, day));
+            setDoneButtonAccessibility();
         });
         datePickerDialog.show();
     }

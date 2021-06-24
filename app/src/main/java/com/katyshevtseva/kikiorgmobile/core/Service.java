@@ -124,12 +124,7 @@ public class Service {
                 tasks.add(irregularTask);
         }
         tasks.addAll(komDao.getRegularTasksByDate(date));
-        Collections.sort(tasks, new Comparator<Task>() {
-            @Override
-            public int compare(Task task, Task t1) {
-                return task.getTimeOfDay().getCode().compareTo(t1.getTimeOfDay().getCode());
-            }
-        });
+        Collections.sort(tasks, (task, t1) -> task.getTimeOfDay().getCode().compareTo(t1.getTimeOfDay().getCode()));
 
         return tasks;
     }

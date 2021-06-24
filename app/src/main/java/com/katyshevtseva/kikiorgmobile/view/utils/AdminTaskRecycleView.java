@@ -54,53 +54,36 @@ public class AdminTaskRecycleView {
         private void bindRegularTask(final RegularTask task) {
             ((TextView) itemView.findViewById(R.id.task_title_view)).setText(task.getTitle());
             ((TextView) itemView.findViewById(R.id.task_desc_view)).setText(task.getAdminTaskListDesk());
-            itemView.findViewById(R.id.edit_task_button).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    context.startActivity(TaskCreationActivity.newIntent(context, task));
-                }
-            });
+            itemView.findViewById(R.id.edit_task_button).setOnClickListener(
+                    view -> context.startActivity(TaskCreationActivity.newIntent(context, task)));
             Button archiveButton = itemView.findViewById(R.id.delete_task_button);
             archiveButton.setText("Archive");
-            archiveButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    service.archiveTask(task);
-                    Toast.makeText(context, "Archived!", Toast.LENGTH_LONG).show();
-                    taskListAdapter.updateContent();
-                }
+            archiveButton.setOnClickListener(view -> {
+                service.archiveTask(task);
+                Toast.makeText(context, "Archived!", Toast.LENGTH_LONG).show();
+                taskListAdapter.updateContent();
             });
         }
 
         private void bindIrregularTask(final IrregularTask task) {
             ((TextView) itemView.findViewById(R.id.task_title_view)).setText(task.getTitle());
             ((TextView) itemView.findViewById(R.id.task_desc_view)).setText(task.getAdminTaskListDesk());
-            itemView.findViewById(R.id.edit_task_button).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    context.startActivity(TaskCreationActivity.newIntent(context, task));
-                }
-            });
+            itemView.findViewById(R.id.edit_task_button).setOnClickListener(
+                    view -> context.startActivity(TaskCreationActivity.newIntent(context, task)));
             Button deleteButton = itemView.findViewById(R.id.delete_task_button);
             deleteButton.setText("Delete");
-            deleteButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    DialogFragment dlg1 = new QuestionDialog("Delete?", getDeletionDialogAnswerHandler(task));
-                    dlg1.show(context.getSupportFragmentManager(), "dialog1");
-                }
+            deleteButton.setOnClickListener(view -> {
+                DialogFragment dlg1 = new QuestionDialog("Delete?", getDeletionDialogAnswerHandler(task));
+                dlg1.show(context.getSupportFragmentManager(), "dialog1");
             });
         }
 
         private AnswerHandler getDeletionDialogAnswerHandler(final IrregularTask task) {
-            return new AnswerHandler() {
-                @Override
-                public void execute(boolean answer) {
-                    if (answer) {
-                        service.deleteTask(task);
-                        Toast.makeText(context, "Deleted!", Toast.LENGTH_LONG).show();
-                        taskListAdapter.updateContent();
-                    }
+            return answer -> {
+                if (answer) {
+                    service.deleteTask(task);
+                    Toast.makeText(context, "Deleted!", Toast.LENGTH_LONG).show();
+                    taskListAdapter.updateContent();
                 }
             };
         }
@@ -147,12 +130,12 @@ public class AdminTaskRecycleView {
         }
 
         public void updateContent() {
-            items = getTaskListItems(context, service);
+            items = getTaskListItems(service);
             notifyDataSetChanged();
         }
     }
 
-    private static List<TaskListItem> getTaskListItems(Context context, Service service) {
+    private static List<TaskListItem> getTaskListItems(Service service) {
         List<TaskListItem> items = new ArrayList<>();
         items.add(getHeader("Irregular tasks"));
         for (IrregularTask irregularTask : service.getNotDoneIrregularTasks()) {

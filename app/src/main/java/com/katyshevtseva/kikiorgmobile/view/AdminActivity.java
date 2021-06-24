@@ -20,18 +20,10 @@ public class AdminActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin);
 
-        findViewById(R.id.new_task_button).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(TaskCreationActivity.newIntent(AdminActivity.this, null));
-            }
-        });
-        findViewById(R.id.archive_button).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(AdminActivity.this, ArchiveActivity.class));
-            }
-        });
+        findViewById(R.id.new_task_button).setOnClickListener(view ->
+                startActivity(TaskCreationActivity.newIntent(AdminActivity.this, null)));
+        findViewById(R.id.archive_button).setOnClickListener(view ->
+                startActivity(new Intent(AdminActivity.this, ArchiveActivity.class)));
         RecyclerView taskList = findViewById(R.id.admin_task_list);
         taskList.setLayoutManager(new LinearLayoutManager(this));
         taskListAdapter = new TaskListAdapter(this, new Service(this));

@@ -3,8 +3,6 @@ package com.katyshevtseva.kikiorgmobile.view;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.DatePicker;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -31,32 +29,17 @@ public class MainActivity extends AppCompatActivity {
 
         date = DateUtils.getProperDate();
         dateView = findViewById(R.id.main_date_text_view);
-        findViewById(R.id.admin_button).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(getApplicationContext(), AdminActivity.class));
-            }
+        findViewById(R.id.admin_button).setOnClickListener(view ->
+                startActivity(new Intent(getApplicationContext(), AdminActivity.class)));
+        findViewById(R.id.prev_date_button).setOnClickListener(view -> {
+            date = DateUtils.shiftDate(date, TimeUnit.DAY, -1);
+            updateTaskPane();
         });
-        findViewById(R.id.prev_date_button).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                date = DateUtils.shiftDate(date, TimeUnit.DAY, -1);
-                updateTaskPane();
-            }
+        findViewById(R.id.next_date_button).setOnClickListener(view -> {
+            date = DateUtils.shiftDate(date, TimeUnit.DAY, 1);
+            updateTaskPane();
         });
-        findViewById(R.id.next_date_button).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                date = DateUtils.shiftDate(date, TimeUnit.DAY, 1);
-                updateTaskPane();
-            }
-        });
-        dateView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                openDatePicker();
-            }
-        });
+        dateView.setOnClickListener(view -> openDatePicker());
 
         RecyclerView taskList = findViewById(R.id.main_task_list);
         taskList.setLayoutManager(new LinearLayoutManager(this));
@@ -79,12 +62,9 @@ public class MainActivity extends AppCompatActivity {
 
     public void openDatePicker() {
         DatePickerDialog datePickerDialog = new DatePickerDialog(this);
-        datePickerDialog.setOnDateSetListener(new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker datePicker, int year, int month, int day) {
-                date = DateUtils.parse(year, month + 1, day);
-                updateTaskPane();
-            }
+        datePickerDialog.setOnDateSetListener((datePicker, year, month, day) -> {
+            date = DateUtils.parse(year, month + 1, day);
+            updateTaskPane();
         });
         datePickerDialog.show();
     }

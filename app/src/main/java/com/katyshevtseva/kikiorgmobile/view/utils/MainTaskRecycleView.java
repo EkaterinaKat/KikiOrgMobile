@@ -21,15 +21,11 @@ import java.util.List;
 public class MainTaskRecycleView {
 
     static class TaskHolder extends RecyclerView.ViewHolder {
-        private TaskListAdapter taskListAdapter;
         private AppCompatActivity context;
-        private Service service;
 
-        TaskHolder(View view, TaskListAdapter taskListAdapter, AppCompatActivity context, Service service) {
+        TaskHolder(View view, AppCompatActivity context) {
             super(view);
-            this.taskListAdapter = taskListAdapter;
             this.context = context;
-            this.service = service;
         }
 
         void bind(Task task) {
@@ -68,7 +64,7 @@ public class MainTaskRecycleView {
         @Override
         public TaskHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(context).inflate(R.layout.main_task_list_item, parent, false);
-            return new TaskHolder(view, this, context, service);
+            return new TaskHolder(view, context);
         }
 
         @Override
