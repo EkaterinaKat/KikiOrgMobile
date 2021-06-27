@@ -8,6 +8,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 import static com.katyshevtseva.kikiorgmobile.core.DateUtils.TimeUnit.DAY;
@@ -107,5 +108,30 @@ public abstract class DateUtils {
         public int getIntRepresentationForCalendar() {
             return intRepresentationForCalendar;
         }
+    }
+
+    static boolean containsIgnoreTime(List<Date> dates, Date date) {
+        for (Date date1 : dates)
+            if (equalsIgnoreTime(date1, date))
+                return true;
+        return false;
+    }
+
+    static void removeIgnoreTime(List<Date> dates, Date date) {
+        Iterator<Date> iterator = dates.iterator();
+        while (iterator.hasNext()) {
+            if (equalsIgnoreTime(iterator.next(), date))
+                iterator.remove();
+        }
+    }
+
+    private static boolean equalsIgnoreTime(Date date1, Date date2) {
+        Calendar calendar1 = Calendar.getInstance();
+        calendar1.setTime(date1);
+        Calendar calendar2 = Calendar.getInstance();
+        calendar2.setTime(date2);
+        return calendar1.get(Calendar.DATE) == calendar2.get(Calendar.DATE)
+                && calendar1.get(Calendar.MONTH) == calendar2.get(Calendar.MONTH)
+                && calendar1.get(Calendar.YEAR) == calendar2.get(Calendar.YEAR);
     }
 }

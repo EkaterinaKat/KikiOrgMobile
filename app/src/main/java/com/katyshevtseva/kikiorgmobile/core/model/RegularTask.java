@@ -43,6 +43,20 @@ public class RegularTask implements Task {
     }
 
     @Override
+    public String toString() {
+        return "RegularTask{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", desc='" + desc + '\'' +
+                ", timeOfDay=" + timeOfDay +
+                ", periodType=" + periodType +
+                ", period=" + period +
+                ", archived=" + archived +
+                ", dates=" + dates +
+                '}';
+    }
+
+    @Override
     public TaskType getType() {
         return TaskType.REGULAR;
     }

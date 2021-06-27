@@ -14,9 +14,6 @@ public enum TimeOfDay {
     }
 
     public static TimeOfDay findByCode(int code) {
-        if (code == 0)
-            return MORNING; //todo затычка
-
         for (TimeOfDay timeOfDay : TimeOfDay.values())
             if (timeOfDay.code == code)
                 return timeOfDay;

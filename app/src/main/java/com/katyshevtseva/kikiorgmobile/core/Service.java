@@ -13,9 +13,11 @@ import com.katyshevtseva.kikiorgmobile.db.KomDaoImpl;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+
+import static com.katyshevtseva.kikiorgmobile.core.DateUtils.containsIgnoreTime;
+import static com.katyshevtseva.kikiorgmobile.core.DateUtils.removeIgnoreTime;
 
 
 public class Service {
@@ -127,5 +129,35 @@ public class Service {
         Collections.sort(tasks, (task, t1) -> task.getTimeOfDay().getCode().compareTo(t1.getTimeOfDay().getCode()));
 
         return tasks;
+    }
+
+    public void done(IrregularTask irregularTask) {
+        irregularTask.setDone(true);
+        komDao.updateIrregularTask(irregularTask);
+    }
+
+    public void done(RegularTask regularTask, Date date) {
+        if (!containsIgnoreTime(regularTask.getDates(), date))
+            throw new RuntimeException();
+
+        regularTask.getDates().remove(date);
+        removeIgnoreTime(regularTask.getDates(), date);
+        regularTask.getDates().add(shiftDate(regularTask, date));
+
+        komDao.updateRegularTask(regularTask);
+    }
+
+    private Date shiftDate(RegularTask regularTask, Date date) {
+        switch (regularTask.getPeriodType()) {
+            case DAY:
+                return DateUtils.shiftDate(date, DateUtils.TimeUnit.DAY, regularTask.getPeriod());
+            case WEEK:
+                return DateUtils.shiftDate(date, DateUtils.TimeUnit.DAY, regularTask.getPeriod() * 7);
+            case MONTH:
+                return DateUtils.shiftDate(date, DateUtils.TimeUnit.MONTH, regularTask.getPeriod());
+            case YEAR:
+                return DateUtils.shiftDate(date, DateUtils.TimeUnit.YEAR, regularTask.getPeriod());
+        }
+        throw new RuntimeException();
     }
 }

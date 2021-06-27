@@ -5,7 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 public class DbHelper extends SQLiteOpenHelper {
-    private static final int VERSION = 11;
+    private static final int VERSION = 12;
     private static final String DATABASE_NAME = "kom.db";
 
     DbHelper(Context context) {
@@ -40,5 +40,6 @@ public class DbHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase database, int oldVersion, int newVersion) {
 //        database.execSQL("ALTER TABLE regular_task ADD COLUMN time_of_day INTEGER DEFAULT 0");
+//        database.execSQL("drop table if exists "+ IrregularTaskDao.TableSchema.NAME);
     }
 }
