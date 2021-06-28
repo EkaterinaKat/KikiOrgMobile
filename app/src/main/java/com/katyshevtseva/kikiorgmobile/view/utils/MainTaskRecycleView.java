@@ -1,5 +1,6 @@
 package com.katyshevtseva.kikiorgmobile.view.utils;
 
+import android.app.DatePickerDialog;
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,7 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.kikiorgmobile.R;
+import com.katyshevtseva.kikiorgmobile.core.DateUtils;
 import com.katyshevtseva.kikiorgmobile.core.Service;
 import com.katyshevtseva.kikiorgmobile.core.model.IrregularTask;
 import com.katyshevtseva.kikiorgmobile.core.model.RegularTask;
@@ -47,6 +49,18 @@ public class MainTaskRecycleView {
                 }
                 adapter.updateContent();
             });
+            itemView.findViewById(R.id.one_day_reschedule_button).setOnClickListener(view -> {
+                switch (task.getType()) {
+                    case IRREGULAR:
+                        service.rescheduleForOneDay((IrregularTask) task);
+                        break;
+                    case REGULAR:
+                        //todo
+                }
+                adapter.updateContent();
+            });
+            itemView.findViewById(R.id.more_days_reschedule_button).setOnClickListener(
+                    view -> rescheduleWithDatePicker(task));
             Drawable background = null;
             switch (task.getTimeOfDay()) {
                 case MORNING:
@@ -59,6 +73,22 @@ public class MainTaskRecycleView {
                     background = ContextCompat.getDrawable(context, R.drawable.evening);
             }
             itemView.findViewById(R.id.root_layout).setBackground(background);
+        }
+
+        void rescheduleWithDatePicker(Task task) {
+            DatePickerDialog datePickerDialog = new DatePickerDialog(context);
+            datePickerDialog.setOnDateSetListener((datePicker, year, month, day) -> {
+                Date date = DateUtils.parse(year, month + 1, day);
+                switch (task.getType()) {
+                    case IRREGULAR:
+                        service.rescheduleToCertainDate((IrregularTask) task, date);
+                        break;
+                    case REGULAR:
+                        //todo
+                }
+                adapter.updateContent();
+            });
+            datePickerDialog.show();
         }
     }
 

@@ -173,4 +173,14 @@ public class Service {
         }
         throw new RuntimeException();
     }
+
+    public void rescheduleForOneDay(IrregularTask irregularTask) {
+        rescheduleToCertainDate(irregularTask,
+                DateUtils.shiftDate(irregularTask.getDate(), DateUtils.TimeUnit.DAY, 1));
+    }
+
+    public void rescheduleToCertainDate(IrregularTask irregularTask, Date date) {
+        irregularTask.setDate(date);
+        komDao.updateIrregularTask(irregularTask);
+    }
 }
