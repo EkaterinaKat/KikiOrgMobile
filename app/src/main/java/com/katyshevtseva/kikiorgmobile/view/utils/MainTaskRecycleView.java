@@ -98,7 +98,7 @@ public class MainTaskRecycleView {
         }
 
         void updateContent() {
-            tasks = service.getTasksByDate(date);
+            tasks = service.getTasksForMainList(date);
             notifyDataSetChanged();
         }
     }

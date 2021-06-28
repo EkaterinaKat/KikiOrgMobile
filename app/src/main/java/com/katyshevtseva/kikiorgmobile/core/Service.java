@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.katyshevtseva.kikiorgmobile.core.DateUtils.containsIgnoreTime;
 import static com.katyshevtseva.kikiorgmobile.core.DateUtils.removeIgnoreTime;
@@ -118,16 +119,15 @@ public class Service {
         return null;
     }
 
-    public List<Task> getTasksByDate(Date date) {
+    public List<Task> getTasksForMainList(Date date) {
         List<Task> tasks = new ArrayList<>();
 
-        for (IrregularTask irregularTask : komDao.getIrregularTasksByDate(date)) {
-            if (!irregularTask.isDone())
-                tasks.add(irregularTask);
-        }
-        tasks.addAll(komDao.getRegularTasksByDate(date));
-        Collections.sort(tasks, (task, t1) -> task.getTimeOfDay().getCode().compareTo(t1.getTimeOfDay().getCode()));
+        tasks.addAll(komDao.getIrregularTasksByDate(date).stream()
+                .filter(irregularTask -> !irregularTask.isDone()).collect(Collectors.toList()));
+        tasks.addAll(komDao.getRegularTasksByDate(date).stream()
+                .filter(regularTask -> !regularTask.isArchived()).collect(Collectors.toList()));
 
+        Collections.sort(tasks, (task, t1) -> task.getTimeOfDay().getCode().compareTo(t1.getTimeOfDay().getCode()));
         return tasks;
     }
 
