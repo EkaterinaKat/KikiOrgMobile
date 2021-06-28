@@ -13,6 +13,7 @@ import com.katyshevtseva.kikiorgmobile.db.KomDaoImpl;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -95,6 +96,13 @@ public class Service {
         return tasks;
     }
 
+    public List<IrregularTask> getDoneIrregularTasks() {
+        return komDao.getAllIrregularTasks().stream()
+                .filter(IrregularTask::isDone)
+                .sorted(Comparator.comparing(IrregularTask::getDate).reversed())
+                .collect(Collectors.toList());
+    }
+
     public void archiveTask(RegularTask regularTask) {
         regularTask.setArchived(true);
         komDao.updateRegularTask(regularTask);
@@ -103,6 +111,11 @@ public class Service {
     public void resumeTask(RegularTask regularTask) {
         regularTask.setArchived(false);
         komDao.updateRegularTask(regularTask);
+    }
+
+    public void returnToWorkTask(IrregularTask irregularTask) {
+        irregularTask.setDone(false);
+        komDao.updateIrregularTask(irregularTask);
     }
 
     public void deleteTask(IrregularTask irregularTask) {

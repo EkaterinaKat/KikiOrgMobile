@@ -1,8 +1,6 @@
 package com.katyshevtseva.kikiorgmobile.view;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -10,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.kikiorgmobile.R;
 import com.katyshevtseva.kikiorgmobile.core.Service;
+import com.katyshevtseva.kikiorgmobile.core.model.TaskType;
 import com.katyshevtseva.kikiorgmobile.view.utils.AdminTaskRecycleView.TaskListAdapter;
 
 public class AdminActivity extends AppCompatActivity {
@@ -23,7 +22,9 @@ public class AdminActivity extends AppCompatActivity {
         findViewById(R.id.new_task_button).setOnClickListener(view ->
                 startActivity(TaskCreationActivity.newIntent(AdminActivity.this, null)));
         findViewById(R.id.archive_button).setOnClickListener(view ->
-                startActivity(new Intent(AdminActivity.this, ArchiveActivity.class)));
+                startActivity(InactiveTasksActivity.newIntent(this, TaskType.REGULAR)));
+        findViewById(R.id.done_tasks_button).setOnClickListener(view ->
+                startActivity(InactiveTasksActivity.newIntent(this, TaskType.IRREGULAR)));
         RecyclerView taskList = findViewById(R.id.admin_task_list);
         taskList.setLayoutManager(new LinearLayoutManager(this));
         taskListAdapter = new TaskListAdapter(this, new Service(this));

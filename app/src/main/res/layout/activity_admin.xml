@@ -21,6 +21,12 @@
             android:layout_height="wrap_content"
             android:text="Archive" />
 
+        <Button
+            android:id="@+id/done_tasks_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Done tasks" />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/admin_task_list"
             android:layout_width="match_parent"
