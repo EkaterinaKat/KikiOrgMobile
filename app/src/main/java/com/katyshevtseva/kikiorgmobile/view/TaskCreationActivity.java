@@ -139,7 +139,7 @@ public class TaskCreationActivity extends AppCompatActivity implements FragmentU
     private void saveTask() {
         switch ((TaskType) taskTypeSpinner.getSelectedItem()) {
             case IRREGULAR:
-                service.saveNewIrregularTask(
+                service.saveIrregularTask(
                         (IrregularTask) existing,
                         titleEdit.getText().toString(),
                         descEdit.getText().toString(),
@@ -148,7 +148,7 @@ public class TaskCreationActivity extends AppCompatActivity implements FragmentU
                 );
                 break;
             case REGULAR:
-                service.saveNewRegularTask(
+                service.saveRegularTask(
                         (RegularTask) existing,
                         titleEdit.getText().toString(),
                         descEdit.getText().toString(),

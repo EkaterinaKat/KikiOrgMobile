@@ -1,6 +1,5 @@
 package com.katyshevtseva.kikiorgmobile.core;
 
-
 import android.content.Context;
 
 import com.katyshevtseva.kikiorgmobile.core.model.IrregularTask;
@@ -18,9 +17,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.katyshevtseva.kikiorgmobile.core.DateUtils.READABLE_DATE_FORMAT;
 import static com.katyshevtseva.kikiorgmobile.core.DateUtils.containsIgnoreTime;
 import static com.katyshevtseva.kikiorgmobile.core.DateUtils.removeIgnoreTime;
-
 
 public class Service {
     private KomDao komDao;
@@ -29,7 +28,7 @@ public class Service {
         this.komDao = new KomDaoImpl(context);
     }
 
-    public void saveNewIrregularTask(IrregularTask existing, String title, String desc, TimeOfDay timeOfDay, Date date) {
+    public void saveIrregularTask(IrregularTask existing, String title, String desc, TimeOfDay timeOfDay, Date date) {
         if (existing == null) {
             IrregularTask task = new IrregularTask();
             task.setTitle(title);
@@ -47,8 +46,8 @@ public class Service {
         }
     }
 
-    public void saveNewRegularTask(RegularTask existing, String title, String desc, TimeOfDay timeOfDay,
-                                   PeriodType periodType, List<Date> dates, int period) {
+    public void saveRegularTask(RegularTask existing, String title, String desc, TimeOfDay timeOfDay,
+                                PeriodType periodType, List<Date> dates, int period) {
         if (existing == null) {
             RegularTask task = new RegularTask();
             task.setTitle(title);
@@ -182,5 +181,14 @@ public class Service {
     public void rescheduleToCertainDate(IrregularTask irregularTask, Date date) {
         irregularTask.setDate(date);
         komDao.updateIrregularTask(irregularTask);
+    }
+
+    public void rescheduleForOneDay(RegularTask regularTask, Date date, boolean shiftAllCycle) {
+        rescheduleToCertainDate(regularTask, date,
+                DateUtils.shiftDate(date, DateUtils.TimeUnit.DAY, 1), shiftAllCycle);
+    }
+
+    public void rescheduleToCertainDate(RegularTask regularTask, Date initDate, Date targetDate, boolean shiftAllCycle) {
+
     }
 }

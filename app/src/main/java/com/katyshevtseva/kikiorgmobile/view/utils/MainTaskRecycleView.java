@@ -10,6 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.kikiorgmobile.R;
@@ -18,6 +19,7 @@ import com.katyshevtseva.kikiorgmobile.core.Service;
 import com.katyshevtseva.kikiorgmobile.core.model.IrregularTask;
 import com.katyshevtseva.kikiorgmobile.core.model.RegularTask;
 import com.katyshevtseva.kikiorgmobile.core.model.Task;
+import com.katyshevtseva.kikiorgmobile.view.QuestionDialog;
 
 import java.util.Date;
 import java.util.List;
@@ -55,12 +57,14 @@ public class MainTaskRecycleView {
                         service.rescheduleForOneDay((IrregularTask) task);
                         break;
                     case REGULAR:
-                        //todo
+                        DialogFragment dlg1 = new QuestionDialog("Shift all cycle?",
+                                answer -> service.rescheduleForOneDay((RegularTask) task, date, answer));
+                        dlg1.show(context.getSupportFragmentManager(), "dialog2");
                 }
                 adapter.updateContent();
             });
             itemView.findViewById(R.id.more_days_reschedule_button).setOnClickListener(
-                    view -> rescheduleWithDatePicker(task));
+                    view -> rescheduleWithDatePicker(task, date));
             Drawable background = null;
             switch (task.getTimeOfDay()) {
                 case MORNING:
@@ -75,16 +79,18 @@ public class MainTaskRecycleView {
             itemView.findViewById(R.id.root_layout).setBackground(background);
         }
 
-        void rescheduleWithDatePicker(Task task) {
+        void rescheduleWithDatePicker(Task task, Date currentDate) {
             DatePickerDialog datePickerDialog = new DatePickerDialog(context);
             datePickerDialog.setOnDateSetListener((datePicker, year, month, day) -> {
-                Date date = DateUtils.parse(year, month + 1, day);
+                Date selectedDate = DateUtils.parse(year, month + 1, day);
                 switch (task.getType()) {
                     case IRREGULAR:
-                        service.rescheduleToCertainDate((IrregularTask) task, date);
+                        service.rescheduleToCertainDate((IrregularTask) task, selectedDate);
                         break;
                     case REGULAR:
-                        //todo
+                        DialogFragment dlg1 = new QuestionDialog("Shift all cycle?", answer ->
+                                service.rescheduleToCertainDate((RegularTask) task, currentDate, selectedDate, answer));
+                        dlg1.show(context.getSupportFragmentManager(), "dialog2");
                 }
                 adapter.updateContent();
             });
