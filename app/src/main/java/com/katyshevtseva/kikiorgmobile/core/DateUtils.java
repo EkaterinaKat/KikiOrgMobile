@@ -134,4 +134,25 @@ public abstract class DateUtils {
                 && calendar1.get(Calendar.MONTH) == calendar2.get(Calendar.MONTH)
                 && calendar1.get(Calendar.YEAR) == calendar2.get(Calendar.YEAR);
     }
+
+    /**
+     * @return положительное число если date1 раньше чем date2 и наоборот
+     */
+    static int countNumberOfDaysBetweenDates(Date date1, Date date2) {
+        boolean date1BeforeDate2 = date1.before(date2);
+
+        Date earlierDate = date1BeforeDate2 ? new Date(date1.getTime()) : new Date(date2.getTime());
+        Date laterDate = date1BeforeDate2 ? new Date(date2.getTime()) : new Date(date1.getTime());
+
+        int count = 0;
+        while (!equalsIgnoreTime(earlierDate, laterDate)) {
+            count++;
+            earlierDate = shiftDate(earlierDate, TimeUnit.DAY, 1);
+        }
+
+        if (!date1BeforeDate2)
+            count = count * (-1);
+
+        return count;
+    }
 }

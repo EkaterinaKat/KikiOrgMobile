@@ -17,7 +17,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.katyshevtseva.kikiorgmobile.core.DateUtils.READABLE_DATE_FORMAT;
 import static com.katyshevtseva.kikiorgmobile.core.DateUtils.containsIgnoreTime;
 import static com.katyshevtseva.kikiorgmobile.core.DateUtils.removeIgnoreTime;
 
@@ -189,6 +188,20 @@ public class Service {
     }
 
     public void rescheduleToCertainDate(RegularTask regularTask, Date initDate, Date targetDate, boolean shiftAllCycle) {
-
+        if (shiftAllCycle) {
+            int diffBetweenDates = DateUtils.countNumberOfDaysBetweenDates(initDate, targetDate);
+            List<Date> newDates = regularTask.getDates().stream()
+                    .map(date -> DateUtils.shiftDate(date, DateUtils.TimeUnit.DAY, diffBetweenDates))
+                    .collect(Collectors.toList());
+            regularTask.setDates(newDates);
+            komDao.updateRegularTask(regularTask);
+        } else {
+            done(regularTask, initDate);
+            saveIrregularTask(null,
+                    regularTask.getTitle() + " *",
+                    regularTask.getTitle() + " перенесенный с " + DateUtils.getDateString(initDate),
+                    regularTask.getTimeOfDay(),
+                    targetDate);
+        }
     }
 }

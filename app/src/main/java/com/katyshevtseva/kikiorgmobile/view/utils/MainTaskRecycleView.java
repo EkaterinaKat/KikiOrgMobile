@@ -55,13 +55,16 @@ public class MainTaskRecycleView {
                 switch (task.getType()) {
                     case IRREGULAR:
                         service.rescheduleForOneDay((IrregularTask) task);
+                        adapter.updateContent();
                         break;
                     case REGULAR:
                         DialogFragment dlg1 = new QuestionDialog("Shift all cycle?",
-                                answer -> service.rescheduleForOneDay((RegularTask) task, date, answer));
+                                answer -> {
+                                    service.rescheduleForOneDay((RegularTask) task, date, answer);
+                                    adapter.updateContent();
+                                });
                         dlg1.show(context.getSupportFragmentManager(), "dialog2");
                 }
-                adapter.updateContent();
             });
             itemView.findViewById(R.id.more_days_reschedule_button).setOnClickListener(
                     view -> rescheduleWithDatePicker(task, date));
@@ -86,13 +89,15 @@ public class MainTaskRecycleView {
                 switch (task.getType()) {
                     case IRREGULAR:
                         service.rescheduleToCertainDate((IrregularTask) task, selectedDate);
+                        adapter.updateContent();
                         break;
                     case REGULAR:
-                        DialogFragment dlg1 = new QuestionDialog("Shift all cycle?", answer ->
-                                service.rescheduleToCertainDate((RegularTask) task, currentDate, selectedDate, answer));
+                        DialogFragment dlg1 = new QuestionDialog("Shift all cycle?", answer -> {
+                            service.rescheduleToCertainDate((RegularTask) task, currentDate, selectedDate, answer);
+                            adapter.updateContent();
+                        });
                         dlg1.show(context.getSupportFragmentManager(), "dialog2");
                 }
-                adapter.updateContent();
             });
             datePickerDialog.show();
         }
