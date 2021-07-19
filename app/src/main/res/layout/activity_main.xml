@@ -19,9 +19,11 @@
         android:id="@+id/main_task_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_above="@id/main_activity_buttons"
         android:layout_below="@id/main_date_text_view" />
 
     <LinearLayout
+        android:id="@+id/main_activity_buttons"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true">
