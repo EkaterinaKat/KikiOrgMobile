@@ -3,9 +3,12 @@ package com.katyshevtseva.kikiorgmobile.view;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.GestureDetectorCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -31,20 +34,17 @@ public class MainActivity extends AppCompatActivity {
         dateView = findViewById(R.id.main_date_text_view);
         findViewById(R.id.admin_button).setOnClickListener(view ->
                 startActivity(new Intent(getApplicationContext(), AdminActivity.class)));
-        findViewById(R.id.prev_date_button).setOnClickListener(view -> {
-            date = DateUtils.shiftDate(date, TimeUnit.DAY, -1);
-            updateTaskPane();
-        });
-        findViewById(R.id.next_date_button).setOnClickListener(view -> {
-            date = DateUtils.shiftDate(date, TimeUnit.DAY, 1);
-            updateTaskPane();
-        });
+        findViewById(R.id.prev_date_button).setOnClickListener(view -> previousDate());
+        findViewById(R.id.next_date_button).setOnClickListener(view -> nextDate());
         dateView.setOnClickListener(view -> openDatePicker());
 
         RecyclerView taskList = findViewById(R.id.main_task_list);
         taskList.setLayoutManager(new LinearLayoutManager(this));
         taskListAdapter = new TaskListAdapter(this, new Service(this), date);
         taskList.setAdapter(taskListAdapter);
+
+        GestureDetectorCompat lSwipeDetector = new GestureDetectorCompat(this, new MyGestureListener());
+        taskList.setOnTouchListener((v, event) -> lSwipeDetector.onTouchEvent(event));
 
         updateTaskPane();
     }
@@ -67,5 +67,33 @@ public class MainActivity extends AppCompatActivity {
             updateTaskPane();
         });
         datePickerDialog.show();
+    }
+
+    private void previousDate() {
+        date = DateUtils.shiftDate(date, TimeUnit.DAY, -1);
+        updateTaskPane();
+    }
+
+    private void nextDate() {
+        date = DateUtils.shiftDate(date, TimeUnit.DAY, 1);
+        updateTaskPane();
+    }
+
+    private class MyGestureListener extends GestureDetector.SimpleOnGestureListener {
+        private static final int SWIPE_MIN_DISTANCE = 130;
+
+        @Override
+        public boolean onDown(MotionEvent e) {
+            return true;
+        }
+
+        @Override
+        public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+            if (e2.getX() - e1.getX() > SWIPE_MIN_DISTANCE)
+                previousDate();
+            if (e1.getX() - e2.getX() > SWIPE_MIN_DISTANCE)
+                nextDate();
+            return false;
+        }
     }
 }
