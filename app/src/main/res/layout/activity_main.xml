@@ -15,12 +15,25 @@
         android:textColor="@color/black"
         android:textSize="30sp" />
 
+    <TextView
+        android:id="@+id/alarm_text_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/main_date_text_view"
+        android:layout_margin="12dp"
+        android:background="@color/alarmColor"
+        android:padding="20dp"
+        android:text="Остались незавершенные задачи за прошедшие даты!"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="25sp" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/main_task_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@id/main_activity_buttons"
-        android:layout_below="@id/main_date_text_view" />
+        android:layout_below="@id/alarm_text_view" />
 
     <LinearLayout
         android:id="@+id/main_activity_buttons"

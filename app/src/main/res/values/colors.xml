@@ -6,4 +6,5 @@
     <color name="black">#000000</color>
     <color name="white">#fff</color>
     <color name="taskTitleColor">#0000CD</color>
+    <color name="alarmColor">#FF8C19</color>
 </resources>

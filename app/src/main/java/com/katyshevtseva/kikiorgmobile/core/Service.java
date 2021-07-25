@@ -204,4 +204,8 @@ public class Service {
                     targetDate);
         }
     }
+
+    public boolean overdueTasksExist() {
+        return true;
+    }
 }
