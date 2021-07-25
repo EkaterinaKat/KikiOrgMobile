@@ -58,6 +58,10 @@ public class MainActivity extends AppCompatActivity {
     private void updateTaskPane() {
         dateView.setText(DateUtils.getDateStringWithWeekDay(date));
         taskListAdapter.setDate(date);
+        updateAlarmBanner();
+    }
+
+    public void updateAlarmBanner() {
         if (DateUtils.equalsIgnoreTime(date, DateUtils.getProperDate()) && service.overdueTasksExist()) {
             alarmTextView.setVisibility(View.VISIBLE);
         } else {

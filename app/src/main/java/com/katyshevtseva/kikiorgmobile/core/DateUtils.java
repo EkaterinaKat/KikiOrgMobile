@@ -135,6 +135,10 @@ public abstract class DateUtils {
                 && calendar1.get(Calendar.YEAR) == calendar2.get(Calendar.YEAR);
     }
 
+    static boolean beforeIgnoreTime(Date date1, Date date2) {
+        return countNumberOfDaysBetweenDates(date1, date2) > 0;
+    }
+
     /**
      * @return положительное число если date1 раньше чем date2 и наоборот
      */

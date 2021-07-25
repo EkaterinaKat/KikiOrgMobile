@@ -17,7 +17,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.katyshevtseva.kikiorgmobile.core.DateUtils.beforeIgnoreTime;
 import static com.katyshevtseva.kikiorgmobile.core.DateUtils.containsIgnoreTime;
+import static com.katyshevtseva.kikiorgmobile.core.DateUtils.getProperDate;
 import static com.katyshevtseva.kikiorgmobile.core.DateUtils.removeIgnoreTime;
 
 public class Service {
@@ -206,6 +208,18 @@ public class Service {
     }
 
     public boolean overdueTasksExist() {
-        return true;
+        for (IrregularTask irregularTask : komDao.getAllIrregularTasks()) {
+            if (!irregularTask.isDone() && beforeIgnoreTime(irregularTask.getDate(), getProperDate()))
+                return true;
+        }
+        for (RegularTask regularTask : komDao.getAllRegularTasks()) {
+            if (!regularTask.isArchived()) {
+                for (Date date : regularTask.getDates()) {
+                    if (beforeIgnoreTime(date, getProperDate()))
+                        return true;
+                }
+            }
+        }
+        return false;
     }
 }

@@ -19,6 +19,7 @@ import com.katyshevtseva.kikiorgmobile.core.Service;
 import com.katyshevtseva.kikiorgmobile.core.model.IrregularTask;
 import com.katyshevtseva.kikiorgmobile.core.model.RegularTask;
 import com.katyshevtseva.kikiorgmobile.core.model.Task;
+import com.katyshevtseva.kikiorgmobile.view.MainActivity;
 import com.katyshevtseva.kikiorgmobile.view.QuestionDialog;
 
 import java.util.Date;
@@ -105,11 +106,11 @@ public class MainTaskRecycleView {
 
     public static class TaskListAdapter extends RecyclerView.Adapter<TaskHolder> {
         private List<Task> tasks;
-        private AppCompatActivity context;
+        private MainActivity context;
         private Service service;
         private Date date;
 
-        public TaskListAdapter(AppCompatActivity context, Service service, Date date) {
+        public TaskListAdapter(MainActivity context, Service service, Date date) {
             this.context = context;
             this.service = service;
             this.date = date;
@@ -140,6 +141,7 @@ public class MainTaskRecycleView {
 
         void updateContent() {
             tasks = service.getTasksForMainList(date);
+            context.updateAlarmBanner();
             notifyDataSetChanged();
         }
     }
