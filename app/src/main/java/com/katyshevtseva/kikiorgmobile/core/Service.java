@@ -11,7 +11,6 @@ import com.katyshevtseva.kikiorgmobile.core.model.TimeOfDay;
 import com.katyshevtseva.kikiorgmobile.db.KomDaoImpl;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
@@ -70,36 +69,30 @@ public class Service {
     }
 
     public List<RegularTask> getNotArchivedRegularTasks() {
-        List<RegularTask> tasks = new ArrayList<>();
-        for (RegularTask task : komDao.getAllRegularTasks()) {
-            if (!task.isArchived())
-                tasks.add(task);
-        }
-        return tasks;
+        return komDao.getAllRegularTasks().stream()
+                .filter(task -> !task.isArchived())
+                .sorted(Comparator.comparing(task -> task.getTitle().toLowerCase()))
+                .collect(Collectors.toList());
     }
 
     public List<RegularTask> getArchivedRegularTasks() {
-        List<RegularTask> tasks = new ArrayList<>();
-        for (RegularTask task : komDao.getAllRegularTasks()) {
-            if (task.isArchived())
-                tasks.add(task);
-        }
-        return tasks;
+        return komDao.getAllRegularTasks().stream()
+                .filter(RegularTask::isArchived)
+                .sorted(Comparator.comparing(task -> task.getTitle().toLowerCase()))
+                .collect(Collectors.toList());
     }
 
     public List<IrregularTask> getNotDoneIrregularTasks() {
-        List<IrregularTask> tasks = new ArrayList<>();
-        for (IrregularTask task : komDao.getAllIrregularTasks()) {
-            if (!task.isDone())
-                tasks.add(task);
-        }
-        return tasks;
+        return komDao.getAllIrregularTasks().stream()
+                .filter(task -> !task.isDone())
+                .sorted(Comparator.comparing(task -> task.getTitle().toLowerCase()))
+                .collect(Collectors.toList());
     }
 
     public List<IrregularTask> getDoneIrregularTasks() {
         return komDao.getAllIrregularTasks().stream()
                 .filter(IrregularTask::isDone)
-                .sorted(Comparator.comparing(IrregularTask::getDate).reversed())
+                .sorted(Comparator.comparing(task -> task.getTitle().toLowerCase()))
                 .collect(Collectors.toList());
     }
 
@@ -140,7 +133,13 @@ public class Service {
         tasks.addAll(komDao.getRegularTasksByDate(date).stream()
                 .filter(regularTask -> !regularTask.isArchived()).collect(Collectors.toList()));
 
-        Collections.sort(tasks, (task, t1) -> task.getTimeOfDay().getCode().compareTo(t1.getTimeOfDay().getCode()));
+        tasks.sort((t1, t2) -> {
+            int result = t1.getTimeOfDay().getCode().compareTo(t2.getTimeOfDay().getCode());
+            if (result != 0)
+                return result;
+            return t1.getTitle().compareToIgnoreCase(t2.getTitle());
+        });
+
         return tasks;
     }
 
