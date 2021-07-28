@@ -2,11 +2,13 @@ package com.katyshevtseva.kikiorgmobile.view;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -58,7 +60,18 @@ public class MainActivity extends AppCompatActivity {
     private void updateTaskPane() {
         dateView.setText(DateUtils.getDateStringWithWeekDay(date));
         taskListAdapter.setDate(date);
+        setDateViewStyle();
         updateAlarmBanner();
+    }
+
+    private void setDateViewStyle() {
+        if (DateUtils.equalsIgnoreTime(date, DateUtils.getProperDate())) {
+            dateView.setTextColor(ContextCompat.getColor(this, R.color.colorAccent));
+            dateView.setTypeface(null, Typeface.BOLD);
+        } else {
+            dateView.setTextColor(ContextCompat.getColor(this, R.color.black));
+            dateView.setTypeface(null, Typeface.NORMAL);
+        }
     }
 
     public void updateAlarmBanner() {
