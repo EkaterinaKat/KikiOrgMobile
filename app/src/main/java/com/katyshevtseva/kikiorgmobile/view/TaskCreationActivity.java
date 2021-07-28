@@ -29,6 +29,7 @@ import java.util.Arrays;
 
 import static com.katyshevtseva.kikiorgmobile.core.DateUtils.getDateByString;
 import static com.katyshevtseva.kikiorgmobile.core.DateUtils.getDateString;
+import static com.katyshevtseva.kikiorgmobile.core.DateUtils.getProperDate;
 import static com.katyshevtseva.kikiorgmobile.core.DateUtils.isDate;
 import static com.katyshevtseva.kikiorgmobile.view.utils.ViewUtils.adjustSpinner;
 import static com.katyshevtseva.kikiorgmobile.view.utils.ViewUtils.isEmpty;
@@ -71,7 +72,22 @@ public class TaskCreationActivity extends AppCompatActivity implements FragmentU
         initializeControls();
         setDoneButtonAccessibility();
         setControlListeners();
-        handleIntent();
+        setInitFieldValues();
+    }
+
+    private void setInitFieldValues() {
+        boolean intentIsEmpty = getIntent().getLongExtra(EXTRA_TASK_ID, -1) == -1;
+
+        if (intentIsEmpty)
+            setFieldDefaultValues();
+        else
+            handleIntent();
+    }
+
+    private void setFieldDefaultValues() {
+        selectSpinnerItemByValue(timeOfDaySpinner, TimeOfDay.AFTERNOON);
+        selectSpinnerItemByValue(taskTypeSpinner, TaskType.IRREGULAR);
+        itDateTextView.setText(getDateString(getProperDate()));
     }
 
     private void handleIntent() {
