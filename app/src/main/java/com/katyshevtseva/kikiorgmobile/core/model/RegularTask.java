@@ -24,7 +24,7 @@ public class RegularTask implements Task {
     private List<Date> dates;
 
     public String getAdminTaskListDesk() {
-        return String.format("%s\n%s\n%s %s\n%s",
+        return String.format("%s\n\n%s\n%s %s\n%s",
                 desc, timeOfDay, period, periodType, getLoppedDateListString());
     }
 

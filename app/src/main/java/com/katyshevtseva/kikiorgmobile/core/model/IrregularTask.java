@@ -20,7 +20,7 @@ public class IrregularTask implements Task {
     private boolean done;
 
     public String getAdminTaskListDesk() {
-        return String.format("%s\n%s\n%s",
+        return String.format("%s\n\n%s\n%s",
                 desc, timeOfDay, DateUtils.getDateStringWithWeekDay(date));
     }
 

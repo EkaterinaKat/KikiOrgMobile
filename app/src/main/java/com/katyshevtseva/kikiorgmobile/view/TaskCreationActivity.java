@@ -179,7 +179,7 @@ public class TaskCreationActivity extends AppCompatActivity implements FragmentU
     private void setDoneButtonAccessibility() {
         doneButton.setEnabled(true);
 
-        if (isEmpty(titleEdit) || isEmpty(descEdit)) {
+        if (isEmpty(titleEdit)) {
             doneButton.setEnabled(false);
             return;
         }
