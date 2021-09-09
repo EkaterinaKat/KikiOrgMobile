@@ -106,8 +106,9 @@ public class Service {
         komDao.updateRegularTask(regularTask);
     }
 
-    public void returnToWorkTask(IrregularTask irregularTask) {
+    public void returnToWorkTask(IrregularTask irregularTask, Date date) {
         irregularTask.setDone(false);
+        irregularTask.setDate(date);
         komDao.updateIrregularTask(irregularTask);
     }
 

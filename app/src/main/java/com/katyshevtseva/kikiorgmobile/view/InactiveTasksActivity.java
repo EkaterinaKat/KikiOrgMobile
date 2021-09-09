@@ -1,5 +1,6 @@
 package com.katyshevtseva.kikiorgmobile.view;
 
+import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.kikiorgmobile.R;
+import com.katyshevtseva.kikiorgmobile.core.DateUtils;
 import com.katyshevtseva.kikiorgmobile.core.Service;
 import com.katyshevtseva.kikiorgmobile.core.model.IrregularTask;
 import com.katyshevtseva.kikiorgmobile.core.model.RegularTask;
@@ -24,6 +26,7 @@ import com.katyshevtseva.kikiorgmobile.core.model.TaskType;
 import com.katyshevtseva.kikiorgmobile.view.QuestionDialog.AnswerHandler;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class InactiveTasksActivity extends AppCompatActivity {
@@ -81,13 +84,22 @@ public class InactiveTasksActivity extends AppCompatActivity {
             ((TextView) itemView.findViewById(R.id.done_task_title_view)).setText(irregularTask.getTitle());
             ((TextView) itemView.findViewById(R.id.done_task_desc_view)).setText(irregularTask.getAdminTaskListDesk());
             itemView.findViewById(R.id.return_to_work_done_task_button).setOnClickListener(view -> {
-                service.returnToWorkTask(irregularTask);
-                taskListAdapter.updateContent();
+                returnToWorkButtonListener(irregularTask);
             });
             itemView.findViewById(R.id.delete_done_task).setOnClickListener(view -> {
                 DialogFragment dlg1 = new QuestionDialog("Delete?", getDeletionDialogAnswerHandler(irregularTask));
                 dlg1.show(context.getSupportFragmentManager(), "dialog1");
             });
+        }
+
+        private void returnToWorkButtonListener(IrregularTask irregularTask) {
+            DatePickerDialog datePickerDialog = new DatePickerDialog(context);
+            datePickerDialog.setOnDateSetListener((datePicker, year, month, day) -> {
+                Date selectedDate = DateUtils.parse(year, month + 1, day);
+                service.returnToWorkTask(irregularTask, selectedDate);
+                taskListAdapter.updateContent();
+            });
+            datePickerDialog.show();
         }
 
         private AnswerHandler getDeletionDialogAnswerHandler(final IrregularTask task) {
