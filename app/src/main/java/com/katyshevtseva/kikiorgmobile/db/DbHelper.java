@@ -5,7 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 public class DbHelper extends SQLiteOpenHelper {
-    private static final int VERSION = 12;
+    private static final int VERSION = 13;
     private static final String DATABASE_NAME = "kom.db";
 
     DbHelper(Context context) {
@@ -35,6 +35,10 @@ public class DbHelper extends SQLiteOpenHelper {
                 RtDateDao.TableSchema.Cols.ID + " INTEGER primary key autoincrement, " +
                 RtDateDao.TableSchema.Cols.TASK_ID + " INTEGER, " +
                 RtDateDao.TableSchema.Cols.VALUE + " TEXT )");
+
+        database.execSQL("create table " + DatelessTaskDao.TableSchema.NAME + "(" +
+                DatelessTaskDao.TableSchema.Cols.ID + " INTEGER primary key autoincrement, " +
+                DatelessTaskDao.TableSchema.Cols.TITLE + " TEXT )");
     }
 
     @Override

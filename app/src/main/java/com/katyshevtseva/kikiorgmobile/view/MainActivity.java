@@ -48,6 +48,9 @@ public class MainActivity extends AppCompatActivity {
         taskListAdapter = new TaskListAdapter(this, service, date);
         taskList.setAdapter(taskListAdapter);
 
+        findViewById(R.id.dateless_task_button).setOnClickListener(view ->
+                startActivity(new Intent(getApplicationContext(), DatelessTaskActivity.class)));
+
         updateTaskPane();
     }
 
