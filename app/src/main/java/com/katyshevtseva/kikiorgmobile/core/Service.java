@@ -2,6 +2,7 @@ package com.katyshevtseva.kikiorgmobile.core;
 
 import android.content.Context;
 
+import com.katyshevtseva.kikiorgmobile.core.model.DatelessTask;
 import com.katyshevtseva.kikiorgmobile.core.model.IrregularTask;
 import com.katyshevtseva.kikiorgmobile.core.model.PeriodType;
 import com.katyshevtseva.kikiorgmobile.core.model.RegularTask;
@@ -68,6 +69,17 @@ public class Service {
         }
     }
 
+    public void saveDatelessTask(DatelessTask existing, String title) {
+        if (existing == null) {
+            DatelessTask task = new DatelessTask();
+            task.setTitle(title);
+            komDao.saveNewDatelessTask(task);
+        } else {
+            existing.setTitle(title);
+            komDao.updateDatelessTask(existing);
+        }
+    }
+
     public List<RegularTask> getNotArchivedRegularTasks() {
         return komDao.getAllRegularTasks().stream()
                 .filter(task -> !task.isArchived())
@@ -96,6 +108,15 @@ public class Service {
                 .collect(Collectors.toList());
     }
 
+    public List<DatelessTask> getAllDatelessTasks() {
+        return komDao.getAllDatelessTasks().stream()
+                .sorted(Comparator.comparing(DatelessTask::getId)).collect(Collectors.toList());
+    }
+
+    public int countDatelessTasks() {
+        return komDao.getAllDatelessTasks().size();
+    }
+
     public void archiveTask(RegularTask regularTask) {
         regularTask.setArchived(true);
         komDao.updateRegularTask(regularTask);
@@ -114,6 +135,10 @@ public class Service {
 
     public void deleteTask(IrregularTask irregularTask) {
         komDao.deleteIrregularTask(irregularTask);
+    }
+
+    public void deleteTask(DatelessTask datelessTask) {
+        komDao.deleteDatelessTask(datelessTask);
     }
 
     public Task findTask(TaskType taskType, long id) {

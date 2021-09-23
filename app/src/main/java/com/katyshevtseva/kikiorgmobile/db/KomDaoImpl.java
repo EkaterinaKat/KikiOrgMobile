@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.katyshevtseva.kikiorgmobile.core.KomDao;
+import com.katyshevtseva.kikiorgmobile.core.model.DatelessTask;
 import com.katyshevtseva.kikiorgmobile.core.model.IrregularTask;
 import com.katyshevtseva.kikiorgmobile.core.model.RegularTask;
 
@@ -17,13 +18,40 @@ public class KomDaoImpl implements KomDao {
     private IrregularTaskDao irregularTaskDao;
     private RegularTaskDao regularTaskDao;
     private RtDateDao rtDateDao;
+    private DatelessTaskDao datelessTaskDao;
 
     public KomDaoImpl(Context context) {
         SQLiteDatabase database = new DbHelper(context).getWritableDatabase();
         irregularTaskDao = new IrregularTaskDao(database);
         regularTaskDao = new RegularTaskDao(database);
         rtDateDao = new RtDateDao(database);
+        datelessTaskDao = new DatelessTaskDao(database);
     }
+
+    ////////////////////////////  DatelessTask  //////////////////////////////////
+
+    @Override
+    public void saveNewDatelessTask(DatelessTask datelessTask) {
+        datelessTaskDao.saveNew(datelessTask);
+    }
+
+    @Override
+    public List<DatelessTask> getAllDatelessTasks() {
+        return datelessTaskDao.findAll();
+    }
+
+    @Override
+    public void updateDatelessTask(DatelessTask datelessTask) {
+        datelessTaskDao.update(datelessTask, DatelessTaskDao.TableSchema.Cols.ID, "" + datelessTask.getId());
+    }
+
+    @Override
+    public void deleteDatelessTask(DatelessTask datelessTask) {
+        datelessTaskDao.delete(DatelessTaskDao.TableSchema.Cols.ID, "" + datelessTask.getId());
+    }
+
+
+    ////////////////////////////  IrregularTask  //////////////////////////////////
 
     @Override
     public void saveNewIrregularTask(IrregularTask irregularTask) {
@@ -55,7 +83,7 @@ public class KomDaoImpl implements KomDao {
         return irregularTaskDao.findFirst(IrregularTaskDao.TableSchema.Cols.ID, "" + id);
     }
 
-    //////////////////////////////////////////////////////////////
+    ////////////////////////////  RegularTask  //////////////////////////////////
 
     @Override
     public void saveNewRegularTask(RegularTask regularTask) {

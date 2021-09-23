@@ -1,5 +1,6 @@
 package com.katyshevtseva.kikiorgmobile.core;
 
+import com.katyshevtseva.kikiorgmobile.core.model.DatelessTask;
 import com.katyshevtseva.kikiorgmobile.core.model.IrregularTask;
 import com.katyshevtseva.kikiorgmobile.core.model.RegularTask;
 
@@ -30,4 +31,12 @@ public interface KomDao {
     RegularTask getRegularTaskById(long id);
 
     IrregularTask getIrregularTaskById(long id);
+
+    void saveNewDatelessTask(DatelessTask datelessTask);
+
+    List<DatelessTask> getAllDatelessTasks();
+
+    void updateDatelessTask(DatelessTask datelessTask);
+
+    void deleteDatelessTask(DatelessTask datelessTask);
 }
