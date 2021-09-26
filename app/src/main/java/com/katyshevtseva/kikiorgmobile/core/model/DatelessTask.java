@@ -10,4 +10,12 @@ import lombok.NoArgsConstructor;
 public class DatelessTask {
     private long id;
     private String title;
+
+    @Override
+    public String toString() {
+        return "DatelessTask{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                '}';
+    }
 }
