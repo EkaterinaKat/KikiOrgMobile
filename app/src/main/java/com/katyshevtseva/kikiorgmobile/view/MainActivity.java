@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -26,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView dateView;
     private TaskListAdapter taskListAdapter;
     private TextView alarmTextView;
+    private Button datelessTaskButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +50,8 @@ public class MainActivity extends AppCompatActivity {
         taskListAdapter = new TaskListAdapter(this, service, date);
         taskList.setAdapter(taskListAdapter);
 
-        findViewById(R.id.dateless_task_button).setOnClickListener(view ->
+        datelessTaskButton = findViewById(R.id.dateless_task_button);
+        datelessTaskButton.setOnClickListener(view ->
                 startActivity(new Intent(getApplicationContext(), DatelessTaskActivity.class)));
 
         updateTaskPane();
@@ -65,6 +68,7 @@ public class MainActivity extends AppCompatActivity {
         taskListAdapter.setDate(date);
         setDateViewStyle();
         updateAlarmBanner();
+        datelessTaskButton.setText("" + service.countDatelessTasks());
     }
 
     private void setDateViewStyle() {
