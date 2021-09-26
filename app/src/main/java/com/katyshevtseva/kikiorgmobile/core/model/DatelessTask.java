@@ -11,6 +11,10 @@ public class DatelessTask {
     private long id;
     private String title;
 
+    public String getIdAndTitleInfo() {
+        return id + ") " + title;
+    }
+
     @Override
     public String toString() {
         return "DatelessTask{" +

@@ -21,7 +21,7 @@ public class DatelessTaskEditDialog extends DialogFragment {
     private Service service;
     private EditText editText;
 
-    DatelessTaskEditDialog(DatelessTask datelessTask, Service service, NoArgKnob activityUpdateKnob) {
+    public DatelessTaskEditDialog(DatelessTask datelessTask, Service service, NoArgKnob activityUpdateKnob) {
         this.datelessTask = datelessTask;
         this.service = service;
         this.activityUpdateKnob = activityUpdateKnob;
@@ -32,6 +32,9 @@ public class DatelessTaskEditDialog extends DialogFragment {
         service = new Service(getContext());
 
         editText = v.findViewById(R.id.edit_text);
+        if (datelessTask != null) {
+            editText.setText(datelessTask.getTitle());
+        }
         v.findViewById(R.id.ok_button).setOnClickListener(view -> {
             service.saveDatelessTask(datelessTask, editText.getText().toString());
             dismiss();
