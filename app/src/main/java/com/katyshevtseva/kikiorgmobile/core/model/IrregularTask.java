@@ -28,4 +28,16 @@ public class IrregularTask implements Task {
     public TaskType getType() {
         return TaskType.IRREGULAR;
     }
+
+    @Override
+    public String toString() {
+        return "IrregularTask{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", desc='" + desc + '\'' +
+                ", timeOfDay=" + timeOfDay +
+                ", date=" + date +
+                ", done=" + done +
+                '}';
+    }
 }
