@@ -109,6 +109,9 @@ public class Service {
     }
 
     public List<DatelessTask> getAllDatelessTasks() {
+        // backup
+//        new SimpleBackupService(komDao, this).execute();
+
         return komDao.getAllDatelessTasks().stream()
                 .sorted(Comparator.comparing(DatelessTask::getId)).collect(Collectors.toList());
     }

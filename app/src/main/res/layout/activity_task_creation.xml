@@ -14,7 +14,7 @@
         android:gravity="center"
         android:hint="title"
         android:inputType="text"
-        android:maxLength="30"
+        android:maxLength="50"
         android:textColor="@color/taskTitleColor" />
 
     <EditText
@@ -25,7 +25,6 @@
         android:hint="description"
         android:inputType="textMultiLine"
         android:lines="3"
-        android:maxLength="150"
         android:textColor="@color/black" />
 
     <Spinner
