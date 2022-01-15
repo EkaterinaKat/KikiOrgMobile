@@ -40,6 +40,9 @@ public class DatelessTaskRecycleView {
             itemView.findViewById(R.id.delete_task_button).setOnClickListener(view ->
                     new QuestionDialog("Delete?", getDeletionDialogAnswerHandler(task))
                             .show(context.getSupportFragmentManager(), "dialog111"));
+            itemView.findViewById(R.id.move_to_end_task_button).setOnClickListener(view ->
+                    new QuestionDialog("Move to end?", getMoveToEndDialogAnswerHandler(task))
+                            .show(context.getSupportFragmentManager(), "dialog112"));
         }
 
         private QuestionDialog.AnswerHandler getDeletionDialogAnswerHandler(final DatelessTask task) {
@@ -51,10 +54,19 @@ public class DatelessTaskRecycleView {
                 }
             };
         }
+
+        private QuestionDialog.AnswerHandler getMoveToEndDialogAnswerHandler(final DatelessTask task) {
+            return answer -> {
+                if (answer) {
+                    service.moveDatelessTaskToEnd(task);
+                    taskListAdapter.updateContent();
+                }
+            };
+        }
     }
 
     public static class TaskListAdapter extends RecyclerView.Adapter<TaskHolder> {
-        private final int TASK_LAYOUT = R.layout.admin_task_list_item;
+        private final int TASK_LAYOUT = R.layout.dateless_task_list_item;
 
         private List<DatelessTask> tasks;
         private AppCompatActivity context;

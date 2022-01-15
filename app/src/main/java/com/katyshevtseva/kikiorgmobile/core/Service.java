@@ -109,9 +109,6 @@ public class Service {
     }
 
     public List<DatelessTask> getAllDatelessTasks() {
-        // backup
-//        new SimpleBackupService(komDao, this).execute();
-
         return komDao.getAllDatelessTasks().stream()
                 .sorted(Comparator.comparing(DatelessTask::getId)).collect(Collectors.toList());
     }
@@ -142,6 +139,11 @@ public class Service {
 
     public void deleteTask(DatelessTask datelessTask) {
         komDao.deleteDatelessTask(datelessTask);
+    }
+
+    public void moveDatelessTaskToEnd(DatelessTask datelessTask) {
+        saveDatelessTask(null, datelessTask.getTitle());
+        deleteTask(datelessTask);
     }
 
     public Task findTask(TaskType taskType, long id) {
@@ -228,8 +230,8 @@ public class Service {
         } else {
             done(regularTask, initDate);
             saveIrregularTask(null,
-                    regularTask.getTitle() + " *",
-                    regularTask.getTitle() + " перенесенный с " + DateUtils.getDateString(initDate),
+                    String.format("%s (перенесено с %s)", regularTask.getTitle(), DateUtils.getDateString(initDate)),
+                    regularTask.getDesc(),
                     regularTask.getTimeOfDay(),
                     targetDate);
         }
