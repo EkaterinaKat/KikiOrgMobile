@@ -9,27 +9,41 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <Button
-            android:id="@+id/new_task_button"
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="New task" />
+            android:layout_margin="10dp">
 
-        <Button
-            android:id="@+id/archive_button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Archive" />
+            <ImageButton
+                android:id="@+id/new_task_button"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentStart="true"
+                android:layout_margin="7dp"
+                android:background="@mipmap/plus" />
 
-        <Button
-            android:id="@+id/done_tasks_button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Done tasks" />
+            <ImageButton
+                android:id="@+id/done_tasks_button"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_margin="7dp"
+                android:layout_toStartOf="@id/archive_button"
+                android:background="@mipmap/black_tick" />
+
+            <ImageButton
+                android:id="@+id/archive_button"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentEnd="true"
+                android:layout_margin="7dp"
+                android:background="@mipmap/archive" />
+
+        </RelativeLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="10dp"
             android:orientation="horizontal">
 
             <ImageView
