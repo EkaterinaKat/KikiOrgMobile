@@ -128,20 +128,24 @@ public class AdminTaskRecycleView {
             return TASK_LAYOUT;
         }
 
-        public void updateContent() {
-            items = getTaskListItems(service);
+        public void updateContent(String s) {
+            items = getTaskListItems(service, s);
             notifyDataSetChanged();
+        }
+
+        public void updateContent() {
+            updateContent(null);
         }
     }
 
-    private static List<TaskListItem> getTaskListItems(Service service) {
+    private static List<TaskListItem> getTaskListItems(Service service, String s) {
         List<TaskListItem> items = new ArrayList<>();
         items.add(getHeader("Irregular tasks"));
-        for (IrregularTask irregularTask : service.getNotDoneIrregularTasks()) {
+        for (IrregularTask irregularTask : service.getNotDoneIrregularTasks(s)) {
             items.add(toListItem(irregularTask));
         }
         items.add(getHeader("Regular tasks"));
-        for (RegularTask regularTask : service.getNotArchivedRegularTasks()) {
+        for (RegularTask regularTask : service.getNotArchivedRegularTasks(s)) {
             items.add(toListItem(regularTask));
         }
         return items;

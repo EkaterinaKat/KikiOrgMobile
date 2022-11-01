@@ -16,13 +16,14 @@ class SimpleBackupService {
     }
 
     void execute() {
+        System.out.println("*** START ***");
         System.out.println("*** REGULAR TASKS ***");
         for (RegularTask regularTask : komDao.getAllRegularTasks()) {
             System.out.println(regularTask);
         }
 
         System.out.println("*** CURRENT IRREGULAR TASKS ***");
-        List<IrregularTask> currentTasks = service.getNotDoneIrregularTasks();
+        List<IrregularTask> currentTasks = service.getNotDoneIrregularTasks(null);
         for (IrregularTask irregularTask : currentTasks) {
             System.out.println(irregularTask);
         }

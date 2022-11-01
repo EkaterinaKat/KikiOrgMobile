@@ -1,5 +1,10 @@
 package com.katyshevtseva.kikiorgmobile.core;
 
+import static com.katyshevtseva.kikiorgmobile.core.DateUtils.beforeIgnoreTime;
+import static com.katyshevtseva.kikiorgmobile.core.DateUtils.containsIgnoreTime;
+import static com.katyshevtseva.kikiorgmobile.core.DateUtils.getProperDate;
+import static com.katyshevtseva.kikiorgmobile.core.DateUtils.removeIgnoreTime;
+
 import android.content.Context;
 
 import com.katyshevtseva.kikiorgmobile.core.model.DatelessTask;
@@ -16,11 +21,6 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
-
-import static com.katyshevtseva.kikiorgmobile.core.DateUtils.beforeIgnoreTime;
-import static com.katyshevtseva.kikiorgmobile.core.DateUtils.containsIgnoreTime;
-import static com.katyshevtseva.kikiorgmobile.core.DateUtils.getProperDate;
-import static com.katyshevtseva.kikiorgmobile.core.DateUtils.removeIgnoreTime;
 
 public class Service {
     private KomDao komDao;
@@ -80,11 +80,16 @@ public class Service {
         }
     }
 
-    public List<RegularTask> getNotArchivedRegularTasks() {
+    public List<RegularTask> getNotArchivedRegularTasks(String s) {
         return komDao.getAllRegularTasks().stream()
                 .filter(task -> !task.isArchived())
+                .filter(task -> isEmpty(s) || (task.getTitle().contains(s) || task.getDesc().contains(s)))
                 .sorted(Comparator.comparing(task -> task.getTitle().toLowerCase()))
                 .collect(Collectors.toList());
+    }
+
+    private boolean isEmpty(String s) {
+        return s == null || s.trim().equals("");
     }
 
     public List<RegularTask> getArchivedRegularTasks() {
@@ -94,9 +99,10 @@ public class Service {
                 .collect(Collectors.toList());
     }
 
-    public List<IrregularTask> getNotDoneIrregularTasks() {
+    public List<IrregularTask> getNotDoneIrregularTasks(String s) {
         return komDao.getAllIrregularTasks().stream()
                 .filter(task -> !task.isDone())
+                .filter(task -> isEmpty(s) || (task.getTitle().contains(s) || task.getDesc().contains(s)))
                 .sorted(Comparator.comparing(task -> task.getTitle().toLowerCase()))
                 .collect(Collectors.toList());
     }
