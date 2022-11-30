@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class Service {
-    private KomDao komDao;
+    private final KomDao komDao;
 
     public Service(Context context) {
         this.komDao = new KomDaoImpl(context);
@@ -81,6 +81,7 @@ public class Service {
     }
 
     public List<RegularTask> getNotArchivedRegularTasks(String s) {
+        new SimpleBackupService(komDao, this).execute();
         return komDao.getAllRegularTasks().stream()
                 .filter(task -> !task.isArchived())
                 .filter(task -> isEmpty(s) || (task.getTitle().contains(s) || task.getDesc().contains(s)))

@@ -1,5 +1,7 @@
 package com.katyshevtseva.kikiorgmobile.core;
 
+import android.util.Log;
+
 import com.katyshevtseva.kikiorgmobile.core.model.DatelessTask;
 import com.katyshevtseva.kikiorgmobile.core.model.IrregularTask;
 import com.katyshevtseva.kikiorgmobile.core.model.RegularTask;
@@ -7,8 +9,9 @@ import com.katyshevtseva.kikiorgmobile.core.model.RegularTask;
 import java.util.List;
 
 class SimpleBackupService {
-    private KomDao komDao;
-    private Service service;
+    private static final String tag = "Backup";
+    private final KomDao komDao;
+    private final Service service;
 
     SimpleBackupService(KomDao komDao, Service service) {
         this.komDao = komDao;
@@ -16,30 +19,30 @@ class SimpleBackupService {
     }
 
     void execute() {
-        System.out.println("*** START ***");
-        System.out.println("*** REGULAR TASKS ***");
+        Log.i(tag, "*** START ***");
+        Log.i(tag, "*** REGULAR TASKS ***");
         for (RegularTask regularTask : komDao.getAllRegularTasks()) {
-            System.out.println(regularTask);
+            Log.i(tag, regularTask.toString());
         }
 
-        System.out.println("*** CURRENT IRREGULAR TASKS ***");
+        Log.i(tag, "*** CURRENT IRREGULAR TASKS ***");
         List<IrregularTask> currentTasks = service.getNotDoneIrregularTasks(null);
         for (IrregularTask irregularTask : currentTasks) {
-            System.out.println(irregularTask);
+            Log.i(tag, irregularTask.toString());
         }
 
-        System.out.println("*** FINISHED IRREGULAR TASKS ***");
+        Log.i(tag, "*** FINISHED IRREGULAR TASKS ***");
         List<IrregularTask> doneTasks = service.getDoneIrregularTasks();
         for (IrregularTask irregularTask : doneTasks) {
-            System.out.println(irregularTask);
+            Log.i(tag, irregularTask.toString());
             komDao.deleteIrregularTask(irregularTask);
         }
 
-        System.out.println("*** DATELESS TASKS ***");
+        Log.i(tag, "*** DATELESS TASKS ***");
         for (DatelessTask datelessTask : komDao.getAllDatelessTasks()) {
-            System.out.println(datelessTask);
+            Log.i(tag, datelessTask.toString());
         }
 
-        System.out.println("--- END ---");
+        Log.i(tag, "--- END ---");
     }
 }
