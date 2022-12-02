@@ -84,7 +84,7 @@ public class Service {
         new SimpleBackupService(komDao, this).execute();
         return komDao.getAllRegularTasks().stream()
                 .filter(task -> !task.isArchived())
-                .filter(task -> isEmpty(s) || (task.getTitle().contains(s) || task.getDesc().contains(s)))
+                .filter(task -> taskFilter(task, s))
                 .sorted(Comparator.comparing(task -> task.getTitle().toLowerCase()))
                 .collect(Collectors.toList());
     }
@@ -103,9 +103,14 @@ public class Service {
     public List<IrregularTask> getNotDoneIrregularTasks(String s) {
         return komDao.getAllIrregularTasks().stream()
                 .filter(task -> !task.isDone())
-                .filter(task -> isEmpty(s) || (task.getTitle().contains(s) || task.getDesc().contains(s)))
+                .filter(task -> taskFilter(task, s))
                 .sorted(Comparator.comparing(task -> task.getTitle().toLowerCase()))
                 .collect(Collectors.toList());
+    }
+
+    private boolean taskFilter(Task task, String s) {
+        s = s == null ? null : s.toLowerCase();
+        return isEmpty(s) || (task.getTitle().toLowerCase().contains(s) || task.getDesc().toLowerCase().contains(s));
     }
 
     public List<IrregularTask> getDoneIrregularTasks() {
