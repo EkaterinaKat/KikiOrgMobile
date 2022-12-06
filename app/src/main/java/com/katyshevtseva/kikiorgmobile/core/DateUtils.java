@@ -1,13 +1,10 @@
 package com.katyshevtseva.kikiorgmobile.core;
 
-import static com.katyshevtseva.kikiorgmobile.core.DateUtils.TimeUnit.DAY;
-
 import android.annotation.SuppressLint;
 
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
@@ -84,14 +81,6 @@ public abstract class DateUtils {
                 return getDateString(date) + " (Сб)";
         }
         throw new RuntimeException();
-    }
-
-    public static Date getProperDate() {
-        LocalDateTime now = LocalDateTime.now();
-        int hour = now.getHour();
-        if (hour > 6)
-            return new Date();
-        return shiftDate(new Date(), DAY, -1);
     }
 
     public static Date shiftDate(Date date, TimeUnit unit, int numOfUnits) {

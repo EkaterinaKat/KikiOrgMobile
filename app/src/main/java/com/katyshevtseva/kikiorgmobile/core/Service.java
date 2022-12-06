@@ -3,7 +3,6 @@ package com.katyshevtseva.kikiorgmobile.core;
 import static com.katyshevtseva.kikiorgmobile.core.DateUtils.beforeIgnoreTime;
 import static com.katyshevtseva.kikiorgmobile.core.DateUtils.containsIgnoreTime;
 import static com.katyshevtseva.kikiorgmobile.core.DateUtils.getDateString;
-import static com.katyshevtseva.kikiorgmobile.core.DateUtils.getProperDate;
 import static com.katyshevtseva.kikiorgmobile.core.DateUtils.removeIgnoreTime;
 
 import android.content.Context;
@@ -38,7 +37,6 @@ public class Service {
             task.setTitle(title);
             task.setDesc(desc);
             task.setDate(date);
-            task.setDone(false);
             task.setTimeOfDay(timeOfDay);
             komDao.saveNewIrregularTask(task);
             saveLog(Action.CREATION, task);
@@ -109,9 +107,8 @@ public class Service {
                 .collect(Collectors.toList());
     }
 
-    public List<IrregularTask> getNotDoneIrregularTasks(String s) {
+    public List<IrregularTask> getIrregularTasks(String s) {
         return komDao.getAllIrregularTasks().stream()
-                .filter(task -> !task.isDone())
                 .filter(task -> taskFilter(task, s))
                 .sorted(Comparator.comparing(task -> task.getTitle().toLowerCase()))
                 .collect(Collectors.toList());
@@ -120,13 +117,6 @@ public class Service {
     private boolean taskFilter(Task task, String s) {
         s = s == null ? null : s.toLowerCase();
         return isEmpty(s) || (task.getTitle().toLowerCase().contains(s) || task.getDesc().toLowerCase().contains(s));
-    }
-
-    public List<IrregularTask> getDoneIrregularTasks() {
-        return komDao.getAllIrregularTasks().stream()
-                .filter(IrregularTask::isDone)
-                .sorted(Comparator.comparing(task -> task.getTitle().toLowerCase()))
-                .collect(Collectors.toList());
     }
 
     public List<DatelessTask> getAllDatelessTasks() {
@@ -148,13 +138,6 @@ public class Service {
         regularTask.setArchived(false);
         komDao.updateRegularTask(regularTask);
         saveLog(Action.RESUME, regularTask);
-    }
-
-    @Deprecated
-    public void returnToWorkTask(IrregularTask irregularTask, Date date) {
-        irregularTask.setDone(false);
-        irregularTask.setDate(date);
-        komDao.updateIrregularTask(irregularTask);
     }
 
     public void deleteTask(IrregularTask irregularTask) {
@@ -185,8 +168,7 @@ public class Service {
     public List<Task> getTasksForMainList(Date date) {
         List<Task> tasks = new ArrayList<>();
 
-        tasks.addAll(komDao.getIrregularTasksByDate(date).stream()
-                .filter(irregularTask -> !irregularTask.isDone()).collect(Collectors.toList()));
+        tasks.addAll(komDao.getIrregularTasksByDate(date));
         tasks.addAll(komDao.getRegularTasksByDate(date).stream()
                 .filter(regularTask -> !regularTask.isArchived()).collect(Collectors.toList()));
 
@@ -200,10 +182,8 @@ public class Service {
         return tasks;
     }
 
-    @Deprecated
     public void done(IrregularTask irregularTask) {
-        irregularTask.setDone(true);
-        komDao.updateIrregularTask(irregularTask);
+        komDao.deleteIrregularTask(irregularTask);
         saveLog(Action.COMPLETION, irregularTask);
     }
 
@@ -274,13 +254,13 @@ public class Service {
 
     public boolean overdueTasksExist() {
         for (IrregularTask irregularTask : komDao.getAllIrregularTasks()) {
-            if (!irregularTask.isDone() && beforeIgnoreTime(irregularTask.getDate(), getProperDate()))
+            if (beforeIgnoreTime(irregularTask.getDate(), new Date()))
                 return true;
         }
         for (RegularTask regularTask : komDao.getAllRegularTasks()) {
             if (!regularTask.isArchived()) {
                 for (Date date : regularTask.getDates()) {
-                    if (beforeIgnoreTime(date, getProperDate()))
+                    if (beforeIgnoreTime(date, new Date()))
                         return true;
                 }
             }
@@ -313,6 +293,6 @@ public class Service {
     }
 
     public List<Log> getLogs() {
-        return komDao.getAllLogs().stream().sorted(Comparator.comparing(Log::getId)).collect(Collectors.toList());
+        return komDao.getAllLogs().stream().sorted(Comparator.comparing(Log::getId).reversed()).collect(Collectors.toList());
     }
 }

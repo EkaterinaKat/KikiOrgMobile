@@ -27,16 +27,8 @@
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_margin="7dp"
-                android:layout_toStartOf="@id/done_tasks_button"
-                android:background="@mipmap/log" />
-
-            <ImageButton
-                android:id="@+id/done_tasks_button"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_margin="7dp"
                 android:layout_toStartOf="@id/archive_button"
-                android:background="@mipmap/black_tick" />
+                android:background="@mipmap/log" />
 
             <ImageButton
                 android:id="@+id/archive_button"

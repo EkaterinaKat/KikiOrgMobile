@@ -1,5 +1,13 @@
 package com.katyshevtseva.kikiorgmobile.db;
 
+import static com.katyshevtseva.kikiorgmobile.db.AbstractTable.ColumnActualType.DATE;
+import static com.katyshevtseva.kikiorgmobile.db.AbstractTable.ColumnActualType.LONG;
+import static com.katyshevtseva.kikiorgmobile.db.AbstractTable.ColumnActualType.STRING;
+import static com.katyshevtseva.kikiorgmobile.db.IrregularTaskDao.TableSchema.Cols.DESC;
+import static com.katyshevtseva.kikiorgmobile.db.IrregularTaskDao.TableSchema.Cols.ID;
+import static com.katyshevtseva.kikiorgmobile.db.IrregularTaskDao.TableSchema.Cols.TIME_OF_DAY;
+import static com.katyshevtseva.kikiorgmobile.db.IrregularTaskDao.TableSchema.Cols.TITLE;
+
 import android.database.sqlite.SQLiteDatabase;
 
 import com.katyshevtseva.kikiorgmobile.core.model.IrregularTask;
@@ -9,16 +17,6 @@ import com.katyshevtseva.kikiorgmobile.db.IrregularTaskDao.TableSchema.Cols;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
-import static com.katyshevtseva.kikiorgmobile.db.AbstractTable.ColumnActualType.BOOLEAN;
-import static com.katyshevtseva.kikiorgmobile.db.AbstractTable.ColumnActualType.DATE;
-import static com.katyshevtseva.kikiorgmobile.db.AbstractTable.ColumnActualType.LONG;
-import static com.katyshevtseva.kikiorgmobile.db.AbstractTable.ColumnActualType.STRING;
-import static com.katyshevtseva.kikiorgmobile.db.IrregularTaskDao.TableSchema.Cols.DESC;
-import static com.katyshevtseva.kikiorgmobile.db.IrregularTaskDao.TableSchema.Cols.DONE;
-import static com.katyshevtseva.kikiorgmobile.db.IrregularTaskDao.TableSchema.Cols.ID;
-import static com.katyshevtseva.kikiorgmobile.db.IrregularTaskDao.TableSchema.Cols.TIME_OF_DAY;
-import static com.katyshevtseva.kikiorgmobile.db.IrregularTaskDao.TableSchema.Cols.TITLE;
 
 class IrregularTaskDao extends AbstractDao<IrregularTask> {
 
@@ -86,17 +84,6 @@ class IrregularTaskDao extends AbstractDao<IrregularTask> {
                     irregularTask.setDate((Date) value);
                 }
             });
-            columns.add(new AbstractColumn<IrregularTask>(DONE, BOOLEAN) {
-                @Override
-                Object getActualValue(IrregularTask irregularTask) {
-                    return irregularTask.isDone();
-                }
-
-                @Override
-                void setActualValue(IrregularTask irregularTask, Object value) {
-                    irregularTask.setDone((Boolean) value);
-                }
-            });
             columns.add(new AbstractColumn<IrregularTask>(TIME_OF_DAY, LONG) {
                 @Override
                 Object getActualValue(IrregularTask irregularTask) {
@@ -121,7 +108,6 @@ class IrregularTaskDao extends AbstractDao<IrregularTask> {
             static final String DESC = "desc";
             static final String TIME_OF_DAY = "time_of_day";
             static final String DATE = "date";
-            static final String DONE = "done";
         }
     }
 }

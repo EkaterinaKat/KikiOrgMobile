@@ -29,7 +29,7 @@ public class RegularTask implements Task {
     }
 
     public String getLogTaskDesk() {
-        return String.format("[(%d) %s \n%s (%s, %d %s)]", id, title, desc, timeOfDay, period, periodType);
+        return String.format("[(%d) %s \n%s \n(%s, %d %s)]", id, title, desc, timeOfDay, period, periodType);
     }
 
     private String getLoppedDateListString() {

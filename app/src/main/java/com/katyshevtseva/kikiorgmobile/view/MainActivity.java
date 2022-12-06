@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
         service = new Service(this);
         alarmTextView = findViewById(R.id.alarm_text_view);
 
-        date = DateUtils.getProperDate();
+        date = new Date();
         dateView = findViewById(R.id.main_date_text_view);
         findViewById(R.id.admin_button).setOnClickListener(view ->
                 startActivity(new Intent(getApplicationContext(), AdminActivity.class)));
@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setDateViewStyle() {
-        if (DateUtils.equalsIgnoreTime(date, DateUtils.getProperDate())) {
+        if (DateUtils.equalsIgnoreTime(date, new Date())) {
             dateView.setTextColor(ContextCompat.getColor(this, R.color.colorAccent));
             dateView.setTypeface(null, Typeface.BOLD);
         } else {
@@ -82,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void updateAlarmBanner() {
-        if (DateUtils.equalsIgnoreTime(date, DateUtils.getProperDate()) && service.overdueTasksExist()) {
+        if (DateUtils.equalsIgnoreTime(date, new Date()) && service.overdueTasksExist()) {
             alarmTextView.setVisibility(View.VISIBLE);
         } else {
             alarmTextView.setVisibility(View.GONE);

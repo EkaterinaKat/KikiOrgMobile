@@ -25,22 +25,20 @@ class SimpleBackupService {
             Log.i(tag, regularTask.toString());
         }
 
-        Log.i(tag, "*** CURRENT IRREGULAR TASKS ***");
-        List<IrregularTask> currentTasks = service.getNotDoneIrregularTasks(null);
+        Log.i(tag, "*** IRREGULAR TASKS ***");
+        List<IrregularTask> currentTasks = service.getIrregularTasks(null);
         for (IrregularTask irregularTask : currentTasks) {
             Log.i(tag, irregularTask.toString());
-        }
-
-        Log.i(tag, "*** FINISHED IRREGULAR TASKS ***");
-        List<IrregularTask> doneTasks = service.getDoneIrregularTasks();
-        for (IrregularTask irregularTask : doneTasks) {
-            Log.i(tag, irregularTask.toString());
-            komDao.deleteIrregularTask(irregularTask);
         }
 
         Log.i(tag, "*** DATELESS TASKS ***");
         for (DatelessTask datelessTask : komDao.getAllDatelessTasks()) {
             Log.i(tag, datelessTask.toString());
+        }
+
+        Log.i(tag, "*** LOGS ***");
+        for (com.katyshevtseva.kikiorgmobile.core.model.Log log : service.getLogs()) {
+            Log.i(tag, log.getFullDesc());
         }
 
         Log.i(tag, "--- END ---");

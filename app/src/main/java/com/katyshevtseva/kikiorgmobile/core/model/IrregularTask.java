@@ -19,8 +19,6 @@ public class IrregularTask implements Task {
     private String desc;
     private TimeOfDay timeOfDay;
     private Date date;
-    @Deprecated
-    private boolean done;
 
     public String getAdminTaskListDesk() {
         return String.format("%s\n\n%s\n%s",
@@ -28,7 +26,7 @@ public class IrregularTask implements Task {
     }
 
     public String getLogTaskDesk() {
-        return String.format("[(%d) %s \n%s (%s, %s)]", id, title, desc, timeOfDay, getDateString(date));
+        return String.format("[(%d) %s \n%s \n(%s, %s)]", id, title, desc, timeOfDay, getDateString(date));
     }
 
     @Override
@@ -44,7 +42,6 @@ public class IrregularTask implements Task {
                 ", desc='" + desc + '\'' +
                 ", timeOfDay=" + timeOfDay +
                 ", date=" + date +
-                ", done=" + done +
                 '}';
     }
 }

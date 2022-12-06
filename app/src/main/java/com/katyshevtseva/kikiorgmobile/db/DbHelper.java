@@ -19,8 +19,7 @@ public class DbHelper extends SQLiteOpenHelper {
                 IrregularTaskDao.TableSchema.Cols.TITLE + " TEXT, " +
                 IrregularTaskDao.TableSchema.Cols.DESC + " TEXT, " +
                 IrregularTaskDao.TableSchema.Cols.TIME_OF_DAY + " INTEGER, " +
-                IrregularTaskDao.TableSchema.Cols.DATE + " TEXT, " +
-                IrregularTaskDao.TableSchema.Cols.DONE + " INTEGER )");
+                IrregularTaskDao.TableSchema.Cols.DATE + " TEXT )");
 
         database.execSQL("create table " + RegularTaskDao.TableSchema.NAME + "(" +
                 RegularTaskDao.TableSchema.Cols.ID + " INTEGER primary key autoincrement, " +

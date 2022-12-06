@@ -141,7 +141,7 @@ public class AdminTaskRecycleView {
     private static List<TaskListItem> getTaskListItems(Service service, String s) {
         List<TaskListItem> items = new ArrayList<>();
         items.add(getHeader("Irregular tasks"));
-        for (IrregularTask irregularTask : service.getNotDoneIrregularTasks(s)) {
+        for (IrregularTask irregularTask : service.getIrregularTasks(s)) {
             items.add(toListItem(irregularTask));
         }
         items.add(getHeader("Regular tasks"));

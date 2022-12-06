@@ -1,5 +1,13 @@
 package com.katyshevtseva.kikiorgmobile.view;
 
+import static com.katyshevtseva.kikiorgmobile.core.DateUtils.getDateByString;
+import static com.katyshevtseva.kikiorgmobile.core.DateUtils.getDateString;
+import static com.katyshevtseva.kikiorgmobile.core.DateUtils.isDate;
+import static com.katyshevtseva.kikiorgmobile.view.utils.ViewUtils.adjustSpinner;
+import static com.katyshevtseva.kikiorgmobile.view.utils.ViewUtils.isEmpty;
+import static com.katyshevtseva.kikiorgmobile.view.utils.ViewUtils.selectSpinnerItemByValue;
+import static com.katyshevtseva.kikiorgmobile.view.utils.ViewUtils.setEditTextListener;
+
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -26,15 +34,7 @@ import com.katyshevtseva.kikiorgmobile.view.utils.FragmentUpdateListener;
 import com.katyshevtseva.kikiorgmobile.view.utils.ViewUtils.SpinnerListener;
 
 import java.util.Arrays;
-
-import static com.katyshevtseva.kikiorgmobile.core.DateUtils.getDateByString;
-import static com.katyshevtseva.kikiorgmobile.core.DateUtils.getDateString;
-import static com.katyshevtseva.kikiorgmobile.core.DateUtils.getProperDate;
-import static com.katyshevtseva.kikiorgmobile.core.DateUtils.isDate;
-import static com.katyshevtseva.kikiorgmobile.view.utils.ViewUtils.adjustSpinner;
-import static com.katyshevtseva.kikiorgmobile.view.utils.ViewUtils.isEmpty;
-import static com.katyshevtseva.kikiorgmobile.view.utils.ViewUtils.selectSpinnerItemByValue;
-import static com.katyshevtseva.kikiorgmobile.view.utils.ViewUtils.setEditTextListener;
+import java.util.Date;
 
 public class TaskCreationActivity extends AppCompatActivity implements FragmentUpdateListener {
     private static final String EXTRA_TASK_ID = "task_id";
@@ -87,7 +87,7 @@ public class TaskCreationActivity extends AppCompatActivity implements FragmentU
     private void setFieldDefaultValues() {
         selectSpinnerItemByValue(timeOfDaySpinner, TimeOfDay.AFTERNOON);
         selectSpinnerItemByValue(taskTypeSpinner, TaskType.IRREGULAR);
-        itDateTextView.setText(getDateString(getProperDate()));
+        itDateTextView.setText(getDateString(new Date()));
     }
 
     private void handleIntent() {

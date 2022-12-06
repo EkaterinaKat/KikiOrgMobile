@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.kikiorgmobile.R;
 import com.katyshevtseva.kikiorgmobile.core.Service;
-import com.katyshevtseva.kikiorgmobile.core.model.TaskType;
 import com.katyshevtseva.kikiorgmobile.view.utils.AdminTaskRecycleView.TaskListAdapter;
 
 public class AdminActivity extends AppCompatActivity {
@@ -25,10 +24,7 @@ public class AdminActivity extends AppCompatActivity {
 
         findViewById(R.id.new_task_button).setOnClickListener(view ->
                 startActivity(TaskCreationActivity.newIntent(AdminActivity.this, null)));
-        findViewById(R.id.archive_button).setOnClickListener(view ->
-                startActivity(InactiveTasksActivity.newIntent(this, TaskType.REGULAR)));
-        findViewById(R.id.done_tasks_button).setOnClickListener(view ->
-                startActivity(InactiveTasksActivity.newIntent(this, TaskType.IRREGULAR)));
+        findViewById(R.id.archive_button).setOnClickListener(view -> startActivity(new Intent(this, ArchiveTasksActivity.class)));
         findViewById(R.id.logs_button).setOnClickListener(view -> startActivity(new Intent(this, LogsActivity.class)));
         ((EditText) findViewById(R.id.search_edit_text)).addTextChangedListener(searchTextWatcher);
         RecyclerView taskList = findViewById(R.id.admin_task_list);
