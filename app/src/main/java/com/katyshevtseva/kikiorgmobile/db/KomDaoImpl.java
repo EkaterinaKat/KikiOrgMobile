@@ -1,24 +1,26 @@
 package com.katyshevtseva.kikiorgmobile.db;
 
+import static com.katyshevtseva.kikiorgmobile.db.DbConstants.DATE_FORMAT;
+
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.katyshevtseva.kikiorgmobile.core.KomDao;
 import com.katyshevtseva.kikiorgmobile.core.model.DatelessTask;
 import com.katyshevtseva.kikiorgmobile.core.model.IrregularTask;
+import com.katyshevtseva.kikiorgmobile.core.model.Log;
 import com.katyshevtseva.kikiorgmobile.core.model.RegularTask;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import static com.katyshevtseva.kikiorgmobile.db.DbConstants.DATE_FORMAT;
-
 public class KomDaoImpl implements KomDao {
-    private IrregularTaskDao irregularTaskDao;
-    private RegularTaskDao regularTaskDao;
-    private RtDateDao rtDateDao;
-    private DatelessTaskDao datelessTaskDao;
+    private final IrregularTaskDao irregularTaskDao;
+    private final RegularTaskDao regularTaskDao;
+    private final RtDateDao rtDateDao;
+    private final DatelessTaskDao datelessTaskDao;
+    private final LogDao logDao;
 
     public KomDaoImpl(Context context) {
         SQLiteDatabase database = new DbHelper(context).getWritableDatabase();
@@ -26,6 +28,7 @@ public class KomDaoImpl implements KomDao {
         regularTaskDao = new RegularTaskDao(database);
         rtDateDao = new RtDateDao(database);
         datelessTaskDao = new DatelessTaskDao(database);
+        logDao = new LogDao(database);
     }
 
     ////////////////////////////  DatelessTask  //////////////////////////////////
@@ -48,6 +51,18 @@ public class KomDaoImpl implements KomDao {
     @Override
     public void deleteDatelessTask(DatelessTask datelessTask) {
         datelessTaskDao.delete(DatelessTaskDao.TableSchema.Cols.ID, "" + datelessTask.getId());
+    }
+
+    ////////////////////////////  Log  //////////////////////////////////
+
+    @Override
+    public void saveNewLog(Log log) {
+        logDao.saveNew(log);
+    }
+
+    @Override
+    public List<Log> getAllLogs() {
+        return logDao.findAll();
     }
 
 

@@ -28,6 +28,10 @@ public class RegularTask implements Task {
                 desc, timeOfDay, period, periodType, getLoppedDateListString());
     }
 
+    public String getLogTaskDesk() {
+        return String.format("[(%d) %s \n%s (%s, %d %s)]", id, title, desc, timeOfDay, period, periodType);
+    }
+
     private String getLoppedDateListString() {
         boolean dateListIsTooBig = dates.size() > 5;
         List<Date> loppedList = dateListIsTooBig ? dates.subList(0, 5) : new ArrayList<>(dates);

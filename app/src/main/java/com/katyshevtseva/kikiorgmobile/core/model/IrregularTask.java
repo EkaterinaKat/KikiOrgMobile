@@ -1,5 +1,7 @@
 package com.katyshevtseva.kikiorgmobile.core.model;
 
+import static com.katyshevtseva.kikiorgmobile.core.DateUtils.getDateString;
+
 import com.katyshevtseva.kikiorgmobile.core.DateUtils;
 
 import java.util.Date;
@@ -17,11 +19,16 @@ public class IrregularTask implements Task {
     private String desc;
     private TimeOfDay timeOfDay;
     private Date date;
+    @Deprecated
     private boolean done;
 
     public String getAdminTaskListDesk() {
         return String.format("%s\n\n%s\n%s",
                 desc, timeOfDay, DateUtils.getDateStringWithWeekDay(date));
+    }
+
+    public String getLogTaskDesk() {
+        return String.format("[(%d) %s \n%s (%s, %s)]", id, title, desc, timeOfDay, getDateString(date));
     }
 
     @Override

@@ -12,7 +12,8 @@
         android:roundIcon="@mipmap/icon"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="com.katyshevtseva.kikiorgmobile.view.DatelessTaskActivity"></activity>
+        <activity android:name="com.katyshevtseva.kikiorgmobile.view.DatelessTaskActivity" />
+        <activity android:name="com.katyshevtseva.kikiorgmobile.view.LogsActivity" />
         <activity android:name="com.katyshevtseva.kikiorgmobile.view.InactiveTasksActivity" />
         <activity android:name="com.katyshevtseva.kikiorgmobile.view.TaskCreationActivity" />
         <activity android:name="com.katyshevtseva.kikiorgmobile.view.AdminActivity" />

@@ -2,6 +2,7 @@ package com.katyshevtseva.kikiorgmobile.core;
 
 import static com.katyshevtseva.kikiorgmobile.core.DateUtils.beforeIgnoreTime;
 import static com.katyshevtseva.kikiorgmobile.core.DateUtils.containsIgnoreTime;
+import static com.katyshevtseva.kikiorgmobile.core.DateUtils.getDateString;
 import static com.katyshevtseva.kikiorgmobile.core.DateUtils.getProperDate;
 import static com.katyshevtseva.kikiorgmobile.core.DateUtils.removeIgnoreTime;
 
@@ -9,6 +10,8 @@ import android.content.Context;
 
 import com.katyshevtseva.kikiorgmobile.core.model.DatelessTask;
 import com.katyshevtseva.kikiorgmobile.core.model.IrregularTask;
+import com.katyshevtseva.kikiorgmobile.core.model.Log;
+import com.katyshevtseva.kikiorgmobile.core.model.Log.Action;
 import com.katyshevtseva.kikiorgmobile.core.model.PeriodType;
 import com.katyshevtseva.kikiorgmobile.core.model.RegularTask;
 import com.katyshevtseva.kikiorgmobile.core.model.Task;
@@ -38,12 +41,14 @@ public class Service {
             task.setDone(false);
             task.setTimeOfDay(timeOfDay);
             komDao.saveNewIrregularTask(task);
+            saveLog(Action.CREATION, task);
         } else {
             existing.setTitle(title);
             existing.setDesc(desc);
             existing.setTimeOfDay(timeOfDay);
             existing.setDate(date);
             komDao.updateIrregularTask(existing);
+            saveLog(Action.EDITING, existing);
         }
     }
 
@@ -58,6 +63,7 @@ public class Service {
             task.setPeriod(period);
             task.setDates(dates);
             komDao.saveNewRegularTask(task);
+            saveLog(Action.CREATION, task);
         } else {
             existing.setTitle(title);
             existing.setDesc(desc);
@@ -66,6 +72,7 @@ public class Service {
             existing.setPeriod(period);
             existing.setDates(dates);
             komDao.updateRegularTask(existing);
+            saveLog(Action.EDITING, existing);
         }
     }
 
@@ -74,14 +81,16 @@ public class Service {
             DatelessTask task = new DatelessTask();
             task.setTitle(title);
             komDao.saveNewDatelessTask(task);
+            saveLog(Action.CREATION, task);
         } else {
             existing.setTitle(title);
             komDao.updateDatelessTask(existing);
+            saveLog(Action.EDITING, existing);
         }
     }
 
     public List<RegularTask> getNotArchivedRegularTasks(String s) {
-        new SimpleBackupService(komDao, this).execute();
+//        new SimpleBackupService(komDao, this).execute();
         return komDao.getAllRegularTasks().stream()
                 .filter(task -> !task.isArchived())
                 .filter(task -> taskFilter(task, s))
@@ -132,13 +141,16 @@ public class Service {
     public void archiveTask(RegularTask regularTask) {
         regularTask.setArchived(true);
         komDao.updateRegularTask(regularTask);
+        saveLog(Action.ARCHIVATION, regularTask);
     }
 
     public void resumeTask(RegularTask regularTask) {
         regularTask.setArchived(false);
         komDao.updateRegularTask(regularTask);
+        saveLog(Action.RESUME, regularTask);
     }
 
+    @Deprecated
     public void returnToWorkTask(IrregularTask irregularTask, Date date) {
         irregularTask.setDone(false);
         irregularTask.setDate(date);
@@ -147,10 +159,12 @@ public class Service {
 
     public void deleteTask(IrregularTask irregularTask) {
         komDao.deleteIrregularTask(irregularTask);
+        saveLog(Action.DELETION, irregularTask);
     }
 
     public void deleteTask(DatelessTask datelessTask) {
         komDao.deleteDatelessTask(datelessTask);
+        saveLog(Action.DELETION, datelessTask);
     }
 
     public void moveDatelessTaskToEnd(DatelessTask datelessTask) {
@@ -186,9 +200,11 @@ public class Service {
         return tasks;
     }
 
+    @Deprecated
     public void done(IrregularTask irregularTask) {
         irregularTask.setDone(true);
         komDao.updateIrregularTask(irregularTask);
+        saveLog(Action.COMPLETION, irregularTask);
     }
 
     public void done(RegularTask regularTask, Date date) {
@@ -200,6 +216,7 @@ public class Service {
         regularTask.getDates().add(shiftDate(regularTask, date));
 
         komDao.updateRegularTask(regularTask);
+        saveLog(Action.COMPLETION, regularTask);
     }
 
     private Date shiftDate(RegularTask regularTask, Date date) {
@@ -222,8 +239,11 @@ public class Service {
     }
 
     public void rescheduleToCertainDate(IrregularTask irregularTask, Date date) {
+        Date initDate = irregularTask.getDate();
         irregularTask.setDate(date);
         komDao.updateIrregularTask(irregularTask);
+        saveLog(Action.RESCHEDULE, irregularTask,
+                String.format("Reschedule from %s to %s", getDateString(initDate), getDateString(date)));
     }
 
     public void rescheduleForOneDay(RegularTask regularTask, Date date, boolean shiftAllCycle) {
@@ -242,11 +262,14 @@ public class Service {
         } else {
             done(regularTask, initDate);
             saveIrregularTask(null,
-                    String.format("%s (перенесено с %s)", regularTask.getTitle(), DateUtils.getDateString(initDate)),
+                    String.format("%s (перенесено с %s)", regularTask.getTitle(), getDateString(initDate)),
                     regularTask.getDesc(),
                     regularTask.getTimeOfDay(),
                     targetDate);
         }
+        saveLog(Action.RESCHEDULE, regularTask,
+                String.format("Reschedule from %s to %s \n%s", getDateString(initDate), getDateString(targetDate),
+                        shiftAllCycle ? "shift all cycle" : "shift single iteration"));
     }
 
     public boolean overdueTasksExist() {
@@ -263,5 +286,33 @@ public class Service {
             }
         }
         return false;
+    }
+
+    private void saveLog(Action action, RegularTask regularTask, String additionalInfo) {
+        saveLog(action, Log.Subject.REGULAR_TASK, regularTask.getLogTaskDesk() + "\n" + additionalInfo);
+    }
+
+    private void saveLog(Action action, IrregularTask irregularTask, String additionalInfo) {
+        saveLog(action, Log.Subject.IRREGULAR_TASK, irregularTask.getLogTaskDesk() + "\n" + additionalInfo);
+    }
+
+    private void saveLog(Action action, RegularTask regularTask) {
+        saveLog(action, Log.Subject.REGULAR_TASK, regularTask.getLogTaskDesk());
+    }
+
+    private void saveLog(Action action, IrregularTask irregularTask) {
+        saveLog(action, Log.Subject.IRREGULAR_TASK, irregularTask.getLogTaskDesk());
+    }
+
+    private void saveLog(Action action, DatelessTask datelessTask) {
+        saveLog(action, Log.Subject.DATELESS_TASK, datelessTask.getLogTaskDesk());
+    }
+
+    private void saveLog(Action action, Log.Subject subject, String desc) {
+        komDao.saveNewLog(new Log(new Date(), action, subject, desc));
+    }
+
+    public List<Log> getLogs() {
+        return komDao.getAllLogs().stream().sorted(Comparator.comparing(Log::getId)).collect(Collectors.toList());
     }
 }

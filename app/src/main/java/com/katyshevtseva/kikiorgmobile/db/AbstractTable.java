@@ -1,14 +1,15 @@
 package com.katyshevtseva.kikiorgmobile.db;
 
 
+import static com.katyshevtseva.kikiorgmobile.db.DbConstants.DATE_FORMAT;
+import static com.katyshevtseva.kikiorgmobile.db.DbConstants.DATE_TIME_FORMAT;
+
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-
-import static com.katyshevtseva.kikiorgmobile.db.DbConstants.DATE_FORMAT;
 
 @RequiredArgsConstructor
 abstract class AbstractTable<T> {
@@ -40,6 +41,7 @@ abstract class AbstractTable<T> {
             switch (actualType) {
                 case STRING:
                 case DATE:
+                case DATE_TIME:
                     dbType = ColumnDbType.STRING;
                     break;
                 case LONG:
@@ -62,6 +64,8 @@ abstract class AbstractTable<T> {
                     return ((Boolean) actualValue) ? "1" : "0";
                 case DATE:
                     return DATE_FORMAT.format(actualValue);
+                case DATE_TIME:
+                    return DATE_TIME_FORMAT.format(actualValue);
             }
             throw new RuntimeException();
         }
@@ -79,6 +83,12 @@ abstract class AbstractTable<T> {
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }
+                case DATE_TIME:
+                    try {
+                        return DATE_TIME_FORMAT.parse((String) dbValue);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
             }
             throw new RuntimeException();
         }
@@ -89,6 +99,6 @@ abstract class AbstractTable<T> {
     }
 
     enum ColumnActualType {
-        STRING, LONG, DATE, BOOLEAN
+        STRING, LONG, DATE, BOOLEAN, DATE_TIME
     }
 }

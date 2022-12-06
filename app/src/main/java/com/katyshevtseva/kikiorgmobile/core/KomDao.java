@@ -2,6 +2,7 @@ package com.katyshevtseva.kikiorgmobile.core;
 
 import com.katyshevtseva.kikiorgmobile.core.model.DatelessTask;
 import com.katyshevtseva.kikiorgmobile.core.model.IrregularTask;
+import com.katyshevtseva.kikiorgmobile.core.model.Log;
 import com.katyshevtseva.kikiorgmobile.core.model.RegularTask;
 
 import java.util.Date;
@@ -39,4 +40,8 @@ public interface KomDao {
     void updateDatelessTask(DatelessTask datelessTask);
 
     void deleteDatelessTask(DatelessTask datelessTask);
+
+    void saveNewLog(Log log);
+
+    List<Log> getAllLogs();
 }

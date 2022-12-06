@@ -11,6 +11,10 @@ public class DatelessTask {
     private long id;
     private String title;
 
+    public String getLogTaskDesk() {
+        return String.format("[(%d) %s]", id, title);
+    }
+
     public String getIdAndTitleInfo() {
         return id + ") " + title;
     }

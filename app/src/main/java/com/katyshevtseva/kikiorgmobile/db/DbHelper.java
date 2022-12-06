@@ -5,7 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 public class DbHelper extends SQLiteOpenHelper {
-    private static final int VERSION = 13;
+    private static final int VERSION = 16;
     private static final String DATABASE_NAME = "kom.db";
 
     DbHelper(Context context) {
@@ -39,11 +39,16 @@ public class DbHelper extends SQLiteOpenHelper {
         database.execSQL("create table " + DatelessTaskDao.TableSchema.NAME + "(" +
                 DatelessTaskDao.TableSchema.Cols.ID + " INTEGER primary key autoincrement, " +
                 DatelessTaskDao.TableSchema.Cols.TITLE + " TEXT )");
+
+        database.execSQL("create table " + LogDao.TableSchema.NAME + "(" +
+                LogDao.TableSchema.Cols.ID + " INTEGER primary key autoincrement, " +
+                LogDao.TableSchema.Cols.DESC + " TEXT, " +
+                LogDao.TableSchema.Cols.DATE + " TEXT, " +
+                LogDao.TableSchema.Cols.ACTION + " TEXT, " +
+                LogDao.TableSchema.Cols.SUBJECT + " TEXT )");
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase database, int oldVersion, int newVersion) {
-//        database.execSQL("ALTER TABLE regular_task ADD COLUMN time_of_day INTEGER DEFAULT 0");
-//        database.execSQL("drop table if exists "+ IrregularTaskDao.TableSchema.NAME);
     }
 }

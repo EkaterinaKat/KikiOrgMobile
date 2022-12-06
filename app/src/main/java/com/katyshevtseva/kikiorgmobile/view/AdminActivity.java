@@ -1,5 +1,6 @@
 package com.katyshevtseva.kikiorgmobile.view;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -28,6 +29,7 @@ public class AdminActivity extends AppCompatActivity {
                 startActivity(InactiveTasksActivity.newIntent(this, TaskType.REGULAR)));
         findViewById(R.id.done_tasks_button).setOnClickListener(view ->
                 startActivity(InactiveTasksActivity.newIntent(this, TaskType.IRREGULAR)));
+        findViewById(R.id.logs_button).setOnClickListener(view -> startActivity(new Intent(this, LogsActivity.class)));
         ((EditText) findViewById(R.id.search_edit_text)).addTextChangedListener(searchTextWatcher);
         RecyclerView taskList = findViewById(R.id.admin_task_list);
         taskList.setLayoutManager(new LinearLayoutManager(this));

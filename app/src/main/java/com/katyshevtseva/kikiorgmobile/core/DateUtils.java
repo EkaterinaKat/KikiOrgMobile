@@ -1,5 +1,7 @@
 package com.katyshevtseva.kikiorgmobile.core;
 
+import static com.katyshevtseva.kikiorgmobile.core.DateUtils.TimeUnit.DAY;
+
 import android.annotation.SuppressLint;
 
 import java.text.DateFormat;
@@ -11,11 +13,10 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
-import static com.katyshevtseva.kikiorgmobile.core.DateUtils.TimeUnit.DAY;
-
 @SuppressLint({"DefaultLocale", "SimpleDateFormat"})
 public abstract class DateUtils {
     private static final DateFormat READABLE_DATE_FORMAT = new SimpleDateFormat("dd.MM.yyyy");
+    private static final DateFormat READABLE_DATE_TIME_FORMAT = new SimpleDateFormat("dd.MM.yyyy HH:mm");
 
     public static String getDateString(int year, int month, int day) {
         return String.format("%d.%s.%d", day, month < 10 ? "0" + month : month, year);
@@ -31,6 +32,10 @@ public abstract class DateUtils {
 
     public static String getDateString(Date date) {
         return READABLE_DATE_FORMAT.format(date);
+    }
+
+    public static String getDateTimeString(Date date) {
+        return READABLE_DATE_TIME_FORMAT.format(date);
     }
 
     public static Date getDateByString(String s) {
