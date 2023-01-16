@@ -20,35 +20,4 @@
         android:textColor="@color/black"
         android:textSize="12sp" />
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="end"
-        android:orientation="horizontal">
-
-        <Button
-            android:id="@+id/done_button"
-            style="?android:attr/buttonBarButtonStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Done"
-            android:textColor="@color/black" />
-
-        <Button
-            android:id="@+id/one_day_reschedule_button"
-            style="?android:attr/buttonBarButtonStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=">"
-            android:textColor="@color/black" />
-
-        <Button
-            android:id="@+id/more_days_reschedule_button"
-            style="?android:attr/buttonBarButtonStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=">>"
-            android:textColor="@color/black" />
-    </LinearLayout>
-
 </LinearLayout>

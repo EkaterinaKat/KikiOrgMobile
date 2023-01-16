@@ -16,9 +16,9 @@ import com.katyshevtseva.kikiorgmobile.core.model.DatelessTask;
 import com.katyshevtseva.kikiorgmobile.view.utils.NoArgKnob;
 
 public class DatelessTaskEditDialog extends DialogFragment {
-    private DatelessTask datelessTask;
-    private NoArgKnob activityUpdateKnob;
-    private Service service;
+    private final DatelessTask datelessTask;
+    private final NoArgKnob activityUpdateKnob;
+    private final Service service;
     private EditText editText;
 
     public DatelessTaskEditDialog(DatelessTask datelessTask, Service service, NoArgKnob activityUpdateKnob) {
@@ -29,7 +29,6 @@ public class DatelessTaskEditDialog extends DialogFragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.dialog_dateless_task_edit, null);
-        service = new Service(getContext());
 
         editText = v.findViewById(R.id.edit_text);
         if (datelessTask != null) {

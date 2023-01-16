@@ -1,6 +1,5 @@
 package com.katyshevtseva.kikiorgmobile.view.utils;
 
-import android.app.DatePickerDialog;
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,17 +9,13 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
-import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.kikiorgmobile.R;
-import com.katyshevtseva.kikiorgmobile.core.DateUtils;
 import com.katyshevtseva.kikiorgmobile.core.Service;
-import com.katyshevtseva.kikiorgmobile.core.model.IrregularTask;
-import com.katyshevtseva.kikiorgmobile.core.model.RegularTask;
 import com.katyshevtseva.kikiorgmobile.core.model.Task;
 import com.katyshevtseva.kikiorgmobile.view.MainActivity;
-import com.katyshevtseva.kikiorgmobile.view.QuestionDialog;
+import com.katyshevtseva.kikiorgmobile.view.TaskMenuDialog;
 
 import java.util.Date;
 import java.util.List;
@@ -28,9 +23,9 @@ import java.util.List;
 public class MainTaskRecycleView {
 
     static class TaskHolder extends RecyclerView.ViewHolder {
-        private AppCompatActivity context;
-        private Service service;
-        private TaskListAdapter adapter;
+        private final AppCompatActivity context;
+        private final Service service;
+        private final TaskListAdapter adapter;
 
         TaskHolder(View view, AppCompatActivity context, Service service, TaskListAdapter adapter) {
             super(view);
@@ -42,33 +37,15 @@ public class MainTaskRecycleView {
         void bind(Task task, Date date) {
             ((TextView) itemView.findViewById(R.id.task_title_view)).setText(task.getTitle());
             ((TextView) itemView.findViewById(R.id.task_desc_view)).setText(task.getDesc());
-            itemView.findViewById(R.id.done_button).setOnClickListener(view -> {
-                switch (task.getType()) {
-                    case IRREGULAR:
-                        service.done((IrregularTask) task);
-                        break;
-                    case REGULAR:
-                        service.done((RegularTask) task, date);
-                }
-                adapter.updateContent();
+            setBackground(itemView, task);
+
+            itemView.setOnClickListener(view -> {
+                TaskMenuDialog taskMenuDialog = new TaskMenuDialog(task, adapter::updateContent, service, date, context);
+                taskMenuDialog.show(context.getSupportFragmentManager(), "TaskMenuDialog");
             });
-            itemView.findViewById(R.id.one_day_reschedule_button).setOnClickListener(view -> {
-                switch (task.getType()) {
-                    case IRREGULAR:
-                        service.rescheduleForOneDay((IrregularTask) task);
-                        adapter.updateContent();
-                        break;
-                    case REGULAR:
-                        DialogFragment dlg1 = new QuestionDialog("Shift all cycle?",
-                                answer -> {
-                                    service.rescheduleForOneDay((RegularTask) task, date, answer);
-                                    adapter.updateContent();
-                                });
-                        dlg1.show(context.getSupportFragmentManager(), "dialog2");
-                }
-            });
-            itemView.findViewById(R.id.more_days_reschedule_button).setOnClickListener(
-                    view -> rescheduleWithDatePicker(task, date));
+        }
+
+        private void setBackground(View itemView, Task task) {
             Drawable background = null;
             switch (task.getTimeOfDay()) {
                 case MORNING:
@@ -82,32 +59,12 @@ public class MainTaskRecycleView {
             }
             itemView.findViewById(R.id.root_layout).setBackground(background);
         }
-
-        void rescheduleWithDatePicker(Task task, Date currentDate) {
-            DatePickerDialog datePickerDialog = new DatePickerDialog(context);
-            datePickerDialog.setOnDateSetListener((datePicker, year, month, day) -> {
-                Date selectedDate = DateUtils.parse(year, month + 1, day);
-                switch (task.getType()) {
-                    case IRREGULAR:
-                        service.rescheduleToCertainDate((IrregularTask) task, selectedDate);
-                        adapter.updateContent();
-                        break;
-                    case REGULAR:
-                        DialogFragment dlg1 = new QuestionDialog("Shift all cycle?", answer -> {
-                            service.rescheduleToCertainDate((RegularTask) task, currentDate, selectedDate, answer);
-                            adapter.updateContent();
-                        });
-                        dlg1.show(context.getSupportFragmentManager(), "dialog2");
-                }
-            });
-            datePickerDialog.show();
-        }
     }
 
     public static class TaskListAdapter extends RecyclerView.Adapter<TaskHolder> {
         private List<Task> tasks;
-        private MainActivity context;
-        private Service service;
+        private final MainActivity context;
+        private final Service service;
         private Date date;
 
         public TaskListAdapter(MainActivity context, Service service, Date date) {
