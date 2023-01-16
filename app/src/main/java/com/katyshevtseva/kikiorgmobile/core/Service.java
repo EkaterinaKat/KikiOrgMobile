@@ -33,18 +33,17 @@ public class Service {
 
     public void saveIrregularTask(IrregularTask existing, String title, String desc, TimeOfDay timeOfDay, Date date) {
         if (existing == null) {
-            IrregularTask task = new IrregularTask();
-            task.setTitle(title);
-            task.setDesc(desc);
-            task.setDate(date);
-            task.setTimeOfDay(timeOfDay);
-            komDao.saveNewIrregularTask(task);
-            saveLog(Action.CREATION, task);
+            existing = new IrregularTask();
+        }
+        existing.setTitle(title);
+        existing.setDesc(desc);
+        existing.setTimeOfDay(timeOfDay);
+        existing.setDate(date);
+
+        if (existing.getId() == 0) {
+            komDao.saveNewIrregularTask(existing);
+            saveLog(Action.CREATION, existing);
         } else {
-            existing.setTitle(title);
-            existing.setDesc(desc);
-            existing.setTimeOfDay(timeOfDay);
-            existing.setDate(date);
             komDao.updateIrregularTask(existing);
             saveLog(Action.EDITING, existing);
         }
@@ -294,5 +293,16 @@ public class Service {
 
     public List<Log> getLogs() {
         return komDao.getAllLogs().stream().sorted(Comparator.comparing(Log::getId).reversed()).collect(Collectors.toList());
+    }
+
+    public IrregularTask makeIrregularTaskFromRegular(long regularTaskId) {
+        RegularTask regularTask = komDao.getRegularTaskById(regularTaskId);
+        IrregularTask task = new IrregularTask();
+        task.setTitle(regularTask.getTitle());
+        task.setDesc(regularTask.getDesc());
+        task.setDate(new Date());
+        task.setTimeOfDay(TimeOfDay.AFTERNOON);
+        return task;
+
     }
 }

@@ -19,6 +19,7 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -39,6 +40,7 @@ import java.util.Date;
 public class TaskCreationActivity extends AppCompatActivity implements FragmentUpdateListener {
     private static final String EXTRA_TASK_ID = "task_id";
     private static final String EXTRA_TASK_TYPE = "task_type";
+    private static final String EXTRA_REG_TO_IRREG = "reg_to_irreg";
     private Service service;
     private Task existing;
     private DatesSelectFragment datesFragment = new DatesSelectFragment();
@@ -59,7 +61,15 @@ public class TaskCreationActivity extends AppCompatActivity implements FragmentU
         if (task != null) {
             intent.putExtra(EXTRA_TASK_TYPE, task.getType().getCode());
             intent.putExtra(EXTRA_TASK_ID, task.getId());
+            intent.putExtra(EXTRA_REG_TO_IRREG, false);
         }
+        return intent;
+    }
+
+    public static Intent getRegToIrregIntent(Context context, @NonNull RegularTask regularTask) {
+        Intent intent = new Intent(context, TaskCreationActivity.class);
+        intent.putExtra(EXTRA_TASK_ID, regularTask.getId());
+        intent.putExtra(EXTRA_REG_TO_IRREG, true);
         return intent;
     }
 
@@ -91,13 +101,17 @@ public class TaskCreationActivity extends AppCompatActivity implements FragmentU
     }
 
     private void handleIntent() {
+        boolean regToIrreg = getIntent().getBooleanExtra(EXTRA_REG_TO_IRREG, false);
         long id = getIntent().getLongExtra(EXTRA_TASK_ID, -1);
-        TaskType taskType = TaskType.findByCode(getIntent().getIntExtra(EXTRA_TASK_TYPE, 1));
+        if (regToIrreg) {
+            existing = service.makeIrregularTaskFromRegular(id);
+        } else {
+            if (id == -1)
+                return;
+            TaskType taskType = TaskType.findByCode(getIntent().getIntExtra(EXTRA_TASK_TYPE, 1));
+            existing = service.findTask(taskType, id);
+        }
 
-        if (id == -1)
-            return;
-
-        existing = service.findTask(taskType, id);
         titleEdit.setText(existing.getTitle());
         descEdit.setText(existing.getDesc());
         selectSpinnerItemByValue(timeOfDaySpinner, existing.getTimeOfDay());

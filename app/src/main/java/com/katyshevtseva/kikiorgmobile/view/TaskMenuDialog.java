@@ -50,19 +50,19 @@ public class TaskMenuDialog extends DialogFragment {
                 case REGULAR:
                     service.done((RegularTask) task, date);
             }
-            activityUpdateKnob.execute();
+            dismiss();
         });
         itemView.findViewById(R.id.one_day_reschedule_button).setOnClickListener(view -> {
             switch (task.getType()) {
                 case IRREGULAR:
                     service.rescheduleForOneDay((IrregularTask) task);
-                    activityUpdateKnob.execute();
+                    dismiss();
                     break;
                 case REGULAR:
                     DialogFragment dlg1 = new QuestionDialog("Shift all cycle?",
                             answer -> {
                                 service.rescheduleForOneDay((RegularTask) task, date, answer);
-                                activityUpdateKnob.execute();
+                                dismiss();
                             });
                     dlg1.show(context.getSupportFragmentManager(), "dialog2");
             }
@@ -70,7 +70,37 @@ public class TaskMenuDialog extends DialogFragment {
         itemView.findViewById(R.id.more_days_reschedule_button).setOnClickListener(
                 view -> rescheduleWithDatePicker(task, date));
 
+        itemView.findViewById(R.id.edit_task_button).setOnClickListener(view -> {
+            switch (task.getType()) {
+                case IRREGULAR:
+                    irregularEditListener();
+                    break;
+                case REGULAR:
+                    regularEditListener();
+            }
+        });
+
         return itemView;
+    }
+
+    private void irregularEditListener() {
+        context.startActivity(TaskCreationActivity.newIntent(context, task));
+        dismiss();
+    }
+
+    private void regularEditListener() {
+
+        DialogFragment dlg1 = new QuestionDialog("Edit all tasks in cycle?",
+                answer -> {
+                    if (answer) {
+                        context.startActivity(TaskCreationActivity.newIntent(context, task));
+                    } else {
+                        service.done((RegularTask) task, date);
+                        context.startActivity(TaskCreationActivity.getRegToIrregIntent(context, (RegularTask) task));
+                    }
+                    dismiss();
+                });
+        dlg1.show(context.getSupportFragmentManager(), "dialog2");
     }
 
     void rescheduleWithDatePicker(Task task, Date currentDate) {
@@ -80,12 +110,12 @@ public class TaskMenuDialog extends DialogFragment {
             switch (task.getType()) {
                 case IRREGULAR:
                     service.rescheduleToCertainDate((IrregularTask) task, selectedDate);
-                    activityUpdateKnob.execute();
+                    dismiss();
                     break;
                 case REGULAR:
                     DialogFragment dlg1 = new QuestionDialog("Shift all cycle?", answer -> {
                         service.rescheduleToCertainDate((RegularTask) task, currentDate, selectedDate, answer);
-                        activityUpdateKnob.execute();
+                        dismiss();
                     });
                     dlg1.show(context.getSupportFragmentManager(), "dialog2");
             }
