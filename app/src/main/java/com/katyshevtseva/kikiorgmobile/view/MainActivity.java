@@ -22,8 +22,11 @@ public class MainActivity extends AppCompatActivity {
     private Date date;
     private TextView dateView;
     private final TaskListFragment taskListFragment = new TaskListFragment();
+    private final ScheduleFragment scheduleFragment = new ScheduleFragment();
     private TextView alarmTextView;
     private Button datelessTaskButton;
+    private boolean schedulerMode = false;
+    private Button scheduleButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +51,25 @@ public class MainActivity extends AppCompatActivity {
         datelessTaskButton.setOnClickListener(view ->
                 startActivity(new Intent(getApplicationContext(), DatelessTaskActivity.class)));
 
+        scheduleButton = findViewById(R.id.schedule_button);
+        scheduleButton.setOnClickListener(view -> schedulerButtonListener());
+
+        findViewById(R.id.schedule_settings_button).setOnClickListener(view ->
+                startActivity(new Intent(getApplicationContext(), ScheduleSettingsActivity.class)));
+
         updateTaskPane();
+    }
+
+    private void schedulerButtonListener() {
+        schedulerMode = !schedulerMode;
+
+        if (schedulerMode) {
+            scheduleButton.setBackground(ContextCompat.getDrawable(this, R.mipmap.hamburger));
+            getSupportFragmentManager().beginTransaction().replace(R.id.task_list_container, scheduleFragment).commit();
+        } else {
+            scheduleButton.setBackground(ContextCompat.getDrawable(this, R.mipmap.schedule));
+            getSupportFragmentManager().beginTransaction().replace(R.id.task_list_container, taskListFragment).commit();
+        }
     }
 
     @Override
