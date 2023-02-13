@@ -24,13 +24,11 @@ public class MainTaskRecycleView {
 
     static class TaskHolder extends RecyclerView.ViewHolder {
         private final AppCompatActivity context;
-        private final Service service;
         private final TaskListAdapter adapter;
 
-        TaskHolder(View view, AppCompatActivity context, Service service, TaskListAdapter adapter) {
+        TaskHolder(View view, AppCompatActivity context, TaskListAdapter adapter) {
             super(view);
             this.context = context;
-            this.service = service;
             this.adapter = adapter;
         }
 
@@ -40,7 +38,7 @@ public class MainTaskRecycleView {
             setBackground(itemView, task);
 
             itemView.setOnClickListener(view -> {
-                TaskMenuDialog taskMenuDialog = new TaskMenuDialog(task, adapter::updateContent, service, date, context);
+                TaskMenuDialog taskMenuDialog = new TaskMenuDialog(task, adapter::updateContent, date, context);
                 taskMenuDialog.show(context.getSupportFragmentManager(), "TaskMenuDialog");
             });
         }
@@ -64,12 +62,10 @@ public class MainTaskRecycleView {
     public static class TaskListAdapter extends RecyclerView.Adapter<TaskHolder> {
         private List<Task> tasks;
         private final MainActivity context;
-        private final Service service;
         private Date date;
 
-        public TaskListAdapter(MainActivity context, Service service, Date date) {
+        public TaskListAdapter(MainActivity context, Date date) {
             this.context = context;
-            this.service = service;
             this.date = date;
         }
 
@@ -77,7 +73,7 @@ public class MainTaskRecycleView {
         @Override
         public TaskHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(context).inflate(R.layout.main_task_list_item, parent, false);
-            return new TaskHolder(view, context, service, this);
+            return new TaskHolder(view, context, this);
         }
 
         @Override
@@ -97,7 +93,7 @@ public class MainTaskRecycleView {
         }
 
         void updateContent() {
-            tasks = service.getTasksForMainList(date);
+            tasks = Service.INSTANCE.getTasksForMainList(date);
             context.updateAlarmBanner();
             notifyDataSetChanged();
         }

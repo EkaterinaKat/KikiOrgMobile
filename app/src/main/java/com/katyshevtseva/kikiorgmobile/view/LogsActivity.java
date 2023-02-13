@@ -26,7 +26,7 @@ public class LogsActivity extends AppCompatActivity {
 
         RecyclerView logList = findViewById(R.id.log_list);
         logList.setLayoutManager(new LinearLayoutManager(this));
-        logList.setAdapter(new LogListAdapter(this, new Service(this)));
+        logList.setAdapter(new LogListAdapter(this));
     }
 
     private static class LogHolder extends RecyclerView.ViewHolder {
@@ -43,12 +43,10 @@ public class LogsActivity extends AppCompatActivity {
     private static class LogListAdapter extends RecyclerView.Adapter<LogHolder> {
         private final List<Log> logs;
         private final LogsActivity context;
-        private final Service service;
 
-        LogListAdapter(LogsActivity context, Service service) {
+        LogListAdapter(LogsActivity context) {
             this.context = context;
-            this.service = service;
-            logs = service.getLogs();
+            logs = Service.INSTANCE.getLogs();
         }
 
         @NonNull

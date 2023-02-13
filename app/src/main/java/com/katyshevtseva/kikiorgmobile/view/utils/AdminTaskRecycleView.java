@@ -28,13 +28,11 @@ public class AdminTaskRecycleView {
     static class TaskHolder extends RecyclerView.ViewHolder {
         private TaskListAdapter taskListAdapter;
         private AppCompatActivity context;
-        private Service service;
 
-        TaskHolder(View view, TaskListAdapter taskListAdapter, AppCompatActivity context, Service service) {
+        TaskHolder(View view, TaskListAdapter taskListAdapter, AppCompatActivity context) {
             super(view);
             this.taskListAdapter = taskListAdapter;
             this.context = context;
-            this.service = service;
         }
 
         void bind(TaskListItem item) {
@@ -58,7 +56,7 @@ public class AdminTaskRecycleView {
             Button archiveButton = itemView.findViewById(R.id.delete_task_button);
             archiveButton.setText("Archive");
             archiveButton.setOnClickListener(view -> {
-                service.archiveTask(task);
+                Service.INSTANCE.archiveTask(task);
                 Toast.makeText(context, "Archived!", Toast.LENGTH_LONG).show();
                 taskListAdapter.updateContent();
             });
@@ -80,7 +78,7 @@ public class AdminTaskRecycleView {
         private AnswerHandler getDeletionDialogAnswerHandler(final IrregularTask task) {
             return answer -> {
                 if (answer) {
-                    service.deleteTask(task);
+                    Service.INSTANCE.deleteTask(task);
                     Toast.makeText(context, "Deleted!", Toast.LENGTH_LONG).show();
                     taskListAdapter.updateContent();
                 }
@@ -89,16 +87,11 @@ public class AdminTaskRecycleView {
     }
 
     public static class TaskListAdapter extends RecyclerView.Adapter<TaskHolder> {
-        private final int TASK_LAYOUT = R.layout.admin_task_list_item;
-        private final int HEADER_LAYOUT = R.layout.task_list_header;
-
         private List<TaskListItem> items;
-        private AppCompatActivity context;
-        private Service service;
+        private final AppCompatActivity context;
 
-        public TaskListAdapter(AppCompatActivity context, Service service) {
+        public TaskListAdapter(AppCompatActivity context) {
             this.context = context;
-            this.service = service;
             updateContent();
         }
 
@@ -106,7 +99,7 @@ public class AdminTaskRecycleView {
         @Override
         public TaskHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(context).inflate(viewType, parent, false);
-            return new TaskHolder(view, this, context, service);
+            return new TaskHolder(view, this, context);
         }
 
         @Override
@@ -124,12 +117,12 @@ public class AdminTaskRecycleView {
         public int getItemViewType(int position) {
             TaskListItem item = items.get(position);
             if (item.getType() == TaskListItemType.HEADER)
-                return HEADER_LAYOUT;
-            return TASK_LAYOUT;
+                return R.layout.task_list_header;
+            return R.layout.admin_task_list_item;
         }
 
         public void updateContent(String s) {
-            items = getTaskListItems(service, s);
+            items = getTaskListItems(s);
             notifyDataSetChanged();
         }
 
@@ -138,14 +131,14 @@ public class AdminTaskRecycleView {
         }
     }
 
-    private static List<TaskListItem> getTaskListItems(Service service, String s) {
+    private static List<TaskListItem> getTaskListItems(String s) {
         List<TaskListItem> items = new ArrayList<>();
         items.add(getHeader("Irregular tasks"));
-        for (IrregularTask irregularTask : service.getIrregularTasks(s)) {
+        for (IrregularTask irregularTask : Service.INSTANCE.getIrregularTasks(s)) {
             items.add(toListItem(irregularTask));
         }
         items.add(getHeader("Regular tasks"));
-        for (RegularTask regularTask : service.getNotArchivedRegularTasks(s)) {
+        for (RegularTask regularTask : Service.INSTANCE.getNotArchivedRegularTasks(s)) {
             items.add(toListItem(regularTask));
         }
         return items;

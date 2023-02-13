@@ -21,21 +21,19 @@ import java.util.List;
 public class DatelessTaskRecycleView {
 
     static class TaskHolder extends RecyclerView.ViewHolder {
-        private TaskListAdapter taskListAdapter;
-        private AppCompatActivity context;
-        private Service service;
+        private final TaskListAdapter taskListAdapter;
+        private final AppCompatActivity context;
 
-        TaskHolder(View view, TaskListAdapter taskListAdapter, AppCompatActivity context, Service service) {
+        TaskHolder(View view, TaskListAdapter taskListAdapter, AppCompatActivity context) {
             super(view);
             this.taskListAdapter = taskListAdapter;
             this.context = context;
-            this.service = service;
         }
 
         void bind(DatelessTask task) {
             ((TextView) itemView.findViewById(R.id.task_title_view)).setText(task.getIdAndTitleInfo());
             itemView.findViewById(R.id.edit_task_button).setOnClickListener(view ->
-                    new DatelessTaskEditDialog(task, service, taskListAdapter::updateContent)
+                    new DatelessTaskEditDialog(task, taskListAdapter::updateContent)
                             .show(context.getSupportFragmentManager(), "DatelessTaskEditDialog"));
             itemView.findViewById(R.id.delete_task_button).setOnClickListener(view ->
                     new QuestionDialog("Delete?", getDeletionDialogAnswerHandler(task))
@@ -48,7 +46,7 @@ public class DatelessTaskRecycleView {
         private QuestionDialog.AnswerHandler getDeletionDialogAnswerHandler(final DatelessTask task) {
             return answer -> {
                 if (answer) {
-                    service.deleteTask(task);
+                    Service.INSTANCE.deleteTask(task);
                     Toast.makeText(context, "Deleted!", Toast.LENGTH_LONG).show();
                     taskListAdapter.updateContent();
                 }
@@ -58,7 +56,7 @@ public class DatelessTaskRecycleView {
         private QuestionDialog.AnswerHandler getMoveToEndDialogAnswerHandler(final DatelessTask task) {
             return answer -> {
                 if (answer) {
-                    service.moveDatelessTaskToEnd(task);
+                    Service.INSTANCE.moveDatelessTaskToEnd(task);
                     taskListAdapter.updateContent();
                 }
             };
@@ -66,23 +64,19 @@ public class DatelessTaskRecycleView {
     }
 
     public static class TaskListAdapter extends RecyclerView.Adapter<TaskHolder> {
-        private final int TASK_LAYOUT = R.layout.dateless_task_list_item;
-
         private List<DatelessTask> tasks;
-        private AppCompatActivity context;
-        private Service service;
+        private final AppCompatActivity context;
 
-        public TaskListAdapter(AppCompatActivity context, Service service) {
+        public TaskListAdapter(AppCompatActivity context) {
             this.context = context;
-            this.service = service;
             updateContent();
         }
 
         @NonNull
         @Override
         public TaskHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(context).inflate(TASK_LAYOUT, parent, false);
-            return new TaskHolder(view, this, context, service);
+            View view = LayoutInflater.from(context).inflate(R.layout.dateless_task_list_item, parent, false);
+            return new TaskHolder(view, this, context);
         }
 
         @Override
@@ -97,7 +91,7 @@ public class DatelessTaskRecycleView {
         }
 
         public void updateContent() {
-            tasks = service.getAllDatelessTasks();
+            tasks = Service.INSTANCE.getAllDatelessTasks();
             notifyDataSetChanged();
         }
     }

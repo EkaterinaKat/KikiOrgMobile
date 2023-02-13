@@ -22,7 +22,6 @@ import com.katyshevtseva.kikiorgmobile.view.utils.MainTaskRecycleView.TaskListAd
 import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
-    private Service service;
     private Date date;
     private TextView dateView;
     private TaskListAdapter taskListAdapter;
@@ -34,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        service = new Service(this);
+        Service.init(this);
         alarmTextView = findViewById(R.id.alarm_text_view);
 
         date = new Date();
@@ -47,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
 
         RecyclerView taskList = findViewById(R.id.main_task_list);
         taskList.setLayoutManager(new LinearLayoutManager(this));
-        taskListAdapter = new TaskListAdapter(this, service, date);
+        taskListAdapter = new TaskListAdapter(this, date);
         taskList.setAdapter(taskListAdapter);
 
         datelessTaskButton = findViewById(R.id.dateless_task_button);
@@ -68,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
         taskListAdapter.setDate(date);
         setDateViewStyle();
         updateAlarmBanner();
-        datelessTaskButton.setText("" + service.countDatelessTasks());
+        datelessTaskButton.setText("" + Service.INSTANCE.countDatelessTasks());
     }
 
     private void setDateViewStyle() {
@@ -82,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void updateAlarmBanner() {
-        if (DateUtils.equalsIgnoreTime(date, new Date()) && service.overdueTasksExist()) {
+        if (DateUtils.equalsIgnoreTime(date, new Date()) && Service.INSTANCE.overdueTasksExist()) {
             alarmTextView.setVisibility(View.VISIBLE);
         } else {
             alarmTextView.setVisibility(View.GONE);

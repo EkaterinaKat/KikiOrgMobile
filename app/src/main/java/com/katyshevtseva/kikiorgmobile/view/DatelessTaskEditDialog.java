@@ -18,12 +18,10 @@ import com.katyshevtseva.kikiorgmobile.view.utils.NoArgKnob;
 public class DatelessTaskEditDialog extends DialogFragment {
     private final DatelessTask datelessTask;
     private final NoArgKnob activityUpdateKnob;
-    private final Service service;
     private EditText editText;
 
-    public DatelessTaskEditDialog(DatelessTask datelessTask, Service service, NoArgKnob activityUpdateKnob) {
+    public DatelessTaskEditDialog(DatelessTask datelessTask, NoArgKnob activityUpdateKnob) {
         this.datelessTask = datelessTask;
-        this.service = service;
         this.activityUpdateKnob = activityUpdateKnob;
     }
 
@@ -35,7 +33,7 @@ public class DatelessTaskEditDialog extends DialogFragment {
             editText.setText(datelessTask.getTitle());
         }
         v.findViewById(R.id.ok_button).setOnClickListener(view -> {
-            service.saveDatelessTask(datelessTask, editText.getText().toString());
+            Service.INSTANCE.saveDatelessTask(datelessTask, editText.getText().toString());
             dismiss();
         });
 

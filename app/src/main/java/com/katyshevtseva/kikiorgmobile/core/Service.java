@@ -25,9 +25,14 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class Service {
+    public static Service INSTANCE;
     private final KomDao komDao;
 
-    public Service(Context context) {
+    public static void init(Context context) {
+        INSTANCE = new Service(context);
+    }
+
+    private Service(Context context) {
         this.komDao = new KomDaoImpl(context);
     }
 

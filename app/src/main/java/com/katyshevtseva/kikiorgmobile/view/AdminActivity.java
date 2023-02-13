@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.kikiorgmobile.R;
-import com.katyshevtseva.kikiorgmobile.core.Service;
 import com.katyshevtseva.kikiorgmobile.view.utils.AdminTaskRecycleView.TaskListAdapter;
 
 public class AdminActivity extends AppCompatActivity {
@@ -29,7 +28,7 @@ public class AdminActivity extends AppCompatActivity {
         ((EditText) findViewById(R.id.search_edit_text)).addTextChangedListener(searchTextWatcher);
         RecyclerView taskList = findViewById(R.id.admin_task_list);
         taskList.setLayoutManager(new LinearLayoutManager(this));
-        taskListAdapter = new TaskListAdapter(this, new Service(this));
+        taskListAdapter = new TaskListAdapter(this);
         taskList.setAdapter(taskListAdapter);
     }
 

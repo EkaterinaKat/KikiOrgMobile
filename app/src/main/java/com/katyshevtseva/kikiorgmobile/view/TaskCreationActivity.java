@@ -41,9 +41,8 @@ public class TaskCreationActivity extends AppCompatActivity implements FragmentU
     private static final String EXTRA_TASK_ID = "task_id";
     private static final String EXTRA_TASK_TYPE = "task_type";
     private static final String EXTRA_REG_TO_IRREG = "reg_to_irreg";
-    private Service service;
     private Task existing;
-    private DatesSelectFragment datesFragment = new DatesSelectFragment();
+    private final DatesSelectFragment datesFragment = new DatesSelectFragment();
 
     private EditText titleEdit;
     private EditText descEdit;
@@ -77,7 +76,6 @@ public class TaskCreationActivity extends AppCompatActivity implements FragmentU
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task_creation);
-        service = new Service(this);
 
         initializeControls();
         setDoneButtonAccessibility();
@@ -104,12 +102,12 @@ public class TaskCreationActivity extends AppCompatActivity implements FragmentU
         boolean regToIrreg = getIntent().getBooleanExtra(EXTRA_REG_TO_IRREG, false);
         long id = getIntent().getLongExtra(EXTRA_TASK_ID, -1);
         if (regToIrreg) {
-            existing = service.makeIrregularTaskFromRegular(id);
+            existing = Service.INSTANCE.makeIrregularTaskFromRegular(id);
         } else {
             if (id == -1)
                 return;
             TaskType taskType = TaskType.findByCode(getIntent().getIntExtra(EXTRA_TASK_TYPE, 1));
-            existing = service.findTask(taskType, id);
+            existing = Service.INSTANCE.findTask(taskType, id);
         }
 
         titleEdit.setText(existing.getTitle());
@@ -169,7 +167,7 @@ public class TaskCreationActivity extends AppCompatActivity implements FragmentU
     private void saveTask() {
         switch ((TaskType) taskTypeSpinner.getSelectedItem()) {
             case IRREGULAR:
-                service.saveIrregularTask(
+                Service.INSTANCE.saveIrregularTask(
                         (IrregularTask) existing,
                         titleEdit.getText().toString(),
                         descEdit.getText().toString(),
@@ -178,7 +176,7 @@ public class TaskCreationActivity extends AppCompatActivity implements FragmentU
                 );
                 break;
             case REGULAR:
-                service.saveRegularTask(
+                Service.INSTANCE.saveRegularTask(
                         (RegularTask) existing,
                         titleEdit.getText().toString(),
                         descEdit.getText().toString(),
@@ -190,7 +188,7 @@ public class TaskCreationActivity extends AppCompatActivity implements FragmentU
         finish();
     }
 
-    private SpinnerListener<TaskType> taskTypeSpinnerListener = new SpinnerListener<TaskType>() {
+    private final SpinnerListener<TaskType> taskTypeSpinnerListener = new SpinnerListener<TaskType>() {
         @Override
         public void execute(TaskType selectedItem) {
             irregularLayout.setVisibility(View.GONE);
