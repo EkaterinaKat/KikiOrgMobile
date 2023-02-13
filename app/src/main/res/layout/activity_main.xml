@@ -38,12 +38,14 @@
         android:textColor="@color/white"
         android:textSize="25sp" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/main_task_list"
+
+    <LinearLayout
+        android:id="@+id/task_list_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@id/main_activity_buttons"
-        android:layout_below="@id/alarm_text_view" />
+        android:layout_below="@id/alarm_text_view"
+        android:orientation="horizontal" />
 
     <LinearLayout
         android:id="@+id/main_activity_buttons"

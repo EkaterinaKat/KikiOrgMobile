@@ -10,21 +10,18 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.kikiorgmobile.R;
 import com.katyshevtseva.kikiorgmobile.core.DateUtils;
 import com.katyshevtseva.kikiorgmobile.core.DateUtils.TimeUnit;
 import com.katyshevtseva.kikiorgmobile.core.Service;
-import com.katyshevtseva.kikiorgmobile.view.utils.MainTaskRecycleView.TaskListAdapter;
 
 import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
     private Date date;
     private TextView dateView;
-    private TaskListAdapter taskListAdapter;
+    private final TaskListFragment taskListFragment = new TaskListFragment();
     private TextView alarmTextView;
     private Button datelessTaskButton;
 
@@ -44,10 +41,8 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.next_date_button).setOnClickListener(view -> nextDate());
         dateView.setOnClickListener(view -> openDatePicker());
 
-        RecyclerView taskList = findViewById(R.id.main_task_list);
-        taskList.setLayoutManager(new LinearLayoutManager(this));
-        taskListAdapter = new TaskListAdapter(this, date);
-        taskList.setAdapter(taskListAdapter);
+        getSupportFragmentManager().beginTransaction().add(R.id.task_list_container, taskListFragment).commit();
+        taskListFragment.initAdapter(date, this);
 
         datelessTaskButton = findViewById(R.id.dateless_task_button);
         datelessTaskButton.setOnClickListener(view ->
@@ -64,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void updateTaskPane() {
         dateView.setText(DateUtils.getDateStringWithWeekDay(date));
-        taskListAdapter.setDate(date);
+        taskListFragment.setDate(date);
         setDateViewStyle();
         updateAlarmBanner();
         datelessTaskButton.setText("" + Service.INSTANCE.countDatelessTasks());
