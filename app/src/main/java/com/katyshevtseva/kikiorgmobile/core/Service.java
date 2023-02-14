@@ -1,9 +1,10 @@
 package com.katyshevtseva.kikiorgmobile.core;
 
-import static com.katyshevtseva.kikiorgmobile.core.DateUtils.beforeIgnoreTime;
-import static com.katyshevtseva.kikiorgmobile.core.DateUtils.containsIgnoreTime;
-import static com.katyshevtseva.kikiorgmobile.core.DateUtils.getDateString;
-import static com.katyshevtseva.kikiorgmobile.core.DateUtils.removeIgnoreTime;
+import static com.katyshevtseva.kikiorgmobile.utils.DateUtils.beforeIgnoreTime;
+import static com.katyshevtseva.kikiorgmobile.utils.DateUtils.containsIgnoreTime;
+import static com.katyshevtseva.kikiorgmobile.utils.DateUtils.countNumberOfDaysBetweenDates;
+import static com.katyshevtseva.kikiorgmobile.utils.DateUtils.getDateString;
+import static com.katyshevtseva.kikiorgmobile.utils.DateUtils.removeIgnoreTime;
 
 import android.content.Context;
 
@@ -17,6 +18,7 @@ import com.katyshevtseva.kikiorgmobile.core.model.Task;
 import com.katyshevtseva.kikiorgmobile.core.model.TaskType;
 import com.katyshevtseva.kikiorgmobile.core.model.TimeOfDay;
 import com.katyshevtseva.kikiorgmobile.db.KomDaoImpl;
+import com.katyshevtseva.kikiorgmobile.utils.DateUtils;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -237,7 +239,7 @@ public class Service {
 
     public void rescheduleToCertainDate(RegularTask regularTask, Date initDate, Date targetDate, boolean shiftAllCycle) {
         if (shiftAllCycle) {
-            int diffBetweenDates = DateUtils.countNumberOfDaysBetweenDates(initDate, targetDate);
+            int diffBetweenDates = countNumberOfDaysBetweenDates(initDate, targetDate);
             List<Date> newDates = regularTask.getDates().stream()
                     .map(date -> DateUtils.shiftDate(date, DateUtils.TimeUnit.DAY, diffBetweenDates))
                     .collect(Collectors.toList());

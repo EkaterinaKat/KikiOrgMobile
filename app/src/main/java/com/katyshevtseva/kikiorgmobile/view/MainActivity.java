@@ -12,8 +12,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import com.example.kikiorgmobile.R;
-import com.katyshevtseva.kikiorgmobile.core.DateUtils;
-import com.katyshevtseva.kikiorgmobile.core.DateUtils.TimeUnit;
+import com.katyshevtseva.kikiorgmobile.utils.DateUtils;
+import com.katyshevtseva.kikiorgmobile.utils.DateUtils.TimeUnit;
 import com.katyshevtseva.kikiorgmobile.core.Service;
 
 import java.util.Date;

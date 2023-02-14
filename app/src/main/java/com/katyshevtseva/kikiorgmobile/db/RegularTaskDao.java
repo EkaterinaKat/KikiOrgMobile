@@ -1,15 +1,5 @@
 package com.katyshevtseva.kikiorgmobile.db;
 
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-
-import com.katyshevtseva.kikiorgmobile.core.model.PeriodType;
-import com.katyshevtseva.kikiorgmobile.core.model.RegularTask;
-import com.katyshevtseva.kikiorgmobile.core.model.TimeOfDay;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import static com.katyshevtseva.kikiorgmobile.db.AbstractTable.ColumnActualType.BOOLEAN;
 import static com.katyshevtseva.kikiorgmobile.db.AbstractTable.ColumnActualType.LONG;
 import static com.katyshevtseva.kikiorgmobile.db.AbstractTable.ColumnActualType.STRING;
@@ -20,6 +10,16 @@ import static com.katyshevtseva.kikiorgmobile.db.RegularTaskDao.TableSchema.Cols
 import static com.katyshevtseva.kikiorgmobile.db.RegularTaskDao.TableSchema.Cols.PERIOD_TYPE;
 import static com.katyshevtseva.kikiorgmobile.db.RegularTaskDao.TableSchema.Cols.TIME_OF_DAY;
 import static com.katyshevtseva.kikiorgmobile.db.RegularTaskDao.TableSchema.Cols.TITLE;
+
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+
+import com.katyshevtseva.kikiorgmobile.core.model.PeriodType;
+import com.katyshevtseva.kikiorgmobile.core.model.RegularTask;
+import com.katyshevtseva.kikiorgmobile.core.model.TimeOfDay;
+
+import java.util.ArrayList;
+import java.util.List;
 
 class RegularTaskDao extends AbstractDao<RegularTask> {
     RegularTaskDao(SQLiteDatabase database) {
@@ -47,88 +47,27 @@ class RegularTaskDao extends AbstractDao<RegularTask> {
             return new RegularTask();
         }
 
-        private static AbstractColumn<RegularTask> createIdColumn() {
-            return new AbstractColumn<RegularTask>(ID, LONG) {
-                @Override
-                Object getActualValue(RegularTask regularTask) {
-                    return regularTask.getId();
-                }
-
-                @Override
-                void setActualValue(RegularTask regularTask, Object value) {
-                    regularTask.setId((Long) value);
-                }
-            };
+        private static Column<RegularTask> createIdColumn() {
+            return new Column<>(ID, LONG, RegularTask::getId,
+                    (regularTask, o) -> regularTask.setId((Long) o));
         }
 
-        private static List<AbstractColumn<RegularTask>> createColumns() {
-            List<AbstractColumn<RegularTask>> columns = new ArrayList<>();
-            columns.add(new AbstractColumn<RegularTask>(TITLE, STRING) {
-                @Override
-                Object getActualValue(RegularTask regularTask) {
-                    return regularTask.getTitle();
-                }
+        private static List<Column<RegularTask>> createColumns() {
+            List<Column<RegularTask>> columns = new ArrayList<>();
 
-                @Override
-                void setActualValue(RegularTask regularTask, Object value) {
-                    regularTask.setTitle((String) value);
-                }
-            });
-            columns.add(new AbstractColumn<RegularTask>(DESC, STRING) {
-                @Override
-                Object getActualValue(RegularTask regularTask) {
-                    return regularTask.getDesc();
-                }
+            columns.add(new Column<>(TITLE, STRING, RegularTask::getTitle,
+                    (regularTask, o) -> regularTask.setTitle((String) o)));
+            columns.add(new Column<>(DESC, STRING, RegularTask::getDesc,
+                    (regularTask, o) -> regularTask.setDesc((String) o)));
+            columns.add(new Column<>(PERIOD_TYPE, LONG, regularTask -> regularTask.getPeriodType().getCode(),
+                    (regularTask, o) -> regularTask.setPeriodType(PeriodType.findByCode(((Long) o).intValue()))));
+            columns.add(new Column<>(PERIOD, LONG, RegularTask::getPeriod,
+                    (regularTask, o) -> regularTask.setPeriod(((Long) o).intValue())));
+            columns.add(new Column<>(ARCHIVED, BOOLEAN, RegularTask::isArchived,
+                    (regularTask, o) -> regularTask.setArchived((boolean) o)));
+            columns.add(new Column<>(TIME_OF_DAY, LONG, regularTask -> regularTask.getTimeOfDay().getCode(),
+                    (regularTask, o) -> regularTask.setTimeOfDay(TimeOfDay.findByCode(((Long) o).intValue()))));
 
-                @Override
-                void setActualValue(RegularTask regularTask, Object value) {
-                    regularTask.setDesc((String) value);
-                }
-            });
-            columns.add(new AbstractColumn<RegularTask>(PERIOD_TYPE, LONG) {
-                @Override
-                Object getActualValue(RegularTask regularTask) {
-                    return regularTask.getPeriodType().getCode();
-                }
-
-                @Override
-                void setActualValue(RegularTask regularTask, Object value) {
-                    regularTask.setPeriodType(PeriodType.findByCode(((Long) value).intValue()));
-                }
-            });
-            columns.add(new AbstractColumn<RegularTask>(PERIOD, LONG) {
-                @Override
-                Object getActualValue(RegularTask regularTask) {
-                    return regularTask.getPeriod();
-                }
-
-                @Override
-                void setActualValue(RegularTask regularTask, Object value) {
-                    regularTask.setPeriod(((Long) value).intValue());
-                }
-            });
-            columns.add(new AbstractColumn<RegularTask>(ARCHIVED, BOOLEAN) {
-                @Override
-                Object getActualValue(RegularTask regularTask) {
-                    return regularTask.isArchived();
-                }
-
-                @Override
-                void setActualValue(RegularTask regularTask, Object value) {
-                    regularTask.setArchived((boolean) value);
-                }
-            });
-            columns.add(new AbstractColumn<RegularTask>(TIME_OF_DAY, LONG) {
-                @Override
-                Object getActualValue(RegularTask regularTask) {
-                    return regularTask.getTimeOfDay().getCode();
-                }
-
-                @Override
-                void setActualValue(RegularTask regularTask, Object value) {
-                    regularTask.setTimeOfDay(TimeOfDay.findByCode(((Long) value).intValue()));
-                }
-            });
             return columns;
         }
     }

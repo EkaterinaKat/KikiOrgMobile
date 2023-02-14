@@ -1,4 +1,4 @@
-package com.katyshevtseva.kikiorgmobile.core;
+package com.katyshevtseva.kikiorgmobile.utils;
 
 import android.annotation.SuppressLint;
 
@@ -104,14 +104,14 @@ public abstract class DateUtils {
         }
     }
 
-    static boolean containsIgnoreTime(List<Date> dates, Date date) {
+    public static boolean containsIgnoreTime(List<Date> dates, Date date) {
         for (Date date1 : dates)
             if (equalsIgnoreTime(date1, date))
                 return true;
         return false;
     }
 
-    static void removeIgnoreTime(List<Date> dates, Date date) {
+    public static void removeIgnoreTime(List<Date> dates, Date date) {
         Iterator<Date> iterator = dates.iterator();
         while (iterator.hasNext()) {
             if (equalsIgnoreTime(iterator.next(), date))
@@ -129,14 +129,14 @@ public abstract class DateUtils {
                 && calendar1.get(Calendar.YEAR) == calendar2.get(Calendar.YEAR);
     }
 
-    static boolean beforeIgnoreTime(Date date1, Date date2) {
+    public static boolean beforeIgnoreTime(Date date1, Date date2) {
         return countNumberOfDaysBetweenDates(date1, date2) > 0;
     }
 
     /**
      * @return положительное число если date1 раньше чем date2 и наоборот
      */
-    static int countNumberOfDaysBetweenDates(Date date1, Date date2) {
+    public static int countNumberOfDaysBetweenDates(Date date1, Date date2) {
         boolean date1BeforeDate2 = date1.before(date2);
 
         Date earlierDate = date1BeforeDate2 ? new Date(date1.getTime()) : new Date(date2.getTime());

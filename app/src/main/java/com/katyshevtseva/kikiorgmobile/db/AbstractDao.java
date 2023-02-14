@@ -5,7 +5,7 @@ import android.database.Cursor;
 import android.database.CursorWrapper;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.katyshevtseva.kikiorgmobile.db.AbstractTable.AbstractColumn;
+import com.katyshevtseva.kikiorgmobile.db.AbstractTable.Column;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -87,7 +87,7 @@ abstract class AbstractDao<T> {
 
     private ContentValues getContentValues(T t) {
         ContentValues values = new ContentValues();
-        for (AbstractColumn<T> column : table.getContentColumns()) {
+        for (Column<T> column : table.getContentColumns()) {
             values.put(column.getName(), column.getDbValueByActualValue(t));
         }
         return values;
@@ -100,13 +100,13 @@ abstract class AbstractDao<T> {
 
         T getT() {
             T t = table.getNewEmptyObject();
-            for (AbstractColumn<T> column : table.getAllColumns()) {
+            for (Column<T> column : table.getAllColumns()) {
                 switch (column.getDbType()) {
                     case STRING:
-                        column.setActualValue(t, column.getActualValueByDbValue(getString(getColumnIndex(column.getName()))));
+                        column.getActualValueReceiver().execute(t, column.getActualValueByDbValue(getString(getColumnIndex(column.getName()))));
                         break;
                     case LONG:
-                        column.setActualValue(t, column.getActualValueByDbValue(getLong(getColumnIndex(column.getName()))));
+                        column.getActualValueReceiver().execute(t, column.getActualValueByDbValue(getLong(getColumnIndex(column.getName()))));
                 }
             }
             return t;

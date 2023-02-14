@@ -35,66 +35,26 @@ class IrregularTaskDao extends AbstractDao<IrregularTask> {
             return new IrregularTask();
         }
 
-        private static AbstractColumn<IrregularTask> createIdColumn() {
-            return new AbstractColumn<IrregularTask>(ID, LONG) {
-                @Override
-                Object getActualValue(IrregularTask irregularTask) {
-                    return irregularTask.getId();
-                }
-
-                @Override
-                void setActualValue(IrregularTask irregularTask, Object value) {
-                    irregularTask.setId((Long) value);
-                }
-            };
+        private static Column<IrregularTask> createIdColumn() {
+            return new Column<>(ID, LONG, IrregularTask::getId,
+                    (irregularTask, o) -> irregularTask.setId((Long) o));
         }
 
-        private static List<AbstractColumn<IrregularTask>> createColumns() {
-            List<AbstractColumn<IrregularTask>> columns = new ArrayList<>();
-            columns.add(new AbstractColumn<IrregularTask>(TITLE, STRING) {
-                @Override
-                Object getActualValue(IrregularTask irregularTask) {
-                    return irregularTask.getTitle();
-                }
+        private static List<Column<IrregularTask>> createColumns() {
+            List<Column<IrregularTask>> columns = new ArrayList<>();
 
-                @Override
-                void setActualValue(IrregularTask irregularTask, Object value) {
-                    irregularTask.setTitle((String) value);
-                }
-            });
-            columns.add(new AbstractColumn<IrregularTask>(DESC, STRING) {
-                @Override
-                Object getActualValue(IrregularTask irregularTask) {
-                    return irregularTask.getDesc();
-                }
+            columns.add(new Column<>(TITLE, STRING, IrregularTask::getTitle,
+                    (irregularTask, o) -> irregularTask.setTitle((String) o)));
 
-                @Override
-                void setActualValue(IrregularTask irregularTask, Object value) {
-                    irregularTask.setDesc((String) value);
-                }
-            });
-            columns.add(new AbstractColumn<IrregularTask>(Cols.DATE, DATE) {
-                @Override
-                Object getActualValue(IrregularTask irregularTask) {
-                    return irregularTask.getDate();
-                }
+            columns.add(new Column<>(DESC, STRING, IrregularTask::getDesc,
+                    (irregularTask, o) -> irregularTask.setDesc((String) o)));
 
-                @Override
-                void setActualValue(IrregularTask irregularTask, Object value) {
-                    irregularTask.setDate((Date) value);
-                }
-            });
-            columns.add(new AbstractColumn<IrregularTask>(TIME_OF_DAY, LONG) {
-                @Override
-                Object getActualValue(IrregularTask irregularTask) {
-                    return irregularTask.getTimeOfDay().getCode();
-                }
+            columns.add(new Column<>(Cols.DATE, DATE, IrregularTask::getDate,
+                    (irregularTask, o) -> irregularTask.setDate((Date) o)));
 
-                @Override
-                void setActualValue(IrregularTask irregularTask, Object value) {
-                    irregularTask.setTimeOfDay(TimeOfDay.findByCode(((Long) value).intValue()));
-                }
-            });
+            columns.add(new Column<>(TIME_OF_DAY, LONG, irregularTask -> irregularTask.getTimeOfDay().getCode(),
+                    (irregularTask, o) -> irregularTask.setTimeOfDay(TimeOfDay.findByCode(((Long) o).intValue()))));
+
             return columns;
         }
     }

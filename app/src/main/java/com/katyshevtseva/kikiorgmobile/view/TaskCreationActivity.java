@@ -1,8 +1,8 @@
 package com.katyshevtseva.kikiorgmobile.view;
 
-import static com.katyshevtseva.kikiorgmobile.core.DateUtils.getDateByString;
-import static com.katyshevtseva.kikiorgmobile.core.DateUtils.getDateString;
-import static com.katyshevtseva.kikiorgmobile.core.DateUtils.isDate;
+import static com.katyshevtseva.kikiorgmobile.utils.DateUtils.getDateByString;
+import static com.katyshevtseva.kikiorgmobile.utils.DateUtils.getDateString;
+import static com.katyshevtseva.kikiorgmobile.utils.DateUtils.isDate;
 import static com.katyshevtseva.kikiorgmobile.view.utils.ViewUtils.adjustSpinner;
 import static com.katyshevtseva.kikiorgmobile.view.utils.ViewUtils.isEmpty;
 import static com.katyshevtseva.kikiorgmobile.view.utils.ViewUtils.selectSpinnerItemByValue;

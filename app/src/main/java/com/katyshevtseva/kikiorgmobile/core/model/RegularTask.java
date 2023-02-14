@@ -1,6 +1,6 @@
 package com.katyshevtseva.kikiorgmobile.core.model;
 
-import com.katyshevtseva.kikiorgmobile.core.DateUtils;
+import com.katyshevtseva.kikiorgmobile.utils.DateUtils;
 
 import java.util.ArrayList;
 import java.util.Date;

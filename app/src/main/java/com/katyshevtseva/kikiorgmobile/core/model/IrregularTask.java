@@ -1,8 +1,8 @@
 package com.katyshevtseva.kikiorgmobile.core.model;
 
-import static com.katyshevtseva.kikiorgmobile.core.DateUtils.getDateString;
+import static com.katyshevtseva.kikiorgmobile.utils.DateUtils.getDateString;
 
-import com.katyshevtseva.kikiorgmobile.core.DateUtils;
+import com.katyshevtseva.kikiorgmobile.utils.DateUtils;
 
 import java.util.Date;
 

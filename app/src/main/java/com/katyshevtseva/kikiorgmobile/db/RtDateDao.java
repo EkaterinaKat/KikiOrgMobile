@@ -1,16 +1,16 @@
 package com.katyshevtseva.kikiorgmobile.db;
 
-import android.database.sqlite.SQLiteDatabase;
-
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
 import static com.katyshevtseva.kikiorgmobile.db.AbstractTable.ColumnActualType.DATE;
 import static com.katyshevtseva.kikiorgmobile.db.AbstractTable.ColumnActualType.LONG;
 import static com.katyshevtseva.kikiorgmobile.db.RtDateDao.TableSchema.Cols.ID;
 import static com.katyshevtseva.kikiorgmobile.db.RtDateDao.TableSchema.Cols.TASK_ID;
 import static com.katyshevtseva.kikiorgmobile.db.RtDateDao.TableSchema.Cols.VALUE;
+
+import android.database.sqlite.SQLiteDatabase;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 class RtDateDao extends AbstractDao<RtDate> {
 
@@ -29,44 +29,18 @@ class RtDateDao extends AbstractDao<RtDate> {
             return new RtDate();
         }
 
-        private static AbstractColumn<RtDate> createIdColumn() {
-            return new AbstractColumn<RtDate>(ID, LONG) {
-                @Override
-                Object getActualValue(RtDate rtDate) {
-                    return rtDate.getId();
-                }
-
-                @Override
-                void setActualValue(RtDate rtDate, Object value) {
-                    rtDate.setId((Long) value);
-                }
-            };
+        private static Column<RtDate> createIdColumn() {
+            return new Column<>(ID, LONG, RtDate::getId,
+                    (rtDate, o) -> rtDate.setId((Long) o));
         }
 
-        private static List<AbstractColumn<RtDate>> createColumns() {
-            List<AbstractColumn<RtDate>> columns = new ArrayList<>();
-            columns.add(new AbstractColumn<RtDate>(TASK_ID, LONG) {
-                @Override
-                Object getActualValue(RtDate rtDate) {
-                    return rtDate.getRegularTaskId();
-                }
+        private static List<Column<RtDate>> createColumns() {
+            List<Column<RtDate>> columns = new ArrayList<>();
 
-                @Override
-                void setActualValue(RtDate rtDate, Object value) {
-                    rtDate.setRegularTaskId((Long) value);
-                }
-            });
-            columns.add(new AbstractColumn<RtDate>(VALUE, DATE) {
-                @Override
-                Object getActualValue(RtDate rtDate) {
-                    return rtDate.getValue();
-                }
-
-                @Override
-                void setActualValue(RtDate rtDate, Object value) {
-                    rtDate.setValue((Date) value);
-                }
-            });
+            columns.add(new Column<>(TASK_ID, LONG, RtDate::getRegularTaskId,
+                    (rtDate, o) -> rtDate.setRegularTaskId((Long) o)));
+            columns.add(new Column<>(VALUE, DATE, RtDate::getValue,
+                    (rtDate, o) -> rtDate.setValue((Date) o)));
 
             return columns;
         }

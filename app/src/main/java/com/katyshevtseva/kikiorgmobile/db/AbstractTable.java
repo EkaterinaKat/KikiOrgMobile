@@ -4,6 +4,9 @@ package com.katyshevtseva.kikiorgmobile.db;
 import static com.katyshevtseva.kikiorgmobile.db.DbConstants.DATE_FORMAT;
 import static com.katyshevtseva.kikiorgmobile.db.DbConstants.DATE_TIME_FORMAT;
 
+import com.katyshevtseva.kikiorgmobile.utils.OneInOneOutKnob;
+import com.katyshevtseva.kikiorgmobile.utils.TwoInKnob;
+
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,29 +18,33 @@ import lombok.RequiredArgsConstructor;
 abstract class AbstractTable<T> {
     @Getter
     private final String name;
-    private final AbstractColumn<T> idColumn;
+    private final Column<T> idColumn;
     @Getter
-    private final List<AbstractColumn<T>> contentColumns;
+    private final List<Column<T>> contentColumns;
 
-    List<AbstractColumn<T>> getAllColumns() {
-        List<AbstractColumn<T>> columns = new ArrayList<>(contentColumns);
+    List<Column<T>> getAllColumns() {
+        List<Column<T>> columns = new ArrayList<>(contentColumns);
         columns.add(idColumn);
         return columns;
     }
 
     abstract T getNewEmptyObject();
 
-    abstract static class AbstractColumn<T> {
-        @Getter
-        private String name;
-        @Getter
+    @Getter
+    static class Column<T> {
+        private final String name;
         private ColumnDbType dbType;
-        @Getter
-        private ColumnActualType actualType;
+        private final ColumnActualType actualType;
+        private final OneInOneOutKnob<T, Object> actualValueSupplier;
+        private final TwoInKnob<T, Object> actualValueReceiver;
 
-        AbstractColumn(String name, ColumnActualType actualType) {
+        Column(String name, ColumnActualType actualType,
+               OneInOneOutKnob<T, Object> actualValueSupplier,
+               TwoInKnob<T, Object> actualValueReceiver) {
             this.name = name;
             this.actualType = actualType;
+            this.actualValueSupplier = actualValueSupplier;
+            this.actualValueReceiver = actualValueReceiver;
             switch (actualType) {
                 case STRING:
                 case DATE:
@@ -50,12 +57,8 @@ abstract class AbstractTable<T> {
             }
         }
 
-        abstract Object getActualValue(T t);
-
-        abstract void setActualValue(T t, Object value);
-
         String getDbValueByActualValue(T t) {
-            Object actualValue = getActualValue(t);
+            Object actualValue = actualValueSupplier.execute(t);
             switch (actualType) {
                 case STRING:
                 case LONG:

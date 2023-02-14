@@ -31,68 +31,22 @@ public class LogDao extends AbstractDao<Log> {
             return new Log();
         }
 
-        private static AbstractColumn<Log> createIdColumn() {
-            return new AbstractColumn<Log>(ID, LONG) {
-                @Override
-                Object getActualValue(Log log) {
-                    return log.getId();
-                }
-
-                @Override
-                void setActualValue(Log log, Object value) {
-                    log.setId((Long) value);
-                }
-            };
+        private static Column<Log> createIdColumn() {
+            return new Column<>(ID, LONG, Log::getId,
+                    (log, o) -> log.setId((Long) o));
         }
 
-        private static List<AbstractColumn<Log>> createColumns() {
-            List<AbstractColumn<Log>> columns = new ArrayList<>();
+        private static List<Column<Log>> createColumns() {
+            List<Column<Log>> columns = new ArrayList<>();
 
-
-            columns.add(new AbstractColumn<Log>(DESC, STRING) {
-                @Override
-                Object getActualValue(Log log) {
-                    return log.getDesc();
-                }
-
-                @Override
-                void setActualValue(Log log, Object value) {
-                    log.setDesc((String) value);
-                }
-            });
-            columns.add(new AbstractColumn<Log>(TableSchema.Cols.DATE, DATE_TIME) {
-                @Override
-                Object getActualValue(Log log) {
-                    return log.getDate();
-                }
-
-                @Override
-                void setActualValue(Log log, Object value) {
-                    log.setDate((Date) value);
-                }
-            });
-            columns.add(new AbstractColumn<Log>(TableSchema.Cols.ACTION, STRING) {
-                @Override
-                Object getActualValue(Log log) {
-                    return log.getAction().toString();
-                }
-
-                @Override
-                void setActualValue(Log log, Object value) {
-                    log.setAction(Log.Action.valueOf((String) value));
-                }
-            });
-            columns.add(new AbstractColumn<Log>(TableSchema.Cols.SUBJECT, STRING) {
-                @Override
-                Object getActualValue(Log log) {
-                    return log.getSubject().toString();
-                }
-
-                @Override
-                void setActualValue(Log log, Object value) {
-                    log.setSubject(Log.Subject.valueOf((String) value));
-                }
-            });
+            columns.add(new Column<>(DESC, STRING, Log::getDesc,
+                    (log, o) -> log.setDesc((String) o)));
+            columns.add(new Column<>(TableSchema.Cols.DATE, DATE_TIME, Log::getDate,
+                    (log, o) -> log.setDate((Date) o)));
+            columns.add(new Column<>(TableSchema.Cols.ACTION, STRING, log -> log.getAction().toString(),
+                    (log, o) -> log.setAction(Log.Action.valueOf((String) o))));
+            columns.add(new Column<>(TableSchema.Cols.SUBJECT, STRING, log -> log.getSubject().toString(),
+                    (log, o) -> log.setSubject(Log.Subject.valueOf((String) o))));
 
             return columns;
         }
