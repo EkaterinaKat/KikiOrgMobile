@@ -9,6 +9,7 @@ import com.katyshevtseva.kikiorgmobile.core.KomDao;
 import com.katyshevtseva.kikiorgmobile.core.model.DatelessTask;
 import com.katyshevtseva.kikiorgmobile.core.model.IrregularTask;
 import com.katyshevtseva.kikiorgmobile.core.model.Log;
+import com.katyshevtseva.kikiorgmobile.core.model.PrefEntity;
 import com.katyshevtseva.kikiorgmobile.core.model.RegularTask;
 
 import java.util.ArrayList;
@@ -21,6 +22,7 @@ public class KomDaoImpl implements KomDao {
     private final RtDateDao rtDateDao;
     private final DatelessTaskDao datelessTaskDao;
     private final LogDao logDao;
+    private final PrefDao prefDao;
 
     public KomDaoImpl(Context context) {
         SQLiteDatabase database = new DbHelper(context).getWritableDatabase();
@@ -29,6 +31,7 @@ public class KomDaoImpl implements KomDao {
         rtDateDao = new RtDateDao(database);
         datelessTaskDao = new DatelessTaskDao(database);
         logDao = new LogDao(database);
+        prefDao = new PrefDao(database);
     }
 
     ////////////////////////////  DatelessTask  //////////////////////////////////
@@ -65,6 +68,21 @@ public class KomDaoImpl implements KomDao {
         return logDao.findAll();
     }
 
+    ////////////////////////////  Pref  //////////////////////////////////
+
+    @Override
+    public PrefEntity getPrefByTitle(String title) {
+        List<PrefEntity> prefs = prefDao.find(PrefDao.TableSchema.Cols.TITLE, title);
+        if (prefs.size() != 1) {
+            throw new RuntimeException("По заданному заголовку найдено более или менее одного преференса");
+        }
+        return prefs.get(0);
+    }
+
+    @Override
+    public void updatePref(PrefEntity pref) {
+        prefDao.update(pref, PrefDao.TableSchema.Cols.ID, "" + pref.getId());
+    }
 
     ////////////////////////////  IrregularTask  //////////////////////////////////
 

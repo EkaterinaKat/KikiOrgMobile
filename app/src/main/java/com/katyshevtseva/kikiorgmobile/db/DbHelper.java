@@ -1,11 +1,15 @@
 package com.katyshevtseva.kikiorgmobile.db;
 
+import static com.katyshevtseva.kikiorgmobile.core.model.PrefEntity.Pref.ACTIVITY_PERIOD_END;
+import static com.katyshevtseva.kikiorgmobile.core.model.PrefEntity.Pref.ACTIVITY_PERIOD_START;
+
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 public class DbHelper extends SQLiteOpenHelper {
-    private static final int VERSION = 16;
+    private static final int VERSION = 18;
     private static final String DATABASE_NAME = "kom.db";
 
     DbHelper(Context context) {
@@ -45,9 +49,26 @@ public class DbHelper extends SQLiteOpenHelper {
                 LogDao.TableSchema.Cols.DATE + " TEXT, " +
                 LogDao.TableSchema.Cols.ACTION + " TEXT, " +
                 LogDao.TableSchema.Cols.SUBJECT + " TEXT )");
+
+        database.execSQL("create table " + PrefDao.TableSchema.NAME + "(" +
+                PrefDao.TableSchema.Cols.ID + " INTEGER primary key autoincrement, " +
+                PrefDao.TableSchema.Cols.TITLE + " TEXT, " +
+                PrefDao.TableSchema.Cols.VALUE + " TEXT )");
+
+        database.insert(PrefDao.TableSchema.NAME, null,
+                getPrefContentValues(ACTIVITY_PERIOD_START.toString(), "08:00"));
+        database.insert(PrefDao.TableSchema.NAME, null,
+                getPrefContentValues(ACTIVITY_PERIOD_END.toString(), "22:00"));
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase database, int oldVersion, int newVersion) {
+    }
+
+    private static ContentValues getPrefContentValues(String title, String value) {
+        ContentValues values = new ContentValues();
+        values.put(PrefDao.TableSchema.Cols.TITLE, title);
+        values.put(PrefDao.TableSchema.Cols.VALUE, value);
+        return values;
     }
 }

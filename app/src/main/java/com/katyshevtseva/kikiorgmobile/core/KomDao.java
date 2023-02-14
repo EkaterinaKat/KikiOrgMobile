@@ -3,6 +3,7 @@ package com.katyshevtseva.kikiorgmobile.core;
 import com.katyshevtseva.kikiorgmobile.core.model.DatelessTask;
 import com.katyshevtseva.kikiorgmobile.core.model.IrregularTask;
 import com.katyshevtseva.kikiorgmobile.core.model.Log;
+import com.katyshevtseva.kikiorgmobile.core.model.PrefEntity;
 import com.katyshevtseva.kikiorgmobile.core.model.RegularTask;
 
 import java.util.Date;
@@ -44,4 +45,8 @@ public interface KomDao {
     void saveNewLog(Log log);
 
     List<Log> getAllLogs();
+
+    PrefEntity getPrefByTitle(String title);
+
+    void updatePref(PrefEntity pref);
 }
