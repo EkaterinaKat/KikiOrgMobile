@@ -19,5 +19,14 @@ public class Time {
         minute = Integer.parseInt(strings[1]);
     }
 
+    public Time(int hour, int minute) {
+        this.hour = hour;
+        this.minute = minute;
+        s = hour + ":" + minute;
+    }
 
+    @Override
+    public String toString() {
+        return "Time{" + s + "}";
+    }
 }

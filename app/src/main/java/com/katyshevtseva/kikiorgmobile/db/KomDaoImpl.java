@@ -11,6 +11,7 @@ import com.katyshevtseva.kikiorgmobile.core.model.IrregularTask;
 import com.katyshevtseva.kikiorgmobile.core.model.Log;
 import com.katyshevtseva.kikiorgmobile.core.model.PrefEntity;
 import com.katyshevtseva.kikiorgmobile.core.model.RegularTask;
+import com.katyshevtseva.kikiorgmobile.core.model.RtSetting;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -23,6 +24,7 @@ public class KomDaoImpl implements KomDao {
     private final DatelessTaskDao datelessTaskDao;
     private final LogDao logDao;
     private final PrefDao prefDao;
+    private final RtSettingDao rtSettingDao;
 
     public KomDaoImpl(Context context) {
         SQLiteDatabase database = new DbHelper(context).getWritableDatabase();
@@ -32,6 +34,7 @@ public class KomDaoImpl implements KomDao {
         datelessTaskDao = new DatelessTaskDao(database);
         logDao = new LogDao(database);
         prefDao = new PrefDao(database);
+        rtSettingDao = new RtSettingDao(database);
     }
 
     ////////////////////////////  DatelessTask  //////////////////////////////////
@@ -82,6 +85,18 @@ public class KomDaoImpl implements KomDao {
     @Override
     public void updatePref(PrefEntity pref) {
         prefDao.update(pref, PrefDao.TableSchema.Cols.ID, "" + pref.getId());
+    }
+
+    ////////////////////////////  Setting  //////////////////////////////////
+
+    @Override
+    public RtSetting getRtSettingById(long id) {
+        return rtSettingDao.findFirst(RtSettingDao.TableSchema.Cols.ID, "" + id);
+    }
+
+    @Override
+    public void saveNewRtSetting(RtSetting setting) {
+        rtSettingDao.saveNew(setting);
     }
 
     ////////////////////////////  IrregularTask  //////////////////////////////////

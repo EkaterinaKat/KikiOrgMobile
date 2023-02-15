@@ -9,7 +9,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 public class DbHelper extends SQLiteOpenHelper {
-    private static final int VERSION = 18;
+    private static final int VERSION = 19;
     private static final String DATABASE_NAME = "kom.db";
 
     DbHelper(Context context) {
@@ -59,6 +59,13 @@ public class DbHelper extends SQLiteOpenHelper {
                 getPrefContentValues(ACTIVITY_PERIOD_START.toString(), "08:00"));
         database.insert(PrefDao.TableSchema.NAME, null,
                 getPrefContentValues(ACTIVITY_PERIOD_END.toString(), "22:00"));
+
+        database.execSQL("create table " + RtSettingDao.TableSchema.NAME + "(" +
+                RtSettingDao.TableSchema.Cols.ID + " INTEGER primary key autoincrement, " +
+                RtSettingDao.TableSchema.Cols.RG_ID + " INTEGER, " +
+                RtSettingDao.TableSchema.Cols.DURATION + " TEXT, " +
+                RtSettingDao.TableSchema.Cols.BEGIN_TIME + " TEXT, " +
+                RtSettingDao.TableSchema.Cols.ABSOLUTE_WOBS + " INTEGER )");
     }
 
     @Override

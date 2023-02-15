@@ -11,6 +11,8 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 
+import com.katyshevtseva.kikiorgmobile.utils.OneInKnob;
+
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
@@ -18,7 +20,7 @@ import java.util.List;
 
 public class ViewUtils {
     public static <T> void adjustSpinner(Context context, Spinner spinner,
-                                         final List<T> items, final SpinnerListener<T> spinnerListener) {
+                                         final List<T> items, final OneInKnob<T> spinnerListener) {
         ArrayAdapter<T> adapter = new ArrayAdapter<>(context, android.R.layout.simple_spinner_item, items);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
@@ -32,10 +34,6 @@ public class ViewUtils {
             public void onNothingSelected(AdapterView<?> arg0) {
             }
         });
-    }
-
-    public interface SpinnerListener<T> {
-        void execute(T selectedItem);
     }
 
     public static Date getDateByDatePicker(DatePicker datePicker) {

@@ -5,6 +5,7 @@ import com.katyshevtseva.kikiorgmobile.core.model.IrregularTask;
 import com.katyshevtseva.kikiorgmobile.core.model.Log;
 import com.katyshevtseva.kikiorgmobile.core.model.PrefEntity;
 import com.katyshevtseva.kikiorgmobile.core.model.RegularTask;
+import com.katyshevtseva.kikiorgmobile.core.model.RtSetting;
 
 import java.util.Date;
 import java.util.List;
@@ -49,4 +50,8 @@ public interface KomDao {
     PrefEntity getPrefByTitle(String title);
 
     void updatePref(PrefEntity pref);
+
+    RtSetting getRtSettingById(long id);
+
+    void saveNewRtSetting(RtSetting setting);
 }

@@ -31,8 +31,8 @@ import com.katyshevtseva.kikiorgmobile.core.model.RegularTask;
 import com.katyshevtseva.kikiorgmobile.core.model.Task;
 import com.katyshevtseva.kikiorgmobile.core.model.TaskType;
 import com.katyshevtseva.kikiorgmobile.core.model.TimeOfDay;
+import com.katyshevtseva.kikiorgmobile.utils.OneInKnob;
 import com.katyshevtseva.kikiorgmobile.view.utils.FragmentUpdateListener;
-import com.katyshevtseva.kikiorgmobile.view.utils.ViewUtils.SpinnerListener;
 
 import java.util.Arrays;
 import java.util.Date;
@@ -188,20 +188,17 @@ public class TaskCreationActivity extends AppCompatActivity implements FragmentU
         finish();
     }
 
-    private final SpinnerListener<TaskType> taskTypeSpinnerListener = new SpinnerListener<TaskType>() {
-        @Override
-        public void execute(TaskType selectedItem) {
-            irregularLayout.setVisibility(View.GONE);
-            regularLayout.setVisibility(View.GONE);
-            switch ((TaskType) taskTypeSpinner.getSelectedItem()) {
-                case IRREGULAR:
-                    irregularLayout.setVisibility(View.VISIBLE);
-                    break;
-                case REGULAR:
-                    regularLayout.setVisibility(View.VISIBLE);
-            }
-            setDoneButtonAccessibility();
+    private final OneInKnob<TaskType> taskTypeSpinnerListener = taskType -> {
+        irregularLayout.setVisibility(View.GONE);
+        regularLayout.setVisibility(View.GONE);
+        switch ((TaskType) taskTypeSpinner.getSelectedItem()) {
+            case IRREGULAR:
+                irregularLayout.setVisibility(View.VISIBLE);
+                break;
+            case REGULAR:
+                regularLayout.setVisibility(View.VISIBLE);
         }
+        setDoneButtonAccessibility();
     };
 
     private void setDoneButtonAccessibility() {

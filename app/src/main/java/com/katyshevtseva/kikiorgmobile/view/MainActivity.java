@@ -14,6 +14,7 @@ import androidx.core.content.ContextCompat;
 import com.example.kikiorgmobile.R;
 import com.katyshevtseva.kikiorgmobile.core.PrefService;
 import com.katyshevtseva.kikiorgmobile.core.Service;
+import com.katyshevtseva.kikiorgmobile.core.SettingService;
 import com.katyshevtseva.kikiorgmobile.utils.DateUtils;
 import com.katyshevtseva.kikiorgmobile.utils.DateUtils.TimeUnit;
 
@@ -36,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
 
         Service.init(this);
         PrefService.init(this);
+        SettingService.init(this);
         alarmTextView = findViewById(R.id.alarm_text_view);
 
         date = new Date();

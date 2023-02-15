@@ -22,13 +22,16 @@ public class ScheduleSettingsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_schedule_settings);
 
+        findViewById(R.id.add_setting_button).setOnClickListener(view ->
+                startActivity(SettingCreationActivity.newIntent(this, null)));
+
         apStartView = findViewById(R.id.activity_period_start_view);
         apEndView = findViewById(R.id.activity_period_end_view);
 
         setTimeViewsValues();
 
         apStartView.setOnClickListener(view -> new TimePickerDialog(this,
-                (TimePickerDialog.OnTimeSetListener) (timePicker, hour, min) -> {
+                (timePicker, hour, min) -> {
                     if (!PrefService.INSTANCE.updateStartActivityPeriodValue(hour, min)) {
                         showApWarning();
                     }
@@ -36,7 +39,7 @@ public class ScheduleSettingsActivity extends AppCompatActivity {
                 }, apStart.getHour(), apStart.getMinute(), true).show());
 
         apEndView.setOnClickListener(view -> new TimePickerDialog(this,
-                (TimePickerDialog.OnTimeSetListener) (timePicker, hour, min) -> {
+                (timePicker, hour, min) -> {
                     if (!PrefService.INSTANCE.updateEndActivityPeriodValue(hour, min)) {
                         showApWarning();
                     }
