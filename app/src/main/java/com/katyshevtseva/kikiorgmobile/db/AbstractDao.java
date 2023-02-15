@@ -5,7 +5,7 @@ import android.database.Cursor;
 import android.database.CursorWrapper;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.katyshevtseva.kikiorgmobile.db.AbstractTable.Column;
+import com.katyshevtseva.kikiorgmobile.db.DbTable.Column;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +15,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 abstract class AbstractDao<T> {
     protected final SQLiteDatabase database;
-    private final AbstractTable<T> table;
+    private final DbTable<T> table;
 
     void saveNew(T t) {
         ContentValues values = getContentValues(t);
@@ -99,7 +99,7 @@ abstract class AbstractDao<T> {
         }
 
         T getT() {
-            T t = table.getNewEmptyObject();
+            T t = table.getEmptyObjectSupplier().execute();
             for (Column<T> column : table.getAllColumns()) {
                 switch (column.getDbType()) {
                     case STRING:

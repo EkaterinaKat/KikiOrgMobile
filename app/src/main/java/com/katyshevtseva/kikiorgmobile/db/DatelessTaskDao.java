@@ -1,9 +1,9 @@
 package com.katyshevtseva.kikiorgmobile.db;
 
-import static com.katyshevtseva.kikiorgmobile.db.AbstractTable.ColumnActualType.LONG;
-import static com.katyshevtseva.kikiorgmobile.db.AbstractTable.ColumnActualType.STRING;
-import static com.katyshevtseva.kikiorgmobile.db.DatelessTaskDao.TableSchema.Cols.ID;
-import static com.katyshevtseva.kikiorgmobile.db.DatelessTaskDao.TableSchema.Cols.TITLE;
+import static com.katyshevtseva.kikiorgmobile.db.DbConstants.ID;
+import static com.katyshevtseva.kikiorgmobile.db.DbConstants.TITLE;
+import static com.katyshevtseva.kikiorgmobile.db.DbTable.ColumnActualType.LONG;
+import static com.katyshevtseva.kikiorgmobile.db.DbTable.ColumnActualType.STRING;
 
 import android.database.sqlite.SQLiteDatabase;
 
@@ -13,43 +13,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 class DatelessTaskDao extends AbstractDao<DatelessTask> {
+    static final String NAME = "dateless_task";
 
     DatelessTaskDao(SQLiteDatabase database) {
-        super(database, new DatelessTaskTable());
+        super(database, new DbTable<>(NAME, createIdColumn(), createColumns(), DatelessTask::new));
     }
 
-    private static class DatelessTaskTable extends AbstractTable<DatelessTask> {
-
-        DatelessTaskTable() {
-            super(TableSchema.NAME, createIdColumn(), createColumns());
-        }
-
-        @Override
-        DatelessTask getNewEmptyObject() {
-            return new DatelessTask();
-        }
-
-        private static Column<DatelessTask> createIdColumn() {
-            return new Column<>(ID, LONG, DatelessTask::getId,
-                    (datelessTask, o) -> datelessTask.setId((Long) o));
-        }
-
-        private static List<Column<DatelessTask>> createColumns() {
-            List<Column<DatelessTask>> columns = new ArrayList<>();
-
-            columns.add(new Column<>(TITLE, STRING, DatelessTask::getTitle,
-                    (datelessTask, o) -> datelessTask.setTitle((String) o)));
-
-            return columns;
-        }
+    private static DbTable.Column<DatelessTask> createIdColumn() {
+        return new DbTable.Column<>(ID, LONG, DatelessTask::getId,
+                (datelessTask, o) -> datelessTask.setId((Long) o));
     }
 
-    static final class TableSchema {
-        static final String NAME = "dateless_task";
+    private static List<DbTable.Column<DatelessTask>> createColumns() {
+        List<DbTable.Column<DatelessTask>> columns = new ArrayList<>();
 
-        static final class Cols {
-            static final String ID = "id";
-            static final String TITLE = "title";
-        }
+        columns.add(new DbTable.Column<>(TITLE, STRING, DatelessTask::getTitle,
+                (datelessTask, o) -> datelessTask.setTitle((String) o)));
+
+        return columns;
     }
 }

@@ -2,6 +2,22 @@ package com.katyshevtseva.kikiorgmobile.db;
 
 import static com.katyshevtseva.kikiorgmobile.core.model.PrefEntity.Pref.ACTIVITY_PERIOD_END;
 import static com.katyshevtseva.kikiorgmobile.core.model.PrefEntity.Pref.ACTIVITY_PERIOD_START;
+import static com.katyshevtseva.kikiorgmobile.db.DbConstants.ABSOLUTE_WOBS;
+import static com.katyshevtseva.kikiorgmobile.db.DbConstants.ACTION;
+import static com.katyshevtseva.kikiorgmobile.db.DbConstants.ARCHIVED;
+import static com.katyshevtseva.kikiorgmobile.db.DbConstants.BEGIN_TIME;
+import static com.katyshevtseva.kikiorgmobile.db.DbConstants.DATE;
+import static com.katyshevtseva.kikiorgmobile.db.DbConstants.DESC;
+import static com.katyshevtseva.kikiorgmobile.db.DbConstants.DURATION;
+import static com.katyshevtseva.kikiorgmobile.db.DbConstants.ID;
+import static com.katyshevtseva.kikiorgmobile.db.DbConstants.PERIOD;
+import static com.katyshevtseva.kikiorgmobile.db.DbConstants.PERIOD_TYPE;
+import static com.katyshevtseva.kikiorgmobile.db.DbConstants.RG_ID;
+import static com.katyshevtseva.kikiorgmobile.db.DbConstants.SUBJECT;
+import static com.katyshevtseva.kikiorgmobile.db.DbConstants.TASK_ID;
+import static com.katyshevtseva.kikiorgmobile.db.DbConstants.TIME_OF_DAY;
+import static com.katyshevtseva.kikiorgmobile.db.DbConstants.TITLE;
+import static com.katyshevtseva.kikiorgmobile.db.DbConstants.VALUE;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -18,54 +34,54 @@ public class DbHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase database) {
-        database.execSQL("create table " + IrregularTaskDao.TableSchema.NAME + "(" +
-                IrregularTaskDao.TableSchema.Cols.ID + " INTEGER primary key autoincrement, " +
-                IrregularTaskDao.TableSchema.Cols.TITLE + " TEXT, " +
-                IrregularTaskDao.TableSchema.Cols.DESC + " TEXT, " +
-                IrregularTaskDao.TableSchema.Cols.TIME_OF_DAY + " INTEGER, " +
-                IrregularTaskDao.TableSchema.Cols.DATE + " TEXT )");
+        database.execSQL("create table " + IrregularTaskDao.NAME + "(" +
+                ID + " INTEGER primary key autoincrement, " +
+                TITLE + " TEXT, " +
+                DESC + " TEXT, " +
+                TIME_OF_DAY + " INTEGER, " +
+                DATE + " TEXT )");
 
-        database.execSQL("create table " + RegularTaskDao.TableSchema.NAME + "(" +
-                RegularTaskDao.TableSchema.Cols.ID + " INTEGER primary key autoincrement, " +
-                RegularTaskDao.TableSchema.Cols.TITLE + " TEXT, " +
-                RegularTaskDao.TableSchema.Cols.DESC + " TEXT, " +
-                RegularTaskDao.TableSchema.Cols.TIME_OF_DAY + " INTEGER, " +
-                RegularTaskDao.TableSchema.Cols.PERIOD_TYPE + " INTEGER, " +
-                RegularTaskDao.TableSchema.Cols.PERIOD + " INTEGER, " +
-                RegularTaskDao.TableSchema.Cols.ARCHIVED + " INTEGER )");
+        database.execSQL("create table " + RegularTaskDao.NAME + "(" +
+                ID + " INTEGER primary key autoincrement, " +
+                TITLE + " TEXT, " +
+                DESC + " TEXT, " +
+                TIME_OF_DAY + " INTEGER, " +
+                PERIOD_TYPE + " INTEGER, " +
+                PERIOD + " INTEGER, " +
+                ARCHIVED + " INTEGER )");
 
-        database.execSQL("create table " + RtDateDao.TableSchema.NAME + "(" +
-                RtDateDao.TableSchema.Cols.ID + " INTEGER primary key autoincrement, " +
-                RtDateDao.TableSchema.Cols.TASK_ID + " INTEGER, " +
-                RtDateDao.TableSchema.Cols.VALUE + " TEXT )");
+        database.execSQL("create table " + RtDateDao.NAME + "(" +
+                ID + " INTEGER primary key autoincrement, " +
+                TASK_ID + " INTEGER, " +
+                VALUE + " TEXT )");
 
-        database.execSQL("create table " + DatelessTaskDao.TableSchema.NAME + "(" +
-                DatelessTaskDao.TableSchema.Cols.ID + " INTEGER primary key autoincrement, " +
-                DatelessTaskDao.TableSchema.Cols.TITLE + " TEXT )");
+        database.execSQL("create table " + DatelessTaskDao.NAME + "(" +
+                ID + " INTEGER primary key autoincrement, " +
+                TITLE + " TEXT )");
 
-        database.execSQL("create table " + LogDao.TableSchema.NAME + "(" +
-                LogDao.TableSchema.Cols.ID + " INTEGER primary key autoincrement, " +
-                LogDao.TableSchema.Cols.DESC + " TEXT, " +
-                LogDao.TableSchema.Cols.DATE + " TEXT, " +
-                LogDao.TableSchema.Cols.ACTION + " TEXT, " +
-                LogDao.TableSchema.Cols.SUBJECT + " TEXT )");
+        database.execSQL("create table " + LogDao.NAME + "(" +
+                ID + " INTEGER primary key autoincrement, " +
+                DESC + " TEXT, " +
+                DATE + " TEXT, " +
+                ACTION + " TEXT, " +
+                SUBJECT + " TEXT )");
 
-        database.execSQL("create table " + PrefDao.TableSchema.NAME + "(" +
-                PrefDao.TableSchema.Cols.ID + " INTEGER primary key autoincrement, " +
-                PrefDao.TableSchema.Cols.TITLE + " TEXT, " +
-                PrefDao.TableSchema.Cols.VALUE + " TEXT )");
+        database.execSQL("create table " + PrefDao.NAME + "(" +
+                ID + " INTEGER primary key autoincrement, " +
+                TITLE + " TEXT, " +
+                VALUE + " TEXT )");
 
-        database.insert(PrefDao.TableSchema.NAME, null,
+        database.insert(PrefDao.NAME, null,
                 getPrefContentValues(ACTIVITY_PERIOD_START.toString(), "08:00"));
-        database.insert(PrefDao.TableSchema.NAME, null,
+        database.insert(PrefDao.NAME, null,
                 getPrefContentValues(ACTIVITY_PERIOD_END.toString(), "22:00"));
 
-        database.execSQL("create table " + RtSettingDao.TableSchema.NAME + "(" +
-                RtSettingDao.TableSchema.Cols.ID + " INTEGER primary key autoincrement, " +
-                RtSettingDao.TableSchema.Cols.RG_ID + " INTEGER, " +
-                RtSettingDao.TableSchema.Cols.DURATION + " TEXT, " +
-                RtSettingDao.TableSchema.Cols.BEGIN_TIME + " TEXT, " +
-                RtSettingDao.TableSchema.Cols.ABSOLUTE_WOBS + " INTEGER )");
+        database.execSQL("create table " + RtSettingDao.NAME + "(" +
+                ID + " INTEGER primary key autoincrement, " +
+                RG_ID + " INTEGER, " +
+                DURATION + " TEXT, " +
+                BEGIN_TIME + " TEXT, " +
+                ABSOLUTE_WOBS + " INTEGER )");
     }
 
     @Override
@@ -74,8 +90,8 @@ public class DbHelper extends SQLiteOpenHelper {
 
     private static ContentValues getPrefContentValues(String title, String value) {
         ContentValues values = new ContentValues();
-        values.put(PrefDao.TableSchema.Cols.TITLE, title);
-        values.put(PrefDao.TableSchema.Cols.VALUE, value);
+        values.put(TITLE, title);
+        values.put(VALUE, value);
         return values;
     }
 }

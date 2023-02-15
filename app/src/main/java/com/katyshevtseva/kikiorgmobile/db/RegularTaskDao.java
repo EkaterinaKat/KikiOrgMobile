@@ -1,15 +1,15 @@
 package com.katyshevtseva.kikiorgmobile.db;
 
-import static com.katyshevtseva.kikiorgmobile.db.AbstractTable.ColumnActualType.BOOLEAN;
-import static com.katyshevtseva.kikiorgmobile.db.AbstractTable.ColumnActualType.LONG;
-import static com.katyshevtseva.kikiorgmobile.db.AbstractTable.ColumnActualType.STRING;
-import static com.katyshevtseva.kikiorgmobile.db.RegularTaskDao.TableSchema.Cols.ARCHIVED;
-import static com.katyshevtseva.kikiorgmobile.db.RegularTaskDao.TableSchema.Cols.DESC;
-import static com.katyshevtseva.kikiorgmobile.db.RegularTaskDao.TableSchema.Cols.ID;
-import static com.katyshevtseva.kikiorgmobile.db.RegularTaskDao.TableSchema.Cols.PERIOD;
-import static com.katyshevtseva.kikiorgmobile.db.RegularTaskDao.TableSchema.Cols.PERIOD_TYPE;
-import static com.katyshevtseva.kikiorgmobile.db.RegularTaskDao.TableSchema.Cols.TIME_OF_DAY;
-import static com.katyshevtseva.kikiorgmobile.db.RegularTaskDao.TableSchema.Cols.TITLE;
+import static com.katyshevtseva.kikiorgmobile.db.DbConstants.ARCHIVED;
+import static com.katyshevtseva.kikiorgmobile.db.DbConstants.DESC;
+import static com.katyshevtseva.kikiorgmobile.db.DbConstants.ID;
+import static com.katyshevtseva.kikiorgmobile.db.DbConstants.PERIOD;
+import static com.katyshevtseva.kikiorgmobile.db.DbConstants.PERIOD_TYPE;
+import static com.katyshevtseva.kikiorgmobile.db.DbConstants.TIME_OF_DAY;
+import static com.katyshevtseva.kikiorgmobile.db.DbConstants.TITLE;
+import static com.katyshevtseva.kikiorgmobile.db.DbTable.ColumnActualType.BOOLEAN;
+import static com.katyshevtseva.kikiorgmobile.db.DbTable.ColumnActualType.LONG;
+import static com.katyshevtseva.kikiorgmobile.db.DbTable.ColumnActualType.STRING;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -22,12 +22,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 class RegularTaskDao extends AbstractDao<RegularTask> {
+    static final String NAME = "regular_task";
+
     RegularTaskDao(SQLiteDatabase database) {
-        super(database, new RegularTaskTable());
+        super(database, new DbTable<>(NAME, createIdColumn(), createColumns(), RegularTask::new));
     }
 
     long getLastInsertedId() {
-        String sql = String.format("SELECT ROWID from %s order by ROWID DESC limit 1", TableSchema.NAME);
+        String sql = String.format("SELECT ROWID from %s order by ROWID DESC limit 1", NAME);
         Cursor cursor = database.rawQuery(sql, null);
         if (cursor != null && cursor.moveToFirst()) {
             return cursor.getLong(0);
@@ -36,53 +38,27 @@ class RegularTaskDao extends AbstractDao<RegularTask> {
         throw new RuntimeException();
     }
 
-    private static class RegularTaskTable extends AbstractTable<RegularTask> {
-
-        RegularTaskTable() {
-            super(TableSchema.NAME, createIdColumn(), createColumns());
-        }
-
-        @Override
-        RegularTask getNewEmptyObject() {
-            return new RegularTask();
-        }
-
-        private static Column<RegularTask> createIdColumn() {
-            return new Column<>(ID, LONG, RegularTask::getId,
-                    (regularTask, o) -> regularTask.setId((Long) o));
-        }
-
-        private static List<Column<RegularTask>> createColumns() {
-            List<Column<RegularTask>> columns = new ArrayList<>();
-
-            columns.add(new Column<>(TITLE, STRING, RegularTask::getTitle,
-                    (regularTask, o) -> regularTask.setTitle((String) o)));
-            columns.add(new Column<>(DESC, STRING, RegularTask::getDesc,
-                    (regularTask, o) -> regularTask.setDesc((String) o)));
-            columns.add(new Column<>(PERIOD_TYPE, LONG, regularTask -> regularTask.getPeriodType().getCode(),
-                    (regularTask, o) -> regularTask.setPeriodType(PeriodType.findByCode(((Long) o).intValue()))));
-            columns.add(new Column<>(PERIOD, LONG, RegularTask::getPeriod,
-                    (regularTask, o) -> regularTask.setPeriod(((Long) o).intValue())));
-            columns.add(new Column<>(ARCHIVED, BOOLEAN, RegularTask::isArchived,
-                    (regularTask, o) -> regularTask.setArchived((boolean) o)));
-            columns.add(new Column<>(TIME_OF_DAY, LONG, regularTask -> regularTask.getTimeOfDay().getCode(),
-                    (regularTask, o) -> regularTask.setTimeOfDay(TimeOfDay.findByCode(((Long) o).intValue()))));
-
-            return columns;
-        }
+    private static DbTable.Column<RegularTask> createIdColumn() {
+        return new DbTable.Column<>(ID, LONG, RegularTask::getId,
+                (regularTask, o) -> regularTask.setId((Long) o));
     }
 
-    static final class TableSchema {
-        static final String NAME = "regular_task";
+    private static List<DbTable.Column<RegularTask>> createColumns() {
+        List<DbTable.Column<RegularTask>> columns = new ArrayList<>();
 
-        static final class Cols {
-            static final String ID = "id";
-            static final String TITLE = "title";
-            static final String DESC = "desc";
-            static final String TIME_OF_DAY = "time_of_day";
-            static final String PERIOD_TYPE = "period_type";
-            static final String PERIOD = "period";
-            static final String ARCHIVED = "archived";
-        }
+        columns.add(new DbTable.Column<>(TITLE, STRING, RegularTask::getTitle,
+                (regularTask, o) -> regularTask.setTitle((String) o)));
+        columns.add(new DbTable.Column<>(DESC, STRING, RegularTask::getDesc,
+                (regularTask, o) -> regularTask.setDesc((String) o)));
+        columns.add(new DbTable.Column<>(PERIOD_TYPE, LONG, regularTask -> regularTask.getPeriodType().getCode(),
+                (regularTask, o) -> regularTask.setPeriodType(PeriodType.findByCode(((Long) o).intValue()))));
+        columns.add(new DbTable.Column<>(PERIOD, LONG, RegularTask::getPeriod,
+                (regularTask, o) -> regularTask.setPeriod(((Long) o).intValue())));
+        columns.add(new DbTable.Column<>(ARCHIVED, BOOLEAN, RegularTask::isArchived,
+                (regularTask, o) -> regularTask.setArchived((boolean) o)));
+        columns.add(new DbTable.Column<>(TIME_OF_DAY, LONG, regularTask -> regularTask.getTimeOfDay().getCode(),
+                (regularTask, o) -> regularTask.setTimeOfDay(TimeOfDay.findByCode(((Long) o).intValue()))));
+
+        return columns;
     }
 }

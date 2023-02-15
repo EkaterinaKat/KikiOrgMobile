@@ -5,6 +5,7 @@ import static com.katyshevtseva.kikiorgmobile.db.DbConstants.DATE_FORMAT;
 import static com.katyshevtseva.kikiorgmobile.db.DbConstants.DATE_TIME_FORMAT;
 
 import com.katyshevtseva.kikiorgmobile.utils.OneInOneOutKnob;
+import com.katyshevtseva.kikiorgmobile.utils.OneOutKnob;
 import com.katyshevtseva.kikiorgmobile.utils.TwoInKnob;
 
 import java.text.ParseException;
@@ -14,21 +15,19 @@ import java.util.List;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+@Getter
 @RequiredArgsConstructor
-abstract class AbstractTable<T> {
-    @Getter
+class DbTable<T> {
     private final String name;
     private final Column<T> idColumn;
-    @Getter
     private final List<Column<T>> contentColumns;
+    private final OneOutKnob<T> emptyObjectSupplier;
 
     List<Column<T>> getAllColumns() {
         List<Column<T>> columns = new ArrayList<>(contentColumns);
         columns.add(idColumn);
         return columns;
     }
-
-    abstract T getNewEmptyObject();
 
     @Getter
     static class Column<T> {

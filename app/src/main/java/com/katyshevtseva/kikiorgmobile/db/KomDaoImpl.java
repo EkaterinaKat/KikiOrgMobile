@@ -1,6 +1,11 @@
 package com.katyshevtseva.kikiorgmobile.db;
 
+import static com.katyshevtseva.kikiorgmobile.db.DbConstants.DATE;
 import static com.katyshevtseva.kikiorgmobile.db.DbConstants.DATE_FORMAT;
+import static com.katyshevtseva.kikiorgmobile.db.DbConstants.ID;
+import static com.katyshevtseva.kikiorgmobile.db.DbConstants.TASK_ID;
+import static com.katyshevtseva.kikiorgmobile.db.DbConstants.TITLE;
+import static com.katyshevtseva.kikiorgmobile.db.DbConstants.VALUE;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
@@ -51,12 +56,12 @@ public class KomDaoImpl implements KomDao {
 
     @Override
     public void updateDatelessTask(DatelessTask datelessTask) {
-        datelessTaskDao.update(datelessTask, DatelessTaskDao.TableSchema.Cols.ID, "" + datelessTask.getId());
+        datelessTaskDao.update(datelessTask, ID, "" + datelessTask.getId());
     }
 
     @Override
     public void deleteDatelessTask(DatelessTask datelessTask) {
-        datelessTaskDao.delete(DatelessTaskDao.TableSchema.Cols.ID, "" + datelessTask.getId());
+        datelessTaskDao.delete(ID, "" + datelessTask.getId());
     }
 
     ////////////////////////////  Log  //////////////////////////////////
@@ -75,7 +80,7 @@ public class KomDaoImpl implements KomDao {
 
     @Override
     public PrefEntity getPrefByTitle(String title) {
-        List<PrefEntity> prefs = prefDao.find(PrefDao.TableSchema.Cols.TITLE, title);
+        List<PrefEntity> prefs = prefDao.find(TITLE, title);
         if (prefs.size() != 1) {
             throw new RuntimeException("По заданному заголовку найдено более или менее одного преференса");
         }
@@ -84,14 +89,14 @@ public class KomDaoImpl implements KomDao {
 
     @Override
     public void updatePref(PrefEntity pref) {
-        prefDao.update(pref, PrefDao.TableSchema.Cols.ID, "" + pref.getId());
+        prefDao.update(pref, ID, "" + pref.getId());
     }
 
     ////////////////////////////  Setting  //////////////////////////////////
 
     @Override
     public RtSetting getRtSettingById(long id) {
-        return rtSettingDao.findFirst(RtSettingDao.TableSchema.Cols.ID, "" + id);
+        return rtSettingDao.findFirst(ID, "" + id);
     }
 
     @Override
@@ -113,22 +118,22 @@ public class KomDaoImpl implements KomDao {
 
     @Override
     public List<IrregularTask> getIrregularTasksByDate(Date date) {
-        return irregularTaskDao.find(IrregularTaskDao.TableSchema.Cols.DATE, DATE_FORMAT.format(date));
+        return irregularTaskDao.find(DATE, DATE_FORMAT.format(date));
     }
 
     @Override
     public void updateIrregularTask(IrregularTask irregularTask) {
-        irregularTaskDao.update(irregularTask, IrregularTaskDao.TableSchema.Cols.ID, "" + irregularTask.getId());
+        irregularTaskDao.update(irregularTask, ID, "" + irregularTask.getId());
     }
 
     @Override
     public void deleteIrregularTask(IrregularTask irregularTask) {
-        irregularTaskDao.delete(IrregularTaskDao.TableSchema.Cols.ID, "" + irregularTask.getId());
+        irregularTaskDao.delete(ID, "" + irregularTask.getId());
     }
 
     @Override
     public IrregularTask getIrregularTaskById(long id) {
-        return irregularTaskDao.findFirst(IrregularTaskDao.TableSchema.Cols.ID, "" + id);
+        return irregularTaskDao.findFirst(ID, "" + id);
     }
 
     ////////////////////////////  RegularTask  //////////////////////////////////
@@ -152,10 +157,10 @@ public class KomDaoImpl implements KomDao {
 
     @Override
     public List<RegularTask> getRegularTasksByDate(Date date) {
-        List<RtDate> rtDates = rtDateDao.find(RtDateDao.TableSchema.Cols.VALUE, DATE_FORMAT.format(date));
+        List<RtDate> rtDates = rtDateDao.find(VALUE, DATE_FORMAT.format(date));
         List<RegularTask> regularTasks = new ArrayList<>();
         for (RtDate rtDate : rtDates) {
-            regularTasks.addAll(regularTaskDao.find(RegularTaskDao.TableSchema.Cols.ID, "" + rtDate.getRegularTaskId()));
+            regularTasks.addAll(regularTaskDao.find(ID, "" + rtDate.getRegularTaskId()));
         }
         for (RegularTask task : regularTasks) {
             task.setDates(findDatesByRegularTask(task));
@@ -165,29 +170,29 @@ public class KomDaoImpl implements KomDao {
 
     @Override
     public void updateRegularTask(RegularTask regularTask) {
-        rtDateDao.delete(RtDateDao.TableSchema.Cols.TASK_ID, "" + regularTask.getId());
+        rtDateDao.delete(TASK_ID, "" + regularTask.getId());
         for (Date date : regularTask.getDates()) {
             rtDateDao.saveNew(RtDate.builder().regularTaskId(regularTask.getId()).value(date).build());
         }
-        regularTaskDao.update(regularTask, RegularTaskDao.TableSchema.Cols.ID, "" + regularTask.getId());
+        regularTaskDao.update(regularTask, ID, "" + regularTask.getId());
     }
 
     @Override
     public void deleteRegularTask(RegularTask regularTask) {
-        rtDateDao.delete(RtDateDao.TableSchema.Cols.TASK_ID, "" + regularTask.getId());
-        regularTaskDao.delete(RegularTaskDao.TableSchema.Cols.ID, "" + regularTask.getId());
+        rtDateDao.delete(TASK_ID, "" + regularTask.getId());
+        regularTaskDao.delete(ID, "" + regularTask.getId());
     }
 
     @Override
     public RegularTask getRegularTaskById(long id) {
-        RegularTask task = regularTaskDao.findFirst(RegularTaskDao.TableSchema.Cols.ID, "" + id);
+        RegularTask task = regularTaskDao.findFirst(ID, "" + id);
         task.setDates(findDatesByRegularTask(task));
         return task;
     }
 
     private List<Date> findDatesByRegularTask(RegularTask regularTask) {
         List<Date> dates = new ArrayList<>();
-        for (RtDate rtDate : rtDateDao.find(RtDateDao.TableSchema.Cols.TASK_ID, "" + regularTask.getId())) {
+        for (RtDate rtDate : rtDateDao.find(TASK_ID, "" + regularTask.getId())) {
             dates.add(rtDate.getValue());
         }
         return dates;

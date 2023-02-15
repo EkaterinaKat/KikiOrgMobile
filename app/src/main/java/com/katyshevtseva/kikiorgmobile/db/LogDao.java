@@ -1,10 +1,13 @@
 package com.katyshevtseva.kikiorgmobile.db;
 
-import static com.katyshevtseva.kikiorgmobile.db.AbstractTable.ColumnActualType.DATE_TIME;
-import static com.katyshevtseva.kikiorgmobile.db.AbstractTable.ColumnActualType.LONG;
-import static com.katyshevtseva.kikiorgmobile.db.AbstractTable.ColumnActualType.STRING;
-import static com.katyshevtseva.kikiorgmobile.db.LogDao.TableSchema.Cols.DESC;
-import static com.katyshevtseva.kikiorgmobile.db.LogDao.TableSchema.Cols.ID;
+import static com.katyshevtseva.kikiorgmobile.db.DbConstants.ACTION;
+import static com.katyshevtseva.kikiorgmobile.db.DbConstants.DATE;
+import static com.katyshevtseva.kikiorgmobile.db.DbConstants.DESC;
+import static com.katyshevtseva.kikiorgmobile.db.DbConstants.ID;
+import static com.katyshevtseva.kikiorgmobile.db.DbConstants.SUBJECT;
+import static com.katyshevtseva.kikiorgmobile.db.DbTable.ColumnActualType.DATE_TIME;
+import static com.katyshevtseva.kikiorgmobile.db.DbTable.ColumnActualType.LONG;
+import static com.katyshevtseva.kikiorgmobile.db.DbTable.ColumnActualType.STRING;
 
 import android.database.sqlite.SQLiteDatabase;
 
@@ -15,52 +18,29 @@ import java.util.Date;
 import java.util.List;
 
 public class LogDao extends AbstractDao<Log> {
+    static final String NAME = "log";
 
     LogDao(SQLiteDatabase database) {
-        super(database, new LogTable());
+        super(database, new DbTable<>(NAME, createIdColumn(), createColumns(), Log::new));
     }
 
-    private static class LogTable extends AbstractTable<Log> {
-
-        LogTable() {
-            super(TableSchema.NAME, createIdColumn(), createColumns());
-        }
-
-        @Override
-        Log getNewEmptyObject() {
-            return new Log();
-        }
-
-        private static Column<Log> createIdColumn() {
-            return new Column<>(ID, LONG, Log::getId,
-                    (log, o) -> log.setId((Long) o));
-        }
-
-        private static List<Column<Log>> createColumns() {
-            List<Column<Log>> columns = new ArrayList<>();
-
-            columns.add(new Column<>(DESC, STRING, Log::getDesc,
-                    (log, o) -> log.setDesc((String) o)));
-            columns.add(new Column<>(TableSchema.Cols.DATE, DATE_TIME, Log::getDate,
-                    (log, o) -> log.setDate((Date) o)));
-            columns.add(new Column<>(TableSchema.Cols.ACTION, STRING, log -> log.getAction().toString(),
-                    (log, o) -> log.setAction(Log.Action.valueOf((String) o))));
-            columns.add(new Column<>(TableSchema.Cols.SUBJECT, STRING, log -> log.getSubject().toString(),
-                    (log, o) -> log.setSubject(Log.Subject.valueOf((String) o))));
-
-            return columns;
-        }
+    private static DbTable.Column<Log> createIdColumn() {
+        return new DbTable.Column<>(ID, LONG, Log::getId,
+                (log, o) -> log.setId((Long) o));
     }
 
-    static final class TableSchema {
-        static final String NAME = "log";
+    private static List<DbTable.Column<Log>> createColumns() {
+        List<DbTable.Column<Log>> columns = new ArrayList<>();
 
-        static final class Cols {
-            static final String ID = "id";
-            static final String DESC = "desc";
-            static final String DATE = "date";
-            static final String ACTION = "action";
-            static final String SUBJECT = "subject";
-        }
+        columns.add(new DbTable.Column<>(DESC, STRING, Log::getDesc,
+                (log, o) -> log.setDesc((String) o)));
+        columns.add(new DbTable.Column<>(DATE, DATE_TIME, Log::getDate,
+                (log, o) -> log.setDate((Date) o)));
+        columns.add(new DbTable.Column<>(ACTION, STRING, log -> log.getAction().toString(),
+                (log, o) -> log.setAction(Log.Action.valueOf((String) o))));
+        columns.add(new DbTable.Column<>(SUBJECT, STRING, log -> log.getSubject().toString(),
+                (log, o) -> log.setSubject(Log.Subject.valueOf((String) o))));
+
+        return columns;
     }
 }

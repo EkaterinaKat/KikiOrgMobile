@@ -1,13 +1,13 @@
 package com.katyshevtseva.kikiorgmobile.db;
 
-import static com.katyshevtseva.kikiorgmobile.db.AbstractTable.ColumnActualType.BOOLEAN;
-import static com.katyshevtseva.kikiorgmobile.db.AbstractTable.ColumnActualType.LONG;
-import static com.katyshevtseva.kikiorgmobile.db.AbstractTable.ColumnActualType.STRING;
-import static com.katyshevtseva.kikiorgmobile.db.RtSettingDao.TableSchema.Cols.ABSOLUTE_WOBS;
-import static com.katyshevtseva.kikiorgmobile.db.RtSettingDao.TableSchema.Cols.BEGIN_TIME;
-import static com.katyshevtseva.kikiorgmobile.db.RtSettingDao.TableSchema.Cols.DURATION;
-import static com.katyshevtseva.kikiorgmobile.db.RtSettingDao.TableSchema.Cols.ID;
-import static com.katyshevtseva.kikiorgmobile.db.RtSettingDao.TableSchema.Cols.RG_ID;
+import static com.katyshevtseva.kikiorgmobile.db.DbConstants.ABSOLUTE_WOBS;
+import static com.katyshevtseva.kikiorgmobile.db.DbConstants.BEGIN_TIME;
+import static com.katyshevtseva.kikiorgmobile.db.DbConstants.DURATION;
+import static com.katyshevtseva.kikiorgmobile.db.DbConstants.ID;
+import static com.katyshevtseva.kikiorgmobile.db.DbConstants.RG_ID;
+import static com.katyshevtseva.kikiorgmobile.db.DbTable.ColumnActualType.BOOLEAN;
+import static com.katyshevtseva.kikiorgmobile.db.DbTable.ColumnActualType.LONG;
+import static com.katyshevtseva.kikiorgmobile.db.DbTable.ColumnActualType.STRING;
 
 import android.database.sqlite.SQLiteDatabase;
 
@@ -18,61 +18,38 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RtSettingDao extends AbstractDao<RtSetting> {
+    static final String NAME = "rg_setting";
 
     RtSettingDao(SQLiteDatabase database) {
-        super(database, new RgSettingTable());
+        super(database, new DbTable<>(NAME, createIdColumn(), createColumns(), RtSetting::new));
     }
 
-    private static class RgSettingTable extends AbstractTable<RtSetting> {
-
-        RgSettingTable() {
-            super(TableSchema.NAME, createIdColumn(), createColumns());
-        }
-
-        @Override
-        RtSetting getNewEmptyObject() {
-            return new RtSetting();
-        }
-
-        private static Column<RtSetting> createIdColumn() {
-            return new Column<>(ID, LONG, RtSetting::getId,
-                    (rgSetting, o) -> rgSetting.setId((Long) o));
-        }
-
-        private static List<Column<RtSetting>> createColumns() {
-            List<Column<RtSetting>> columns = new ArrayList<>();
-
-            columns.add(new Column<>(RG_ID, LONG, RtSetting::getRtId,
-                    (rgSetting, o) -> rgSetting.setRtId((Long) o)));
-
-            columns.add(new Column<>(DURATION, STRING, RtSetting::getDuration,
-                    (rgSetting, o) -> {
-                        if (o != null)
-                            rgSetting.setDuration(new Time((String) o));
-                    }));
-
-            columns.add(new Column<>(BEGIN_TIME, STRING, RtSetting::getBeginTime,
-                    (rgSetting, o) -> {
-                        if (o != null)
-                            rgSetting.setBeginTime(new Time((String) o));
-                    }));
-
-            columns.add(new Column<>(ABSOLUTE_WOBS, BOOLEAN, RtSetting::isAbsoluteWobs,
-                    (rgSetting, o) -> rgSetting.setAbsoluteWobs((boolean) o)));
-
-            return columns;
-        }
+    private static DbTable.Column<RtSetting> createIdColumn() {
+        return new DbTable.Column<>(ID, LONG, RtSetting::getId,
+                (rgSetting, o) -> rgSetting.setId((Long) o));
     }
 
-    static final class TableSchema {
-        static final String NAME = "rg_setting";
+    private static List<DbTable.Column<RtSetting>> createColumns() {
+        List<DbTable.Column<RtSetting>> columns = new ArrayList<>();
 
-        static final class Cols {
-            static final String ID = "id";
-            static final String RG_ID = "rg_id";
-            static final String DURATION = "duration";
-            static final String BEGIN_TIME = "begin_time";
-            static final String ABSOLUTE_WOBS = "absolute_wobs";
-        }
+        columns.add(new DbTable.Column<>(RG_ID, LONG, RtSetting::getRtId,
+                (rgSetting, o) -> rgSetting.setRtId((Long) o)));
+
+        columns.add(new DbTable.Column<>(DURATION, STRING, RtSetting::getDuration,
+                (rgSetting, o) -> {
+                    if (o != null)
+                        rgSetting.setDuration(new Time((String) o));
+                }));
+
+        columns.add(new DbTable.Column<>(BEGIN_TIME, STRING, RtSetting::getBeginTime,
+                (rgSetting, o) -> {
+                    if (o != null)
+                        rgSetting.setBeginTime(new Time((String) o));
+                }));
+
+        columns.add(new DbTable.Column<>(ABSOLUTE_WOBS, BOOLEAN, RtSetting::isAbsoluteWobs,
+                (rgSetting, o) -> rgSetting.setAbsoluteWobs((boolean) o)));
+
+        return columns;
     }
 }
