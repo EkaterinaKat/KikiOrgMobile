@@ -54,4 +54,12 @@ public interface KomDao {
     RtSetting getRtSettingById(long id);
 
     void saveNewRtSetting(RtSetting setting);
+
+    void updateRtSetting(RtSetting setting);
+
+    void deleteRtSetting(RtSetting setting);
+
+    List<RtSetting> getAllRtSettings();
+
+    List<RtSetting> getRtSettingsByRtId(Long rtId);
 }

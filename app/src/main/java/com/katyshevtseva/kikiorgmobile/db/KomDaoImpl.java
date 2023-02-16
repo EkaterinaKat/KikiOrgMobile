@@ -3,6 +3,7 @@ package com.katyshevtseva.kikiorgmobile.db;
 import static com.katyshevtseva.kikiorgmobile.db.DbConstants.DATE;
 import static com.katyshevtseva.kikiorgmobile.db.DbConstants.DATE_FORMAT;
 import static com.katyshevtseva.kikiorgmobile.db.DbConstants.ID;
+import static com.katyshevtseva.kikiorgmobile.db.DbConstants.RT_ID;
 import static com.katyshevtseva.kikiorgmobile.db.DbConstants.TASK_ID;
 import static com.katyshevtseva.kikiorgmobile.db.DbConstants.TITLE;
 import static com.katyshevtseva.kikiorgmobile.db.DbConstants.VALUE;
@@ -102,6 +103,26 @@ public class KomDaoImpl implements KomDao {
     @Override
     public void saveNewRtSetting(RtSetting setting) {
         rtSettingDao.saveNew(setting);
+    }
+
+    @Override
+    public void updateRtSetting(RtSetting setting) {
+        rtSettingDao.update(setting, ID, "" + setting.getId());
+    }
+
+    @Override
+    public void deleteRtSetting(RtSetting setting) {
+        rtSettingDao.delete(ID, "" + setting.getId());
+    }
+
+    @Override
+    public List<RtSetting> getAllRtSettings() {
+        return rtSettingDao.findAll();
+    }
+
+    @Override
+    public List<RtSetting> getRtSettingsByRtId(Long rtId) {
+        return rtSettingDao.find(RT_ID, rtId.toString());
     }
 
     ////////////////////////////  IrregularTask  //////////////////////////////////

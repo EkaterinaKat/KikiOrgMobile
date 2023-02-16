@@ -19,7 +19,7 @@ class DbConstants {
     static final String PERIOD = "period";
     static final String ARCHIVED = "archived";
     static final String TASK_ID = "task_id";
-    static final String RG_ID = "rg_id";
+    static final String RT_ID = "rg_id";
     static final String DURATION = "duration";
     static final String BEGIN_TIME = "begin_time";
     static final String ABSOLUTE_WOBS = "absolute_wobs";

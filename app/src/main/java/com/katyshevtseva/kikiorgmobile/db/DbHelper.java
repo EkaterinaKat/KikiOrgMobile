@@ -12,7 +12,7 @@ import static com.katyshevtseva.kikiorgmobile.db.DbConstants.DURATION;
 import static com.katyshevtseva.kikiorgmobile.db.DbConstants.ID;
 import static com.katyshevtseva.kikiorgmobile.db.DbConstants.PERIOD;
 import static com.katyshevtseva.kikiorgmobile.db.DbConstants.PERIOD_TYPE;
-import static com.katyshevtseva.kikiorgmobile.db.DbConstants.RG_ID;
+import static com.katyshevtseva.kikiorgmobile.db.DbConstants.RT_ID;
 import static com.katyshevtseva.kikiorgmobile.db.DbConstants.SUBJECT;
 import static com.katyshevtseva.kikiorgmobile.db.DbConstants.TASK_ID;
 import static com.katyshevtseva.kikiorgmobile.db.DbConstants.TIME_OF_DAY;
@@ -78,7 +78,7 @@ public class DbHelper extends SQLiteOpenHelper {
 
         database.execSQL("create table " + RtSettingDao.NAME + "(" +
                 ID + " INTEGER primary key autoincrement, " +
-                RG_ID + " INTEGER, " +
+                RT_ID + " INTEGER, " +
                 DURATION + " TEXT, " +
                 BEGIN_TIME + " TEXT, " +
                 ABSOLUTE_WOBS + " INTEGER )");

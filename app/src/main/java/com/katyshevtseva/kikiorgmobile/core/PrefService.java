@@ -29,25 +29,23 @@ public class PrefService {
         return new Time(komDao.getPrefByTitle(ACTIVITY_PERIOD_END.toString()).getValue());
     }
 
-    public boolean updateStartActivityPeriodValue(int hour, int minute) {
+    public void updateStartActivityPeriodValue(int hour, int minute) throws Exception {
         if (hour >= getEndActivityPeriod().getHour()) {
-            return false;
+            throw new Exception("Некорректный интервал");
         }
 
         PrefEntity prefEntity = komDao.getPrefByTitle(ACTIVITY_PERIOD_START.toString());
         prefEntity.setValue(hour + ":" + minute);
         komDao.updatePref(prefEntity);
-        return true;
     }
 
-    public boolean updateEndActivityPeriodValue(int hour, int minute) {
+    public void updateEndActivityPeriodValue(int hour, int minute) throws Exception {
         if (hour <= getStartActivityPeriod().getHour()) {
-            return false;
+            throw new Exception("Некорректный интервал");
         }
 
         PrefEntity prefEntity = komDao.getPrefByTitle(ACTIVITY_PERIOD_END.toString());
         prefEntity.setValue(hour + ":" + minute);
         komDao.updatePref(prefEntity);
-        return true;
     }
 }

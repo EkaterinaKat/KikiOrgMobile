@@ -24,6 +24,7 @@ import com.katyshevtseva.kikiorgmobile.core.model.RtSetting;
 import com.katyshevtseva.kikiorgmobile.core.model.TaskType;
 import com.katyshevtseva.kikiorgmobile.utils.OneInKnob;
 import com.katyshevtseva.kikiorgmobile.utils.Time;
+import com.katyshevtseva.kikiorgmobile.view.utils.ViewUtils;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -33,6 +34,7 @@ public class SettingCreationActivity extends AppCompatActivity {
     private static final String EXTRA_SETTING_ID = "setting_id";
 
     private Map<TextView, Time> textViewTimeMap;
+    private RtSetting existing;
 
     private Spinner taskSpinner;
     private Spinner wobsSpinner;
@@ -41,6 +43,7 @@ public class SettingCreationActivity extends AppCompatActivity {
     private Button saveButton;
     private LinearLayout beginTimeContainer;
     private LinearLayout durationContainer;
+    private Button durationClearButton;
 
     public static Intent newIntent(Context context, @Nullable RtSetting rtSetting) {
         Intent intent = new Intent(context, SettingCreationActivity.class);
@@ -67,18 +70,19 @@ public class SettingCreationActivity extends AppCompatActivity {
         boolean intentIsEmpty = settingId == -1;
 
         if (!intentIsEmpty) {
-            RtSetting setting = SettingService.INSTANCE.getRgSettingById(settingId);
-            selectSpinnerItemByValue(taskSpinner, Service.INSTANCE.findTask(TaskType.REGULAR, setting.getRtId()));
+            existing = SettingService.INSTANCE.getRgSettingById(settingId);
+            selectSpinnerItemByValue(taskSpinner, Service.INSTANCE.findTask(TaskType.REGULAR, existing.getRtId()));
+            taskSpinner.setEnabled(false);
 
             WayOfBeginSpecifying wobs = WayOfBeginSpecifying.NONE;
-            if (setting.getBeginTime() != null) {
-                wobs = setting.isAbsoluteWobs() ? WayOfBeginSpecifying.ABSOLUTE : WayOfBeginSpecifying.RELATIVE;
-                setTime(beginView, setting.getBeginTime());
+            if (existing.getBeginTime() != null) {
+                wobs = existing.isAbsoluteWobs() ? WayOfBeginSpecifying.ABSOLUTE : WayOfBeginSpecifying.RELATIVE;
+                setTime(beginView, existing.getBeginTime());
             }
             selectSpinnerItemByValue(wobsSpinner, wobs);
 
-            if (setting.getDuration() != null)
-                setTime(durationView, setting.getDuration());
+            if (existing.getDuration() != null)
+                setTime(durationView, existing.getDuration());
         }
     }
 
@@ -92,6 +96,11 @@ public class SettingCreationActivity extends AppCompatActivity {
 
         durationContainer.setOnClickListener(view -> openTimePicker(durationView));
         beginTimeContainer.setOnClickListener(view -> openTimePicker(beginView));
+
+        durationClearButton.setOnClickListener(view -> {
+            setTime(durationView, null);
+            setSaveButtonAccessibility();
+        });
     }
 
     private void openTimePicker(TextView textView) {
@@ -118,13 +127,24 @@ public class SettingCreationActivity extends AppCompatActivity {
             case ABSOLUTE:
                 beginTimeContainer.setVisibility(View.VISIBLE);
         }
+        setSaveButtonAccessibility();
     };
 
     private void saveSetting() {
-        SettingService.INSTANCE.saveNewRgSetting((RegularTask) taskSpinner.getSelectedItem(),
-                textViewTimeMap.get(durationView), textViewTimeMap.get(beginView),
-                wobsSpinner.getSelectedItem() == WayOfBeginSpecifying.ABSOLUTE);
-        finish();
+        if (existing != null) {
+            SettingService.INSTANCE.editRtSetting(existing, textViewTimeMap.get(durationView), textViewTimeMap.get(beginView),
+                    wobsSpinner.getSelectedItem() == WayOfBeginSpecifying.ABSOLUTE);
+            finish();
+        } else {
+            try {
+                SettingService.INSTANCE.saveNewRgSetting((RegularTask) taskSpinner.getSelectedItem(),
+                        textViewTimeMap.get(durationView), textViewTimeMap.get(beginView),
+                        wobsSpinner.getSelectedItem() == WayOfBeginSpecifying.ABSOLUTE);
+                finish();
+            } catch (Exception e) {
+                ViewUtils.showAlertDialog(this, e.getMessage());
+            }
+        }
     }
 
     private void setSaveButtonAccessibility() {
@@ -142,6 +162,7 @@ public class SettingCreationActivity extends AppCompatActivity {
         saveButton = findViewById(R.id.save_button);
         beginTimeContainer = findViewById(R.id.begin_time_container);
         durationContainer = findViewById(R.id.duration_container);
+        durationClearButton = findViewById(R.id.duration_clear_button);
     }
 
     private void initializeTextViewTimeMap() {

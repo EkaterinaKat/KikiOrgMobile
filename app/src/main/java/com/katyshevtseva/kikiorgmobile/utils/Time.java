@@ -11,12 +11,16 @@ public class Time {
     public Time(String s) {
         this.s = s;
 
-        String[] strings = s.split(":");
-        if (strings.length != 2) {
-            throw new RuntimeException("Ошибка при парсинге строки времени");
+        try {
+            String[] strings = s.split(":");
+            if (strings.length != 2) {
+                throw new RuntimeException();
+            }
+            hour = Integer.parseInt(strings[0]);
+            minute = Integer.parseInt(strings[1]);
+        } catch (Exception e) {
+            throw new RuntimeException("Ошибка при парсинге строки времени: " + s);
         }
-        hour = Integer.parseInt(strings[0]);
-        minute = Integer.parseInt(strings[1]);
     }
 
     public Time(int hour, int minute) {

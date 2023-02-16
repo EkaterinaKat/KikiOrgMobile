@@ -4,7 +4,7 @@ import static com.katyshevtseva.kikiorgmobile.db.DbConstants.ABSOLUTE_WOBS;
 import static com.katyshevtseva.kikiorgmobile.db.DbConstants.BEGIN_TIME;
 import static com.katyshevtseva.kikiorgmobile.db.DbConstants.DURATION;
 import static com.katyshevtseva.kikiorgmobile.db.DbConstants.ID;
-import static com.katyshevtseva.kikiorgmobile.db.DbConstants.RG_ID;
+import static com.katyshevtseva.kikiorgmobile.db.DbConstants.RT_ID;
 import static com.katyshevtseva.kikiorgmobile.db.DbTable.ColumnActualType.BOOLEAN;
 import static com.katyshevtseva.kikiorgmobile.db.DbTable.ColumnActualType.LONG;
 import static com.katyshevtseva.kikiorgmobile.db.DbTable.ColumnActualType.STRING;
@@ -32,19 +32,23 @@ public class RtSettingDao extends AbstractDao<RtSetting> {
     private static List<DbTable.Column<RtSetting>> createColumns() {
         List<DbTable.Column<RtSetting>> columns = new ArrayList<>();
 
-        columns.add(new DbTable.Column<>(RG_ID, LONG, RtSetting::getRtId,
+        columns.add(new DbTable.Column<>(RT_ID, LONG, RtSetting::getRtId,
                 (rgSetting, o) -> rgSetting.setRtId((Long) o)));
 
-        columns.add(new DbTable.Column<>(DURATION, STRING, RtSetting::getDuration,
+        columns.add(new DbTable.Column<>(DURATION, STRING,
+                rtSetting -> rtSetting.getDuration() != null ? rtSetting.getDuration().getS() : null,
                 (rgSetting, o) -> {
-                    if (o != null)
+                    if (o != null && !o.equals("null")) {
                         rgSetting.setDuration(new Time((String) o));
+                    }
                 }));
 
-        columns.add(new DbTable.Column<>(BEGIN_TIME, STRING, RtSetting::getBeginTime,
+        columns.add(new DbTable.Column<>(BEGIN_TIME, STRING,
+                rtSetting -> rtSetting.getBeginTime() != null ? rtSetting.getBeginTime().getS() : null,
                 (rgSetting, o) -> {
-                    if (o != null)
+                    if (o != null && !o.equals("null")) {
                         rgSetting.setBeginTime(new Time((String) o));
+                    }
                 }));
 
         columns.add(new DbTable.Column<>(ABSOLUTE_WOBS, BOOLEAN, RtSetting::isAbsoluteWobs,

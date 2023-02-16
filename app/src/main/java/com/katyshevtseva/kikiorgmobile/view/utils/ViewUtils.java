@@ -1,5 +1,6 @@
 package com.katyshevtseva.kikiorgmobile.view.utils;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -19,6 +20,12 @@ import java.util.Date;
 import java.util.List;
 
 public class ViewUtils {
+
+    public static void showAlertDialog(Context context, String text) {
+        new AlertDialog.Builder(context).setTitle(text)
+                .setPositiveButton("ОК", (dialog, id) -> dialog.cancel()).create().show();
+    }
+
     public static <T> void adjustSpinner(Context context, Spinner spinner,
                                          final List<T> items, final OneInKnob<T> spinnerListener) {
         ArrayAdapter<T> adapter = new ArrayAdapter<>(context, android.R.layout.simple_spinner_item, items);

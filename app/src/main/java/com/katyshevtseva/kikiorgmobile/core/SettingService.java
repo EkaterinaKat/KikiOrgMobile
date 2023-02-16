@@ -7,6 +7,8 @@ import com.katyshevtseva.kikiorgmobile.core.model.RtSetting;
 import com.katyshevtseva.kikiorgmobile.db.KomDaoImpl;
 import com.katyshevtseva.kikiorgmobile.utils.Time;
 
+import java.util.List;
+
 public class SettingService {
     public static SettingService INSTANCE;
     private final KomDao komDao;
@@ -23,7 +25,37 @@ public class SettingService {
         return komDao.getRtSettingById(id);
     }
 
-    public void saveNewRgSetting(RegularTask regularTask, Time duration, Time beginTime, boolean absoluteWobs) {
+    public void saveNewRgSetting(RegularTask regularTask, Time duration, Time beginTime, boolean absoluteWobs) throws Exception {
+        if (komDao.getRtSettingsByRtId(regularTask.getId()).size() > 0) {
+            throw new Exception("Настройка для этой задачи уже существует");
+        }
         komDao.saveNewRtSetting(new RtSetting(regularTask.getId(), duration, beginTime, absoluteWobs));
+    }
+
+    public List<RtSetting> getAllRtSettings() {
+        return komDao.getAllRtSettings();
+    }
+
+    public void editRtSetting(RtSetting setting, Time duration, Time beginTime, boolean absoluteWobs) {
+        setting.setDuration(duration);
+        setting.setBeginTime(beginTime);
+        setting.setAbsoluteWobs(absoluteWobs);
+        komDao.updateRtSetting(setting);
+    }
+
+    public void deleteRtSetting(RtSetting setting) {
+        komDao.deleteRtSetting(setting);
+    }
+
+    public String getRtSettingDesc(RtSetting setting) {
+        RegularTask task = komDao.getRegularTaskById(setting.getRtId());
+        String result = task.getTitle();
+        if (setting.getDuration() != null) {
+            result += ("\nDuration: " + setting.getDuration().getS());
+        }
+        if (setting.getBeginTime() != null) {
+            result += ("\nBegin: " + setting.getBeginTime().getS() + (setting.isAbsoluteWobs() ? " abs" : " rel"));
+        }
+        return result;
     }
 }
