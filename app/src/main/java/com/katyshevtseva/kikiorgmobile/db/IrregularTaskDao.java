@@ -11,7 +11,7 @@ import static com.katyshevtseva.kikiorgmobile.db.DbTable.ColumnActualType.STRING
 import android.database.sqlite.SQLiteDatabase;
 
 import com.katyshevtseva.kikiorgmobile.core.model.IrregularTask;
-import com.katyshevtseva.kikiorgmobile.core.model.TimeOfDay;
+import com.katyshevtseva.kikiorgmobile.core.enums.TimeOfDay;
 
 import java.util.ArrayList;
 import java.util.Date;

@@ -26,11 +26,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.kikiorgmobile.R;
 import com.katyshevtseva.kikiorgmobile.core.Service;
 import com.katyshevtseva.kikiorgmobile.core.model.IrregularTask;
-import com.katyshevtseva.kikiorgmobile.core.model.PeriodType;
+import com.katyshevtseva.kikiorgmobile.core.enums.PeriodType;
 import com.katyshevtseva.kikiorgmobile.core.model.RegularTask;
 import com.katyshevtseva.kikiorgmobile.core.model.Task;
-import com.katyshevtseva.kikiorgmobile.core.model.TaskType;
-import com.katyshevtseva.kikiorgmobile.core.model.TimeOfDay;
+import com.katyshevtseva.kikiorgmobile.core.enums.TaskType;
+import com.katyshevtseva.kikiorgmobile.core.enums.TimeOfDay;
 import com.katyshevtseva.kikiorgmobile.utils.OneInKnob;
 import com.katyshevtseva.kikiorgmobile.view.utils.FragmentUpdateListener;
 

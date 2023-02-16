@@ -13,7 +13,7 @@ import androidx.fragment.app.DialogFragment;
 import com.example.kikiorgmobile.R;
 import com.katyshevtseva.kikiorgmobile.core.Service;
 import com.katyshevtseva.kikiorgmobile.core.model.DatelessTask;
-import com.katyshevtseva.kikiorgmobile.view.utils.NoArgKnob;
+import com.katyshevtseva.kikiorgmobile.utils.NoArgKnob;
 
 public class DatelessTaskEditDialog extends DialogFragment {
     private final DatelessTask datelessTask;

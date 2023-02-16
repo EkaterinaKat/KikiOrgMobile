@@ -29,7 +29,7 @@ public class SettingService {
         if (komDao.getRtSettingsByRtId(regularTask.getId()).size() > 0) {
             throw new Exception("Настройка для этой задачи уже существует");
         }
-        komDao.saveNewRtSetting(new RtSetting(regularTask.getId(), duration, beginTime, absoluteWobs));
+        komDao.saveNew(new RtSetting(regularTask.getId(), duration, beginTime, absoluteWobs));
     }
 
     public List<RtSetting> getAllRtSettings() {
@@ -40,11 +40,11 @@ public class SettingService {
         setting.setDuration(duration);
         setting.setBeginTime(beginTime);
         setting.setAbsoluteWobs(absoluteWobs);
-        komDao.updateRtSetting(setting);
+        komDao.update(setting);
     }
 
     public void deleteRtSetting(RtSetting setting) {
-        komDao.deleteRtSetting(setting);
+        komDao.delete(setting);
     }
 
     public String getRtSettingDesc(RtSetting setting) {

@@ -2,6 +2,8 @@ package com.katyshevtseva.kikiorgmobile.core.model;
 
 import static com.katyshevtseva.kikiorgmobile.utils.DateUtils.getDateTimeString;
 
+import com.katyshevtseva.kikiorgmobile.db.Entity;
+
 import java.util.Date;
 
 import lombok.AllArgsConstructor;
@@ -11,7 +13,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Log {
+public class Log implements Entity {
     private long id;
     private Date date;
     private Action action;

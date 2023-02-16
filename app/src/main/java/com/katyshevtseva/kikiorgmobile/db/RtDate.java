@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-class RtDate {
+class RtDate implements Entity {
     private long id;
     private long regularTaskId;
     private Date value;

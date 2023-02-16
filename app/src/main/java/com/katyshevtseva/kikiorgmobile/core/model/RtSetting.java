@@ -1,5 +1,6 @@
 package com.katyshevtseva.kikiorgmobile.core.model;
 
+import com.katyshevtseva.kikiorgmobile.db.Entity;
 import com.katyshevtseva.kikiorgmobile.utils.Time;
 
 import lombok.Data;
@@ -7,7 +8,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class RtSetting {
+public class RtSetting implements Entity {
     private long id;
 
     private long rtId;

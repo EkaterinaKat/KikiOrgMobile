@@ -1,4 +1,4 @@
-package com.katyshevtseva.kikiorgmobile.core.model;
+package com.katyshevtseva.kikiorgmobile.core.enums;
 
 public enum TaskType {
     REGULAR(1), IRREGULAR(2);

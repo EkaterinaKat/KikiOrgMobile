@@ -18,7 +18,7 @@ import com.katyshevtseva.kikiorgmobile.core.Service;
 import com.katyshevtseva.kikiorgmobile.core.model.IrregularTask;
 import com.katyshevtseva.kikiorgmobile.core.model.RegularTask;
 import com.katyshevtseva.kikiorgmobile.core.model.Task;
-import com.katyshevtseva.kikiorgmobile.view.utils.NoArgKnob;
+import com.katyshevtseva.kikiorgmobile.utils.NoArgKnob;
 
 import java.util.Date;
 

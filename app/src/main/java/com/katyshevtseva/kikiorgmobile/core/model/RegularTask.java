@@ -1,5 +1,9 @@
 package com.katyshevtseva.kikiorgmobile.core.model;
 
+import com.katyshevtseva.kikiorgmobile.core.enums.PeriodType;
+import com.katyshevtseva.kikiorgmobile.core.enums.TaskType;
+import com.katyshevtseva.kikiorgmobile.core.enums.TimeOfDay;
+import com.katyshevtseva.kikiorgmobile.db.Entity;
 import com.katyshevtseva.kikiorgmobile.utils.DateUtils;
 
 import java.util.ArrayList;
@@ -13,7 +17,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class RegularTask implements Task {
+public class RegularTask implements Task, Entity {
     private long id;
     private String title;
     private String desc;

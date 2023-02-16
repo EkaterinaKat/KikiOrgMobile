@@ -36,7 +36,7 @@ public class PrefService {
 
         PrefEntity prefEntity = komDao.getPrefByTitle(ACTIVITY_PERIOD_START.toString());
         prefEntity.setValue(hour + ":" + minute);
-        komDao.updatePref(prefEntity);
+        komDao.update(prefEntity);
     }
 
     public void updateEndActivityPeriodValue(int hour, int minute) throws Exception {
@@ -46,6 +46,6 @@ public class PrefService {
 
         PrefEntity prefEntity = komDao.getPrefByTitle(ACTIVITY_PERIOD_END.toString());
         prefEntity.setValue(hour + ":" + minute);
-        komDao.updatePref(prefEntity);
+        komDao.update(prefEntity);
     }
 }

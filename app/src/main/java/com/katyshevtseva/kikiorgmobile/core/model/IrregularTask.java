@@ -2,6 +2,9 @@ package com.katyshevtseva.kikiorgmobile.core.model;
 
 import static com.katyshevtseva.kikiorgmobile.utils.DateUtils.getDateString;
 
+import com.katyshevtseva.kikiorgmobile.core.enums.TaskType;
+import com.katyshevtseva.kikiorgmobile.core.enums.TimeOfDay;
+import com.katyshevtseva.kikiorgmobile.db.Entity;
 import com.katyshevtseva.kikiorgmobile.utils.DateUtils;
 
 import java.util.Date;
@@ -13,7 +16,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class IrregularTask implements Task {
+public class IrregularTask implements Task, Entity {
     private long id;
     private String title;
     private String desc;

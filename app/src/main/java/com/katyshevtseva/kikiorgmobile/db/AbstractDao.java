@@ -1,10 +1,13 @@
 package com.katyshevtseva.kikiorgmobile.db;
 
+import static com.katyshevtseva.kikiorgmobile.db.DbConstants.ID;
+
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.CursorWrapper;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.katyshevtseva.kikiorgmobile.core.model.DatelessTask;
 import com.katyshevtseva.kikiorgmobile.db.DbTable.Column;
 
 import java.util.ArrayList;
@@ -13,7 +16,7 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-abstract class AbstractDao<T> {
+abstract class AbstractDao<T extends Entity> {
     protected final SQLiteDatabase database;
     private final DbTable<T> table;
 
@@ -62,6 +65,10 @@ abstract class AbstractDao<T> {
         return result;
     }
 
+    public void update(T t) {
+        update(t, ID, "" + t.getId());
+    }
+
     void update(T t, String columnName, String value) {
         ContentValues values = getContentValues(t);
         String selection = columnName + "=?";
@@ -71,6 +78,10 @@ abstract class AbstractDao<T> {
                 values,
                 selection,
                 selectionArgs);
+    }
+
+    public void delete(T t) {
+        delete(ID, "" + t.getId());
     }
 
     void delete(String columnName, String value) {

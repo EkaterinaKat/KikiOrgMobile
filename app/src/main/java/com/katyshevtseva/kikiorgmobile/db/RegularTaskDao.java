@@ -14,9 +14,9 @@ import static com.katyshevtseva.kikiorgmobile.db.DbTable.ColumnActualType.STRING
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.katyshevtseva.kikiorgmobile.core.model.PeriodType;
+import com.katyshevtseva.kikiorgmobile.core.enums.PeriodType;
 import com.katyshevtseva.kikiorgmobile.core.model.RegularTask;
-import com.katyshevtseva.kikiorgmobile.core.model.TimeOfDay;
+import com.katyshevtseva.kikiorgmobile.core.enums.TimeOfDay;
 
 import java.util.ArrayList;
 import java.util.List;

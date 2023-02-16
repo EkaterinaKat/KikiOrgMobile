@@ -21,7 +21,9 @@ import com.katyshevtseva.kikiorgmobile.core.model.RtSetting;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class KomDaoImpl implements KomDao {
     private final IrregularTaskDao irregularTaskDao;
@@ -46,7 +48,7 @@ public class KomDaoImpl implements KomDao {
     ////////////////////////////  DatelessTask  //////////////////////////////////
 
     @Override
-    public void saveNewDatelessTask(DatelessTask datelessTask) {
+    public void saveNew(DatelessTask datelessTask) {
         datelessTaskDao.saveNew(datelessTask);
     }
 
@@ -56,19 +58,19 @@ public class KomDaoImpl implements KomDao {
     }
 
     @Override
-    public void updateDatelessTask(DatelessTask datelessTask) {
-        datelessTaskDao.update(datelessTask, ID, "" + datelessTask.getId());
+    public void update(DatelessTask datelessTask) {
+        datelessTaskDao.update(datelessTask);
     }
 
     @Override
-    public void deleteDatelessTask(DatelessTask datelessTask) {
-        datelessTaskDao.delete(ID, "" + datelessTask.getId());
+    public void delete(DatelessTask datelessTask) {
+        datelessTaskDao.delete(datelessTask);
     }
 
     ////////////////////////////  Log  //////////////////////////////////
 
     @Override
-    public void saveNewLog(Log log) {
+    public void saveNew(Log log) {
         logDao.saveNew(log);
     }
 
@@ -89,8 +91,8 @@ public class KomDaoImpl implements KomDao {
     }
 
     @Override
-    public void updatePref(PrefEntity pref) {
-        prefDao.update(pref, ID, "" + pref.getId());
+    public void update(PrefEntity pref) {
+        prefDao.update(pref);
     }
 
     ////////////////////////////  Setting  //////////////////////////////////
@@ -101,18 +103,18 @@ public class KomDaoImpl implements KomDao {
     }
 
     @Override
-    public void saveNewRtSetting(RtSetting setting) {
+    public void saveNew(RtSetting setting) {
         rtSettingDao.saveNew(setting);
     }
 
     @Override
-    public void updateRtSetting(RtSetting setting) {
-        rtSettingDao.update(setting, ID, "" + setting.getId());
+    public void update(RtSetting setting) {
+        rtSettingDao.update(setting);
     }
 
     @Override
-    public void deleteRtSetting(RtSetting setting) {
-        rtSettingDao.delete(ID, "" + setting.getId());
+    public void delete(RtSetting setting) {
+        rtSettingDao.delete(setting);
     }
 
     @Override
@@ -128,7 +130,7 @@ public class KomDaoImpl implements KomDao {
     ////////////////////////////  IrregularTask  //////////////////////////////////
 
     @Override
-    public void saveNewIrregularTask(IrregularTask irregularTask) {
+    public void saveNew(IrregularTask irregularTask) {
         irregularTaskDao.saveNew(irregularTask);
     }
 
@@ -143,13 +145,13 @@ public class KomDaoImpl implements KomDao {
     }
 
     @Override
-    public void updateIrregularTask(IrregularTask irregularTask) {
-        irregularTaskDao.update(irregularTask, ID, "" + irregularTask.getId());
+    public void update(IrregularTask irregularTask) {
+        irregularTaskDao.update(irregularTask);
     }
 
     @Override
-    public void deleteIrregularTask(IrregularTask irregularTask) {
-        irregularTaskDao.delete(ID, "" + irregularTask.getId());
+    public void delete(IrregularTask irregularTask) {
+        irregularTaskDao.delete(irregularTask);
     }
 
     @Override
@@ -160,7 +162,7 @@ public class KomDaoImpl implements KomDao {
     ////////////////////////////  RegularTask  //////////////////////////////////
 
     @Override
-    public void saveNewRegularTask(RegularTask regularTask) {
+    public void saveNew(RegularTask regularTask) {
         regularTaskDao.saveNew(regularTask);
         for (Date date : regularTask.getDates()) {
             rtDateDao.saveNew(RtDate.builder().regularTaskId(regularTaskDao.getLastInsertedId()).value(date).build());
@@ -190,18 +192,12 @@ public class KomDaoImpl implements KomDao {
     }
 
     @Override
-    public void updateRegularTask(RegularTask regularTask) {
+    public void update(RegularTask regularTask) {
         rtDateDao.delete(TASK_ID, "" + regularTask.getId());
         for (Date date : regularTask.getDates()) {
             rtDateDao.saveNew(RtDate.builder().regularTaskId(regularTask.getId()).value(date).build());
         }
-        regularTaskDao.update(regularTask, ID, "" + regularTask.getId());
-    }
-
-    @Override
-    public void deleteRegularTask(RegularTask regularTask) {
-        rtDateDao.delete(TASK_ID, "" + regularTask.getId());
-        regularTaskDao.delete(ID, "" + regularTask.getId());
+        regularTaskDao.update(regularTask);
     }
 
     @Override

@@ -1,4 +1,4 @@
-package com.katyshevtseva.kikiorgmobile.core.model;
+package com.katyshevtseva.kikiorgmobile.core.enums;
 
 public enum TimeOfDay {
     MORNING(1), AFTERNOON(2), EVENING(3);

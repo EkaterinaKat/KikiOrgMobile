@@ -21,7 +21,7 @@ import com.katyshevtseva.kikiorgmobile.core.Service;
 import com.katyshevtseva.kikiorgmobile.core.SettingService;
 import com.katyshevtseva.kikiorgmobile.core.model.RegularTask;
 import com.katyshevtseva.kikiorgmobile.core.model.RtSetting;
-import com.katyshevtseva.kikiorgmobile.core.model.TaskType;
+import com.katyshevtseva.kikiorgmobile.core.enums.TaskType;
 import com.katyshevtseva.kikiorgmobile.utils.OneInKnob;
 import com.katyshevtseva.kikiorgmobile.utils.Time;
 import com.katyshevtseva.kikiorgmobile.view.utils.ViewUtils;
