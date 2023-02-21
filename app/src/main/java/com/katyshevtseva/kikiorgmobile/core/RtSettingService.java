@@ -9,15 +9,15 @@ import com.katyshevtseva.kikiorgmobile.utils.Time;
 
 import java.util.List;
 
-public class SettingService {
-    public static SettingService INSTANCE;
+public class RtSettingService {
+    public static RtSettingService INSTANCE;
     private final KomDao komDao;
 
     public static void init(Context context) {
-        INSTANCE = new SettingService(context);
+        INSTANCE = new RtSettingService(context);
     }
 
-    private SettingService(Context context) {
+    private RtSettingService(Context context) {
         this.komDao = new KomDaoImpl(context);
     }
 
@@ -30,6 +30,17 @@ public class SettingService {
             throw new Exception("Настройка для этой задачи уже существует");
         }
         komDao.saveNew(new RtSetting(regularTask.getId(), duration, beginTime, absoluteWobs));
+    }
+
+    public RtSetting getRtSettingOrNull(RegularTask task) {
+        List<RtSetting> settings = komDao.getRtSettingsByRtId(task.getId());
+        if (settings.size() > 1) {
+            throw new RuntimeException();
+        }
+        if (settings.size() == 1) {
+            return settings.get(0);
+        }
+        return null;
     }
 
     public List<RtSetting> getAllRtSettings() {

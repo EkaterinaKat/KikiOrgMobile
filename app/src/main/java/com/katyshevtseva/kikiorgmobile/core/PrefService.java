@@ -21,16 +21,16 @@ public class PrefService {
         this.komDao = new KomDaoImpl(context);
     }
 
-    public Time getStartActivityPeriod() {
+    public Time getActivityStart() {
         return new Time(komDao.getPrefByTitle(ACTIVITY_PERIOD_START.toString()).getValue());
     }
 
-    public Time getEndActivityPeriod() {
+    public Time getActivityEnd() {
         return new Time(komDao.getPrefByTitle(ACTIVITY_PERIOD_END.toString()).getValue());
     }
 
     public void updateStartActivityPeriodValue(int hour, int minute) throws Exception {
-        if (hour >= getEndActivityPeriod().getHour()) {
+        if (hour >= getActivityEnd().getHour()) {
             throw new Exception("Некорректный интервал");
         }
 
@@ -40,7 +40,7 @@ public class PrefService {
     }
 
     public void updateEndActivityPeriodValue(int hour, int minute) throws Exception {
-        if (hour <= getStartActivityPeriod().getHour()) {
+        if (hour <= getActivityStart().getHour()) {
             throw new Exception("Некорректный интервал");
         }
 

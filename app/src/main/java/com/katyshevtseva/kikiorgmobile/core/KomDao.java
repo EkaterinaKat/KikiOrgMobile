@@ -1,8 +1,10 @@
 package com.katyshevtseva.kikiorgmobile.core;
 
+import com.katyshevtseva.kikiorgmobile.core.enums.TaskType;
 import com.katyshevtseva.kikiorgmobile.core.model.DatelessTask;
 import com.katyshevtseva.kikiorgmobile.core.model.IrregularTask;
 import com.katyshevtseva.kikiorgmobile.core.model.Log;
+import com.katyshevtseva.kikiorgmobile.core.model.OneDaySetting;
 import com.katyshevtseva.kikiorgmobile.core.model.PrefEntity;
 import com.katyshevtseva.kikiorgmobile.core.model.RegularTask;
 import com.katyshevtseva.kikiorgmobile.core.model.RtSetting;
@@ -60,4 +62,10 @@ public interface KomDao {
     List<RtSetting> getAllRtSettings();
 
     List<RtSetting> getRtSettingsByRtId(Long rtId);
+
+    List<OneDaySetting> findOneDaySetting(long taskId, TaskType taskType, Date date);
+
+    void saveNew(OneDaySetting setting);
+
+    List<OneDaySetting> getAllOneDaySettings();
 }

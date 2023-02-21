@@ -4,37 +4,35 @@ import com.katyshevtseva.kikiorgmobile.core.enums.TaskType;
 import com.katyshevtseva.kikiorgmobile.db.Entity;
 import com.katyshevtseva.kikiorgmobile.utils.Time;
 
+import java.util.Date;
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class RtSetting implements Entity, Setting {
+public class OneDaySetting implements Entity, Setting {
     private long id;
 
-    private long rtId;
+    private long taskId;
+
+    private TaskType taskType;
 
     private Time duration;
 
     private Time beginTime;
 
-    private boolean absoluteWobs;
+    private Date date;
 
-    public RtSetting(long rtId, Time duration, Time beginTime, boolean absoluteWobs) {
-        this.rtId = rtId;
+    public OneDaySetting(long taskId, TaskType taskType, Time duration, Time beginTime) {
+        this.taskId = taskId;
+        this.taskType = taskType;
         this.duration = duration;
         this.beginTime = beginTime;
-        this.absoluteWobs = absoluteWobs;
     }
 
     @Override
-    public TaskType getTaskType() {
-        return TaskType.REGULAR;
+    public boolean isAbsoluteWobs() {
+        return true;
     }
-
-    @Override
-    public long getTaskId() {
-        return rtId;
-    }
-
 }

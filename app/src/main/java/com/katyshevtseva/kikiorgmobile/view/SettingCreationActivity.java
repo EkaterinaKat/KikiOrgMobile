@@ -17,11 +17,11 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.kikiorgmobile.R;
+import com.katyshevtseva.kikiorgmobile.core.RtSettingService;
 import com.katyshevtseva.kikiorgmobile.core.Service;
-import com.katyshevtseva.kikiorgmobile.core.SettingService;
+import com.katyshevtseva.kikiorgmobile.core.enums.TaskType;
 import com.katyshevtseva.kikiorgmobile.core.model.RegularTask;
 import com.katyshevtseva.kikiorgmobile.core.model.RtSetting;
-import com.katyshevtseva.kikiorgmobile.core.enums.TaskType;
 import com.katyshevtseva.kikiorgmobile.utils.OneInKnob;
 import com.katyshevtseva.kikiorgmobile.utils.Time;
 import com.katyshevtseva.kikiorgmobile.view.utils.ViewUtils;
@@ -70,7 +70,7 @@ public class SettingCreationActivity extends AppCompatActivity {
         boolean intentIsEmpty = settingId == -1;
 
         if (!intentIsEmpty) {
-            existing = SettingService.INSTANCE.getRgSettingById(settingId);
+            existing = RtSettingService.INSTANCE.getRgSettingById(settingId);
             selectSpinnerItemByValue(taskSpinner, Service.INSTANCE.findTask(TaskType.REGULAR, existing.getRtId()));
             taskSpinner.setEnabled(false);
 
@@ -132,12 +132,12 @@ public class SettingCreationActivity extends AppCompatActivity {
 
     private void saveSetting() {
         if (existing != null) {
-            SettingService.INSTANCE.editRtSetting(existing, textViewTimeMap.get(durationView), textViewTimeMap.get(beginView),
+            RtSettingService.INSTANCE.editRtSetting(existing, textViewTimeMap.get(durationView), textViewTimeMap.get(beginView),
                     wobsSpinner.getSelectedItem() == WayOfBeginSpecifying.ABSOLUTE);
             finish();
         } else {
             try {
-                SettingService.INSTANCE.saveNewRgSetting((RegularTask) taskSpinner.getSelectedItem(),
+                RtSettingService.INSTANCE.saveNewRgSetting((RegularTask) taskSpinner.getSelectedItem(),
                         textViewTimeMap.get(durationView), textViewTimeMap.get(beginView),
                         wobsSpinner.getSelectedItem() == WayOfBeginSpecifying.ABSOLUTE);
                 finish();

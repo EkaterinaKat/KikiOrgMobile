@@ -7,7 +7,6 @@ import android.database.Cursor;
 import android.database.CursorWrapper;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.katyshevtseva.kikiorgmobile.core.model.DatelessTask;
 import com.katyshevtseva.kikiorgmobile.db.DbTable.Column;
 
 import java.util.ArrayList;
@@ -51,9 +50,18 @@ abstract class AbstractDao<T extends Entity> {
     }
 
     List<T> find(String columnName, String value) {
+        return find(new String[]{columnName}, new String[]{value});
+    }
+
+    List<T> find(String[] columnNames, String[] values) {
+        StringBuilder selection = new StringBuilder(columnNames[0]).append(" = ?");
+        for (int i = 1; i < columnNames.length; i++) {
+            selection.append(" and ").append(columnNames[i]).append(" = ?");
+        }
+
         List<T> result = new ArrayList<>();
-        Cursor cursor = database.query(table.getName(), null, columnName + "=?",
-                new String[]{"" + value}, null, null, null, null);
+        Cursor cursor = database.query(table.getName(), null, selection.toString(),
+                values, null, null, null, null);
 
         try (KomCursorWrapper cursorWrapper = new KomCursorWrapper(cursor)) {
             cursorWrapper.moveToFirst();

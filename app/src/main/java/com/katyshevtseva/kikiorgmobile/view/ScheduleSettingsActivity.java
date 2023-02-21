@@ -61,8 +61,8 @@ public class ScheduleSettingsActivity extends AppCompatActivity {
     }
 
     private void setTimeViewsValues() {
-        apStart = PrefService.INSTANCE.getStartActivityPeriod();
-        apEnd = PrefService.INSTANCE.getEndActivityPeriod();
+        apStart = PrefService.INSTANCE.getActivityStart();
+        apEnd = PrefService.INSTANCE.getActivityEnd();
 
         apStartView.setText(apStart.getS());
         apEndView.setText(apEnd.getS());

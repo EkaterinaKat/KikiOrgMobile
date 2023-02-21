@@ -15,6 +15,7 @@ import static com.katyshevtseva.kikiorgmobile.db.DbConstants.PERIOD_TYPE;
 import static com.katyshevtseva.kikiorgmobile.db.DbConstants.RT_ID;
 import static com.katyshevtseva.kikiorgmobile.db.DbConstants.SUBJECT;
 import static com.katyshevtseva.kikiorgmobile.db.DbConstants.TASK_ID;
+import static com.katyshevtseva.kikiorgmobile.db.DbConstants.TASK_TYPE;
 import static com.katyshevtseva.kikiorgmobile.db.DbConstants.TIME_OF_DAY;
 import static com.katyshevtseva.kikiorgmobile.db.DbConstants.TITLE;
 import static com.katyshevtseva.kikiorgmobile.db.DbConstants.VALUE;
@@ -25,7 +26,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 public class DbHelper extends SQLiteOpenHelper {
-    private static final int VERSION = 19;
+    private static final int VERSION = 20;
     private static final String DATABASE_NAME = "kom.db";
 
     DbHelper(Context context) {
@@ -82,6 +83,14 @@ public class DbHelper extends SQLiteOpenHelper {
                 DURATION + " TEXT, " +
                 BEGIN_TIME + " TEXT, " +
                 ABSOLUTE_WOBS + " INTEGER )");
+
+        database.execSQL("create table " + OneDaySettingDao.NAME + "(" +
+                ID + " INTEGER primary key autoincrement, " +
+                TASK_ID + " INTEGER, " +
+                TASK_TYPE + " INTEGER, " +
+                DURATION + " TEXT, " +
+                BEGIN_TIME + " TEXT, " +
+                DATE + " TEXT )");
     }
 
     @Override

@@ -11,7 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.kikiorgmobile.R;
-import com.katyshevtseva.kikiorgmobile.core.SettingService;
+import com.katyshevtseva.kikiorgmobile.core.RtSettingService;
 import com.katyshevtseva.kikiorgmobile.core.model.RtSetting;
 import com.katyshevtseva.kikiorgmobile.view.QuestionDialog;
 import com.katyshevtseva.kikiorgmobile.view.SettingCreationActivity;
@@ -32,7 +32,7 @@ public class SettingRecycleView {
 
         void bind(RtSetting setting) {
             ((TextView) itemView.findViewById(R.id.setting_desc_view))
-                    .setText(SettingService.INSTANCE.getRtSettingDesc(setting));
+                    .setText(RtSettingService.INSTANCE.getRtSettingDesc(setting));
             itemView.findViewById(R.id.edit_setting_button).setOnClickListener(view ->
                     context.startActivity(SettingCreationActivity.newIntent(context, setting)));
             itemView.findViewById(R.id.delete_setting_button).setOnClickListener(view ->
@@ -43,7 +43,7 @@ public class SettingRecycleView {
         private QuestionDialog.AnswerHandler getDeletionDialogAnswerHandler(final RtSetting setting) {
             return answer -> {
                 if (answer) {
-                    SettingService.INSTANCE.deleteRtSetting(setting);
+                    RtSettingService.INSTANCE.deleteRtSetting(setting);
                     Toast.makeText(context, "Deleted!", Toast.LENGTH_LONG).show();
                     settingListAdapter.updateContent();
                 }
@@ -79,7 +79,7 @@ public class SettingRecycleView {
         }
 
         public void updateContent() {
-            settings = SettingService.INSTANCE.getAllRtSettings();
+            settings = RtSettingService.INSTANCE.getAllRtSettings();
             notifyDataSetChanged();
         }
     }
