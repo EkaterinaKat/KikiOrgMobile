@@ -13,11 +13,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 
 import com.example.kikiorgmobile.R;
-import com.katyshevtseva.kikiorgmobile.utils.DateUtils;
 import com.katyshevtseva.kikiorgmobile.core.Service;
 import com.katyshevtseva.kikiorgmobile.core.model.IrregularTask;
 import com.katyshevtseva.kikiorgmobile.core.model.RegularTask;
 import com.katyshevtseva.kikiorgmobile.core.model.Task;
+import com.katyshevtseva.kikiorgmobile.utils.DateUtils;
 import com.katyshevtseva.kikiorgmobile.utils.NoArgKnob;
 
 import java.util.Date;
@@ -76,6 +76,12 @@ public class TaskMenuDialog extends DialogFragment {
                 case REGULAR:
                     regularEditListener();
             }
+        });
+
+        itemView.findViewById(R.id.add_setting_button).setOnClickListener(view -> {
+            new OneDaySettingCreationDialog(task, activityUpdateKnob, date)
+                    .show(context.getSupportFragmentManager(), "dialog2");
+            dismiss();
         });
 
         return itemView;

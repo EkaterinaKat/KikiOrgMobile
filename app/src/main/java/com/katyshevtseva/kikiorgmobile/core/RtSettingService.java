@@ -32,10 +32,10 @@ public class RtSettingService {
         komDao.saveNew(new RtSetting(regularTask.getId(), duration, beginTime, absoluteWobs));
     }
 
-    public RtSetting getRtSettingOrNull(RegularTask task) {
+    public RtSetting getRtSettingOrNull(RegularTask task) throws Exception {
         List<RtSetting> settings = komDao.getRtSettingsByRtId(task.getId());
         if (settings.size() > 1) {
-            throw new RuntimeException();
+            throw new Exception("Найдено более одной регулярной настройки для задачи " + task.getTitle());
         }
         if (settings.size() == 1) {
             return settings.get(0);

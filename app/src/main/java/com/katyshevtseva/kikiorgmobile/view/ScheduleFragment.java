@@ -1,13 +1,18 @@
 package com.katyshevtseva.kikiorgmobile.view;
 
+import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
+
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import com.example.kikiorgmobile.R;
@@ -15,6 +20,7 @@ import com.katyshevtseva.kikiorgmobile.core.Interval;
 import com.katyshevtseva.kikiorgmobile.core.ScheduleService;
 import com.katyshevtseva.kikiorgmobile.core.ScheduleService.Schedule;
 import com.katyshevtseva.kikiorgmobile.core.model.Task;
+import com.katyshevtseva.kikiorgmobile.utils.GeneralUtil;
 import com.katyshevtseva.kikiorgmobile.view.utils.ViewUtils;
 
 import java.util.Date;
@@ -35,7 +41,7 @@ public class ScheduleFragment extends Fragment {
         alarmTextView = view.findViewById(R.id.schedule_alarm_text_view);
 
         if (schedule != null) {
-            showSchedule();
+            showPartsOfSchedule();
         }
         return view;
     }
@@ -52,7 +58,7 @@ public class ScheduleFragment extends Fragment {
     }
 
     private void updateSchedule() {
-        if (date == null)
+        if (date == null || getActivity() == null)
             return;
 
         try {
@@ -60,7 +66,7 @@ public class ScheduleFragment extends Fragment {
             this.schedule = schedule;
 
             if (intervalsBox != null) {
-                showSchedule();
+                showPartsOfSchedule();
             }
 
         } catch (Exception e) {
@@ -68,7 +74,7 @@ public class ScheduleFragment extends Fragment {
         }
     }
 
-    private void showSchedule() {
+    private void showPartsOfSchedule() {
         updateAlarmBanner(schedule.getWarning());
         showIntervals(schedule.getIntervals());
         showNotScheduledTasks(schedule.getNotScheduledTasks());
@@ -83,10 +89,12 @@ public class ScheduleFragment extends Fragment {
             linearLayout.setOrientation(LinearLayout.VERTICAL);
             linearLayout.setBackgroundColor(Color.parseColor(interval.getColor()));
 
-            TextView titleView = new TextView(getActivity());
-            titleView.setText(interval.getTitle());
-            titleView.setTextSize(20);
-            linearLayout.addView(titleView);
+            if (!GeneralUtil.isEmpty(interval.getTitle())) {
+                TextView titleView = new TextView(getActivity());
+                titleView.setText(interval.getTitle());
+                titleView.setTextSize(20);
+                linearLayout.addView(titleView);
+            }
 
             TextView timeView = new TextView(getActivity());
             timeView.setText(interval.getTimeString());
@@ -100,12 +108,24 @@ public class ScheduleFragment extends Fragment {
         notScheduledBox.removeAllViews();
         for (Task task : tasks) {
             TextView textView = new TextView(getContext());
+            textView.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.task_block));
             textView.setText(task.getTitle());
             textView.setSingleLine(false);
-            textView.setWidth(230);
-            textView.setPadding(15, 20, 15, 20);
+            textView.setWidth(200);
+            textView.setPadding(10, 10, 10, 10);
             notScheduledBox.addView(textView);
+
+            LayoutParams params = new LayoutParams(WRAP_CONTENT, WRAP_CONTENT);
+            params.setMargins(10, 10, 10, 10);
+            textView.setLayoutParams(params);
+
+            textView.setOnClickListener(view -> notScheduledTaskClickListener(task));
         }
+    }
+
+    private void notScheduledTaskClickListener(Task task) {
+        TaskMenuDialog taskMenuDialog = new TaskMenuDialog(task, this::updateSchedule, date, (AppCompatActivity) getActivity());
+        taskMenuDialog.show(getActivity().getSupportFragmentManager(), "TaskMenuDialog");
     }
 
     private void updateAlarmBanner(String warning) {

@@ -29,10 +29,10 @@ public class OneDaySettingService {
             throw new Exception("Предоставлены не все необходимые параметры");
         }
 
-        if (komDao.findOneDaySetting(task.getId(), task.getType(), date).size() > 0) {
-            throw new Exception("Настройка для этой задачи на данную дату уже существует");
+        for (OneDaySetting setting : komDao.findOneDaySetting(task.getId(), task.getType(), date)) {
+            komDao.delete(setting);
         }
-        komDao.saveNew(new OneDaySetting(task.getId(), task.getType(), duration, beginTime));
+        komDao.saveNew(new OneDaySetting(task.getId(), task.getType(), duration, beginTime, date));
     }
 
     public List<OneDaySetting> getAll() {

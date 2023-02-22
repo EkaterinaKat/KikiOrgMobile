@@ -2,7 +2,7 @@ package com.katyshevtseva.kikiorgmobile.core;
 
 import com.katyshevtseva.kikiorgmobile.core.model.Task;
 import com.katyshevtseva.kikiorgmobile.utils.Time;
-import com.katyshevtseva.kikiorgmobile.utils.TimeUtil;
+import com.katyshevtseva.kikiorgmobile.utils.TimeUtils;
 
 import lombok.Getter;
 
@@ -47,6 +47,6 @@ public class Interval {
     }
 
     public int getLength() {
-        return TimeUtil.minus(end, start);
+        return TimeUtils.minus(end, start);
     }
 }

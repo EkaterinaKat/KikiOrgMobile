@@ -20,10 +20,11 @@ public class TaskListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_task_list, container, false);
+
         RecyclerView taskList = view.findViewById(R.id.main_task_list);
         taskList.setLayoutManager(new LinearLayoutManager(getContext()));
-
         taskList.setAdapter(taskListAdapter);
+
         return view;
     }
 

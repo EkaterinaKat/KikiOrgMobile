@@ -149,8 +149,8 @@ public class SettingCreationActivity extends AppCompatActivity {
 
     private void setSaveButtonAccessibility() {
         boolean taskSpinnerIsFilled = taskSpinner.getSelectedItem() != null;
-        boolean durationIsFilled = filled(durationView);
-        boolean beginTimeIsFilled = taskSpinner.getSelectedItem() != WayOfBeginSpecifying.NONE && filled(beginView);
+        boolean durationIsFilled = timeViewIsFilled(durationView);
+        boolean beginTimeIsFilled = taskSpinner.getSelectedItem() != WayOfBeginSpecifying.NONE && timeViewIsFilled(beginView);
         saveButton.setEnabled(taskSpinnerIsFilled && (durationIsFilled || beginTimeIsFilled));
     }
 
@@ -171,7 +171,7 @@ public class SettingCreationActivity extends AppCompatActivity {
         textViewTimeMap.put(beginView, null);
     }
 
-    private boolean filled(TextView textView) {
+    private boolean timeViewIsFilled(TextView textView) {
         return textViewTimeMap.get(textView) != null;
     }
 

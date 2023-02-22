@@ -24,11 +24,12 @@ public class OneDaySetting implements Entity, Setting {
 
     private Date date;
 
-    public OneDaySetting(long taskId, TaskType taskType, Time duration, Time beginTime) {
+    public OneDaySetting(long taskId, TaskType taskType, Time duration, Time beginTime, Date date) {
         this.taskId = taskId;
         this.taskType = taskType;
         this.duration = duration;
         this.beginTime = beginTime;
+        this.date = date;
     }
 
     @Override

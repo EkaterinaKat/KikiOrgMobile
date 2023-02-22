@@ -1,6 +1,6 @@
 package com.katyshevtseva.kikiorgmobile.utils;
 
-public class TimeUtil {
+public abstract class TimeUtils {
     private static final int MIN_IN_DAY = 1440;
 
     public static Time plus(Time time1, Time time2) {

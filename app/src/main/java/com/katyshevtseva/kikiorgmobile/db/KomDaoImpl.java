@@ -149,6 +149,11 @@ public class KomDaoImpl implements KomDao {
         return oneDaySettingDao.findAll();
     }
 
+    @Override
+    public void delete(OneDaySetting setting) {
+        oneDaySettingDao.delete(setting);
+    }
+
     ////////////////////////////  IrregularTask  //////////////////////////////////
 
     @Override

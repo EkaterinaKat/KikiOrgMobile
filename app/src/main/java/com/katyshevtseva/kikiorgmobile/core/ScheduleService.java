@@ -1,6 +1,6 @@
 package com.katyshevtseva.kikiorgmobile.core;
 
-import static com.katyshevtseva.kikiorgmobile.utils.TimeUtil.plus;
+import static com.katyshevtseva.kikiorgmobile.utils.TimeUtils.plus;
 
 import android.content.Context;
 
@@ -12,7 +12,7 @@ import com.katyshevtseva.kikiorgmobile.core.model.Setting;
 import com.katyshevtseva.kikiorgmobile.core.model.Task;
 import com.katyshevtseva.kikiorgmobile.db.KomDaoImpl;
 import com.katyshevtseva.kikiorgmobile.utils.Time;
-import com.katyshevtseva.kikiorgmobile.utils.TimeUtil;
+import com.katyshevtseva.kikiorgmobile.utils.TimeUtils;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -86,7 +86,7 @@ public class ScheduleService {
     private Interval getIntervalBySetting(Setting setting) {
         Time absoluteBeginTime = getAbsoluteBeginTime(setting);
         return Interval.taskInterval(getTaskBySetting(setting), absoluteBeginTime,
-                TimeUtil.plus(absoluteBeginTime, setting.getDuration()));
+                TimeUtils.plus(absoluteBeginTime, setting.getDuration()));
     }
 
     private Task getTaskBySetting(Setting setting) {
@@ -101,7 +101,7 @@ public class ScheduleService {
 
     private final Comparator<Setting> beginTimeComparator = Comparator.comparing(this::getAbsoluteBeginTime);
 
-    private Time getAbsoluteBeginTime(Setting setting) {
+    public Time getAbsoluteBeginTime(Setting setting) {
         return setting.isAbsoluteWobs() ?
                 setting.getBeginTime()
                 : plus(PrefService.INSTANCE.getActivityStart(), setting.getBeginTime());
@@ -118,6 +118,19 @@ public class ScheduleService {
             if (setting != null && setting.getDuration() != null && setting.getBeginTime() != null)
                 return setting;
         }
+        return null;
+    }
+
+    public Setting getAnySettingByTaskOrNull(Task task, Date date) throws Exception {
+        OneDaySetting oneDaySetting = OneDaySettingService.INSTANCE.getSettingOrNull(task, date);
+        if (oneDaySetting != null) {
+            return oneDaySetting;
+        }
+
+        if (task.getType() == TaskType.REGULAR) {
+            return RtSettingService.INSTANCE.getRtSettingOrNull((RegularTask) task);
+        }
+
         return null;
     }
 

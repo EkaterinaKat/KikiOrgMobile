@@ -68,4 +68,6 @@ public interface KomDao {
     void saveNew(OneDaySetting setting);
 
     List<OneDaySetting> getAllOneDaySettings();
+
+    void delete(OneDaySetting setting);
 }
