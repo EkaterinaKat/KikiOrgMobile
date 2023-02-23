@@ -1,7 +1,7 @@
 package com.katyshevtseva.kikiorgmobile.core;
 
-import static com.katyshevtseva.kikiorgmobile.utils.TimeUtils.beforeIgnoreTime;
-import static com.katyshevtseva.kikiorgmobile.utils.TimeUtils.equalsIgnoreTime;
+import static com.katyshevtseva.kikiorgmobile.utils.TimeUtils.after;
+import static com.katyshevtseva.kikiorgmobile.utils.TimeUtils.getNow;
 import static com.katyshevtseva.kikiorgmobile.utils.TimeUtils.plus;
 
 import android.content.Context;
@@ -26,8 +26,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 
 public class ScheduleService {
-    private static final Time startOfDay = new Time(0, 0);
-    private static final Time endOfDay = new Time(23, 59);
     public static ScheduleService INSTANCE;
     private final KomDao komDao;
 
@@ -59,53 +57,55 @@ public class ScheduleService {
         settings = settings.stream().sorted(beginTimeComparator).collect(Collectors.toList());
         Time activityStart = PrefService.INSTANCE.getActivityStart();
         Time activityEnd = PrefService.INSTANCE.getActivityEnd();
-        Date today = new Date();
         List<Interval> intervals = new ArrayList<>();
         String warnings = "";
 
-        // Создаем интервалы сна и выполнения задач
-        if (morningSleepIntervalIsNeeded(date, today, activityStart)) {
-            intervals.add(Interval.sleepInterval(startOfDay, activityStart));
-        }
+        // Создаем интервалы выполнения задач
         settings.forEach(setting -> intervals.add(getIntervalBySetting(setting)));
-        if (eveningSleepIntervalIsNeeded(date, today)) {
-            intervals.add(Interval.sleepInterval(activityEnd, endOfDay));
-        }
 
         // Добавляем пустые интервалы и проверяем на предупреждение
         List<Interval> resultIntervals = new ArrayList<>();
+
         if (!intervals.isEmpty()) {
-            Time prevIntervalEnd = intervals.get(0).getStart();
+            Time prevIntervalEnd = getInitPie(date, intervals.get(0), activityStart);
             for (Interval interval : intervals) {
                 int comparisonResult = prevIntervalEnd.compareTo(interval.getStart());
+
+                if (TimeUtils.after(activityStart, interval.getStart()) || TimeUtils.after(interval.getEnd(), activityEnd)) {
+                    warnings += (interval.getTitle() + " нарушает границы периода активности\n");
+                }
 
                 if (comparisonResult > 0) { //prevIntervalEnd > interval.start
                     warnings += (interval.getTitle() + " накладывается на предыдущий интервал\n");
                 } else if (comparisonResult < 0) { //prevIntervalEnd < interval.start
-                    resultIntervals.add(Interval.emptyInterval(prevIntervalEnd, interval.getStart()));
+                    resultIntervals.add(new Interval(null, prevIntervalEnd, interval.getStart()));
                 }
                 resultIntervals.add(interval);
                 prevIntervalEnd = interval.getEnd();
+            }
+
+            if (after(activityEnd, prevIntervalEnd)) {
+                resultIntervals.add(new Interval(null, prevIntervalEnd, activityEnd));
             }
         }
 
         return new Schedule(notScheduledTasks, resultIntervals, warnings.equals("") ? null : warnings);
     }
 
-    private boolean morningSleepIntervalIsNeeded(Date date, Date today, Time activityStart) {
-        if (equalsIgnoreTime(date, today)) {
-            return TimeUtils.afterNow(activityStart);
+    private Time getInitPie(Date date, Interval firstInterval, Time activityStart) {
+        Date today = new Date();
+        if (TimeUtils.equalsIgnoreTime(today, date)) {
+            return getNow();
         }
-        return !beforeIgnoreTime(date, today);
-    }
-
-    private boolean eveningSleepIntervalIsNeeded(Date date, Date today) {
-        return !beforeIgnoreTime(date, today);
+        if (TimeUtils.beforeIgnoreTime(date, today)) {
+            return firstInterval.getStart();
+        }
+        return activityStart;
     }
 
     private Interval getIntervalBySetting(Setting setting) {
         Time absoluteBeginTime = getAbsoluteBeginTime(setting);
-        return Interval.taskInterval(getTaskBySetting(setting), absoluteBeginTime,
+        return new Interval(getTaskBySetting(setting), absoluteBeginTime,
                 TimeUtils.plus(absoluteBeginTime, setting.getDuration()));
     }
 

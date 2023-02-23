@@ -122,8 +122,8 @@ public class ScheduleFragment extends Fragment {
             linearLayout.setMinimumWidth(600);
             linearLayout.setOrientation(LinearLayout.VERTICAL);
             linearLayout.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.border));
-            if (interval.getColor() != null) {
-                linearLayout.setBackgroundColor(Color.parseColor(interval.getColor()));
+            if (interval.isEmpty()) {
+                linearLayout.setBackgroundColor(Color.parseColor("#FFFFFF"));
             }
             if (interval.getTask() != null) {
                 linearLayout.setOnClickListener(view -> taskClickListener(interval.getTask()));
