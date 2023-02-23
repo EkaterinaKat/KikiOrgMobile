@@ -20,6 +20,7 @@ import com.katyshevtseva.kikiorgmobile.core.Service;
 import com.katyshevtseva.kikiorgmobile.core.enums.TaskType;
 import com.katyshevtseva.kikiorgmobile.core.model.RegularTask;
 import com.katyshevtseva.kikiorgmobile.core.model.RtSetting;
+import com.katyshevtseva.kikiorgmobile.utils.GeneralUtil;
 import com.katyshevtseva.kikiorgmobile.utils.OneInKnob;
 import com.katyshevtseva.kikiorgmobile.view.utils.MyTimePicker;
 
@@ -50,6 +51,7 @@ public class SettingCreationActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting_creation);
+        GeneralUtil.setImmersiveStickyMode(getWindow());
 
         initializeControls();
         initTimePickers();

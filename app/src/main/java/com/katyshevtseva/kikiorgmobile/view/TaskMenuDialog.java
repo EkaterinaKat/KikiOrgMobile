@@ -136,5 +136,6 @@ public class TaskMenuDialog extends DialogFragment {
     public void onDismiss(@NonNull DialogInterface dialog) {
         super.onDismiss(dialog);
         activityUpdateKnob.execute();
+        GeneralUtil.setImmersiveStickyMode(getActivity().getWindow());
     }
 }

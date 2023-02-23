@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.kikiorgmobile.R;
+import com.katyshevtseva.kikiorgmobile.utils.GeneralUtil;
 import com.katyshevtseva.kikiorgmobile.view.utils.DatelessTaskRecycleView.TaskListAdapter;
 
 public class DatelessTaskActivity extends AppCompatActivity {
@@ -16,6 +17,8 @@ public class DatelessTaskActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dateless_task);
+        GeneralUtil.setImmersiveStickyMode(getWindow());
+
         findViewById(R.id.add_dateless_task_button).setOnClickListener(view -> {
             DatelessTaskEditDialog dialog = new DatelessTaskEditDialog(null, this::updateTaskList);
             dialog.show(getSupportFragmentManager(), "DatelessTaskEditDialog");

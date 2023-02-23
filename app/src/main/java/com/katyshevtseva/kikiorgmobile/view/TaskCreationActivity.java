@@ -30,6 +30,7 @@ import com.katyshevtseva.kikiorgmobile.core.enums.TaskType;
 import com.katyshevtseva.kikiorgmobile.core.model.IrregularTask;
 import com.katyshevtseva.kikiorgmobile.core.model.RegularTask;
 import com.katyshevtseva.kikiorgmobile.core.model.Task;
+import com.katyshevtseva.kikiorgmobile.utils.GeneralUtil;
 import com.katyshevtseva.kikiorgmobile.utils.OneInKnob;
 import com.katyshevtseva.kikiorgmobile.view.utils.FragmentUpdateListener;
 
@@ -74,6 +75,7 @@ public class TaskCreationActivity extends AppCompatActivity implements FragmentU
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task_creation);
+        GeneralUtil.setImmersiveStickyMode(getWindow());
 
         initializeControls();
         setDoneButtonAccessibility();

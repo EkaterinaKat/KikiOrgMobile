@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.kikiorgmobile.R;
 import com.katyshevtseva.kikiorgmobile.core.Service;
 import com.katyshevtseva.kikiorgmobile.core.model.RegularTask;
+import com.katyshevtseva.kikiorgmobile.utils.GeneralUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +25,7 @@ public class ArchiveTasksActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_archived_tasks);
+        GeneralUtil.setImmersiveStickyMode(getWindow());
 
         RecyclerView taskList = findViewById(R.id.archived_task_list);
         taskList.setLayoutManager(new LinearLayoutManager(this));

@@ -19,6 +19,7 @@ import com.katyshevtseva.kikiorgmobile.core.ScheduleService;
 import com.katyshevtseva.kikiorgmobile.core.Service;
 import com.katyshevtseva.kikiorgmobile.utils.DateUtils;
 import com.katyshevtseva.kikiorgmobile.utils.DateUtils.TimeUnit;
+import com.katyshevtseva.kikiorgmobile.utils.GeneralUtil;
 
 import java.util.Date;
 
@@ -33,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        GeneralUtil.setImmersiveStickyMode(getWindow());
 
         Service.init(this);
         PrefService.init(this);

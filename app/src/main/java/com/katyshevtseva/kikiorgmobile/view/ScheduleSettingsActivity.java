@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.kikiorgmobile.R;
 import com.katyshevtseva.kikiorgmobile.core.PrefService;
+import com.katyshevtseva.kikiorgmobile.utils.GeneralUtil;
 import com.katyshevtseva.kikiorgmobile.view.utils.MyTimePicker;
 import com.katyshevtseva.kikiorgmobile.view.utils.SettingRecycleView.SettingListAdapter;
 import com.katyshevtseva.kikiorgmobile.view.utils.ViewUtils;
@@ -21,6 +22,7 @@ public class ScheduleSettingsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_schedule_settings);
+        GeneralUtil.setImmersiveStickyMode(getWindow());
 
         findViewById(R.id.add_setting_button).setOnClickListener(view ->
                 startActivity(SettingCreationActivity.newIntent(this, null)));

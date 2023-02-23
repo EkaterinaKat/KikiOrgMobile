@@ -17,6 +17,7 @@ import com.katyshevtseva.kikiorgmobile.core.ScheduleService;
 import com.katyshevtseva.kikiorgmobile.core.model.Setting;
 import com.katyshevtseva.kikiorgmobile.core.model.Task;
 import com.katyshevtseva.kikiorgmobile.utils.DateUtils;
+import com.katyshevtseva.kikiorgmobile.utils.GeneralUtil;
 import com.katyshevtseva.kikiorgmobile.utils.NoArgKnob;
 import com.katyshevtseva.kikiorgmobile.view.utils.MyTimePicker;
 import com.katyshevtseva.kikiorgmobile.view.utils.ViewUtils;
@@ -76,6 +77,7 @@ public class OneDaySettingCreationDialog extends DialogFragment {
     public void onDismiss(@NonNull DialogInterface dialog) {
         super.onDismiss(dialog);
         activityUpdateKnob.execute();
+        GeneralUtil.setImmersiveStickyMode(getActivity().getWindow());
     }
 
     private void initTimePickers(View v, Setting existing) {

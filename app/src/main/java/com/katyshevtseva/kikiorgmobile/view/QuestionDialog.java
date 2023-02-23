@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
 
 import com.example.kikiorgmobile.R;
+import com.katyshevtseva.kikiorgmobile.utils.GeneralUtil;
 
 public class QuestionDialog extends DialogFragment {
     private String message;
@@ -44,5 +45,11 @@ public class QuestionDialog extends DialogFragment {
 
     public interface AnswerHandler {
         void execute(boolean answer);
+    }
+
+    @Override
+    public void onDismiss(@NonNull DialogInterface dialog) {
+        super.onDismiss(dialog);
+        GeneralUtil.setImmersiveStickyMode(getActivity().getWindow());
     }
 }

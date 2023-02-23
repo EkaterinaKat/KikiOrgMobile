@@ -13,6 +13,7 @@ import androidx.fragment.app.DialogFragment;
 import com.example.kikiorgmobile.R;
 import com.katyshevtseva.kikiorgmobile.core.Service;
 import com.katyshevtseva.kikiorgmobile.core.model.DatelessTask;
+import com.katyshevtseva.kikiorgmobile.utils.GeneralUtil;
 import com.katyshevtseva.kikiorgmobile.utils.NoArgKnob;
 
 public class DatelessTaskEditDialog extends DialogFragment {
@@ -44,6 +45,7 @@ public class DatelessTaskEditDialog extends DialogFragment {
     public void onDismiss(@NonNull DialogInterface dialog) {
         super.onDismiss(dialog);
         activityUpdateKnob.execute();
+        GeneralUtil.setImmersiveStickyMode(getActivity().getWindow());
     }
 }
 

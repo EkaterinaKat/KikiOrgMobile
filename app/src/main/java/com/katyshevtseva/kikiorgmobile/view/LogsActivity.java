@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.kikiorgmobile.R;
 import com.katyshevtseva.kikiorgmobile.core.Service;
 import com.katyshevtseva.kikiorgmobile.core.model.Log;
+import com.katyshevtseva.kikiorgmobile.utils.GeneralUtil;
 
 import java.util.List;
 
@@ -23,6 +24,7 @@ public class LogsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_logs);
+        GeneralUtil.setImmersiveStickyMode(getWindow());
 
         RecyclerView logList = findViewById(R.id.log_list);
         logList.setLayoutManager(new LinearLayoutManager(this));
