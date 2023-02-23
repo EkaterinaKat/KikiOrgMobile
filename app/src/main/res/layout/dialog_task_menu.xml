@@ -14,49 +14,67 @@
         android:textColor="@color/black"
         android:textSize="20sp" />
 
-    <Button
-        android:id="@+id/done_button"
+    <TextView
+        android:id="@+id/desc_text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:background="@drawable/button"
-        android:text="Done"
-        android:textColor="@color/black" />
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textSize="15sp" />
 
-    <Button
-        android:id="@+id/one_day_reschedule_button"
+    <GridLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:background="@drawable/button"
-        android:text=">"
-        android:textColor="@color/black" />
+        android:columnCount="2">
 
-    <Button
-        android:id="@+id/more_days_reschedule_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:background="@drawable/button"
-        android:text=">>"
-        android:textColor="@color/black" />
+        <Button
+            android:id="@+id/done_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="@drawable/button"
+            android:text="Done"
+            android:textColor="@color/black" />
 
-    <Button
-        android:id="@+id/edit_task_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:background="@drawable/button"
-        android:text="Edit"
-        android:textColor="@color/black" />
+        <Button
+            android:id="@+id/one_day_reschedule_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="@drawable/button"
+            android:text=">"
+            android:textColor="@color/black" />
 
-    <Button
-        android:id="@+id/add_setting_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:background="@drawable/button"
-        android:text="Add Setting"
-        android:textColor="@color/black" />
+
+        <Button
+            android:id="@+id/edit_task_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="@drawable/button"
+            android:text="Edit"
+            android:textColor="@color/black" />
+
+        <Button
+            android:id="@+id/more_days_reschedule_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="@drawable/button"
+            android:text=">>"
+            android:textColor="@color/black" />
+
+        <Button
+            android:id="@+id/add_setting_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="@drawable/button"
+            android:text="Add Setting"
+            android:textColor="@color/black" />
+
+    </GridLayout>
+
 
 </LinearLayout>

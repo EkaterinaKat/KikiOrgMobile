@@ -1,8 +1,6 @@
 package com.katyshevtseva.kikiorgmobile.view;
 
-import android.app.TimePickerDialog;
 import android.os.Bundle;
-import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -10,16 +8,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.kikiorgmobile.R;
 import com.katyshevtseva.kikiorgmobile.core.PrefService;
-import com.katyshevtseva.kikiorgmobile.utils.Time;
+import com.katyshevtseva.kikiorgmobile.view.utils.MyTimePicker;
 import com.katyshevtseva.kikiorgmobile.view.utils.SettingRecycleView.SettingListAdapter;
 import com.katyshevtseva.kikiorgmobile.view.utils.ViewUtils;
 
 public class ScheduleSettingsActivity extends AppCompatActivity {
     private SettingListAdapter settingListAdapter;
-    private TextView apStartView;
-    private TextView apEndView;
-    private Time apStart;
-    private Time apEnd;
+    private MyTimePicker startTp;
+    private MyTimePicker endTp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,43 +25,42 @@ public class ScheduleSettingsActivity extends AppCompatActivity {
         findViewById(R.id.add_setting_button).setOnClickListener(view ->
                 startActivity(SettingCreationActivity.newIntent(this, null)));
 
-        apStartView = findViewById(R.id.activity_period_start_view);
-        apEndView = findViewById(R.id.activity_period_end_view);
-
-        setTimeViewsValues();
-
-        apStartView.setOnClickListener(view -> new TimePickerDialog(this,
-                (timePicker, hour, min) -> {
-                    try {
-                        PrefService.INSTANCE.updateStartActivityPeriodValue(hour, min);
-                    } catch (Exception e) {
-                        ViewUtils.showAlertDialog(this, e.getMessage());
-                    }
-                    setTimeViewsValues();
-                }, apStart.getHour(), apStart.getMinute(), true).show());
-
-        apEndView.setOnClickListener(view -> new TimePickerDialog(this,
-                (timePicker, hour, min) -> {
-                    try {
-                        PrefService.INSTANCE.updateEndActivityPeriodValue(hour, min);
-                    } catch (Exception e) {
-                        ViewUtils.showAlertDialog(this, e.getMessage());
-                    }
-                    setTimeViewsValues();
-                }, apEnd.getHour(), apEnd.getMinute(), true).show());
-
         RecyclerView settingList = findViewById(R.id.setting_list);
         settingList.setLayoutManager(new LinearLayoutManager(this));
         settingListAdapter = new SettingListAdapter(this);
         settingList.setAdapter(settingListAdapter);
+
+        initTimePickers();
     }
 
-    private void setTimeViewsValues() {
-        apStart = PrefService.INSTANCE.getActivityStart();
-        apEnd = PrefService.INSTANCE.getActivityEnd();
+    private void initTimePickers() {
+        startTp = new MyTimePicker(findViewById(R.id.activity_period_start_view), this,
+                this::startTimeUpdateListener, PrefService.INSTANCE.getActivityStart(), null);
+        endTp = new MyTimePicker(findViewById(R.id.activity_period_end_view), this,
+                this::endTimeUpdateListener, PrefService.INSTANCE.getActivityEnd(), null);
+    }
 
-        apStartView.setText(apStart.getS());
-        apEndView.setText(apEnd.getS());
+    private void startTimeUpdateListener(int hour, int min) {
+        try {
+            PrefService.INSTANCE.updateStartActivityPeriodValue(hour, min);
+        } catch (Exception e) {
+            ViewUtils.showAlertDialog(this, e.getMessage());
+        }
+        updateTimePickersValues();
+    }
+
+    private void endTimeUpdateListener(int hour, int min) {
+        try {
+            PrefService.INSTANCE.updateEndActivityPeriodValue(hour, min);
+        } catch (Exception e) {
+            ViewUtils.showAlertDialog(this, e.getMessage());
+        }
+        updateTimePickersValues();
+    }
+
+    private void updateTimePickersValues() {
+        startTp.setTime(PrefService.INSTANCE.getActivityStart());
+        endTp.setTime(PrefService.INSTANCE.getActivityEnd());
     }
 
     @Override

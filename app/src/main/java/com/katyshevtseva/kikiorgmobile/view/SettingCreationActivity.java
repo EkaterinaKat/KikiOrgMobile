@@ -3,7 +3,6 @@ package com.katyshevtseva.kikiorgmobile.view;
 import static com.katyshevtseva.kikiorgmobile.view.utils.ViewUtils.adjustSpinner;
 import static com.katyshevtseva.kikiorgmobile.view.utils.ViewUtils.selectSpinnerItemByValue;
 
-import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,7 +10,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
-import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -23,25 +21,21 @@ import com.katyshevtseva.kikiorgmobile.core.enums.TaskType;
 import com.katyshevtseva.kikiorgmobile.core.model.RegularTask;
 import com.katyshevtseva.kikiorgmobile.core.model.RtSetting;
 import com.katyshevtseva.kikiorgmobile.utils.OneInKnob;
-import com.katyshevtseva.kikiorgmobile.utils.Time;
+import com.katyshevtseva.kikiorgmobile.view.utils.MyTimePicker;
 
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
 
 public class SettingCreationActivity extends AppCompatActivity {
     private static final String EXTRA_SETTING_ID = "setting_id";
 
-    private Map<TextView, Time> textViewTimeMap;
     private RtSetting existing;
+    private MyTimePicker beginTp;
+    private MyTimePicker durationTp;
 
     private Spinner taskSpinner;
     private Spinner wobsSpinner;
-    private TextView durationView;
-    private TextView beginView;
     private Button saveButton;
     private LinearLayout beginTimeContainer;
-    private LinearLayout durationContainer;
     private Button durationClearButton;
 
     public static Intent newIntent(Context context, @Nullable RtSetting rtSetting) {
@@ -57,8 +51,8 @@ public class SettingCreationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting_creation);
 
-        initializeTextViewTimeMap();
         initializeControls();
+        initTimePickers();
         setSaveButtonAccessibility();
         setControlListeners();
         setInitFieldValues();
@@ -76,12 +70,12 @@ public class SettingCreationActivity extends AppCompatActivity {
             WayOfBeginSpecifying wobs = WayOfBeginSpecifying.NONE;
             if (existing.getBeginTime() != null) {
                 wobs = existing.isAbsoluteWobs() ? WayOfBeginSpecifying.ABSOLUTE : WayOfBeginSpecifying.RELATIVE;
-                setTime(beginView, existing.getBeginTime());
+                beginTp.setTime(existing.getBeginTime());
             }
             selectSpinnerItemByValue(wobsSpinner, wobs);
 
             if (existing.getDuration() != null)
-                setTime(durationView, existing.getDuration());
+                durationTp.setTime(existing.getDuration());
         }
     }
 
@@ -93,33 +87,16 @@ public class SettingCreationActivity extends AppCompatActivity {
                 selectedItem -> setSaveButtonAccessibility());
         saveButton.setOnClickListener(view -> saveSetting());
 
-        durationContainer.setOnClickListener(view -> openTimePicker(durationView));
-        beginTimeContainer.setOnClickListener(view -> openTimePicker(beginView));
-
         durationClearButton.setOnClickListener(view -> {
-            setTime(durationView, null);
+            durationTp.clear();
             setSaveButtonAccessibility();
         });
-    }
-
-    private void openTimePicker(TextView textView) {
-        new TimePickerDialog(this,
-                (timePicker, hour, min) -> {
-                    Time time = new Time(hour, min);
-                    setTime(textView, time);
-                    setSaveButtonAccessibility();
-                }, 0, 0, true).show();
-    }
-
-    private void setTime(TextView textView, Time time) {
-        textViewTimeMap.put(textView, time);
-        textView.setText(time == null ? getResources().getString(R.string.empty_field) : time.getS());
     }
 
     private final OneInKnob<WayOfBeginSpecifying> wobsSpinnerListener = wobs -> {
         switch (wobs) {
             case NONE:
-                setTime(beginView, null);
+                beginTp.clear();
                 beginTimeContainer.setVisibility(View.GONE);
                 break;
             case RELATIVE:
@@ -131,43 +108,35 @@ public class SettingCreationActivity extends AppCompatActivity {
 
     private void saveSetting() {
         if (existing != null) {
-            RtSettingService.INSTANCE.editRtSetting(existing, textViewTimeMap.get(durationView), textViewTimeMap.get(beginView),
+            RtSettingService.INSTANCE.editRtSetting(existing, durationTp.getTime(), beginTp.getTime(),
                     wobsSpinner.getSelectedItem() == WayOfBeginSpecifying.ABSOLUTE);
-            finish();
         } else {
             RtSettingService.INSTANCE.saveNewRgSetting((RegularTask) taskSpinner.getSelectedItem(),
-                    textViewTimeMap.get(durationView), textViewTimeMap.get(beginView),
+                    durationTp.getTime(), beginTp.getTime(),
                     wobsSpinner.getSelectedItem() == WayOfBeginSpecifying.ABSOLUTE);
-            finish();
         }
+        finish();
     }
 
     private void setSaveButtonAccessibility() {
         boolean taskSpinnerIsFilled = taskSpinner.getSelectedItem() != null;
-        boolean durationIsFilled = timeViewIsFilled(durationView);
-        boolean beginTimeIsFilled = taskSpinner.getSelectedItem() != WayOfBeginSpecifying.NONE && timeViewIsFilled(beginView);
-        saveButton.setEnabled(taskSpinnerIsFilled && (durationIsFilled || beginTimeIsFilled));
+        boolean beginTimeIsFilled = taskSpinner.getSelectedItem() != WayOfBeginSpecifying.NONE && beginTp.isFilled();
+        saveButton.setEnabled(taskSpinnerIsFilled && (durationTp.isFilled() || beginTimeIsFilled));
     }
 
     private void initializeControls() {
         taskSpinner = findViewById(R.id.task_spinner);
         wobsSpinner = findViewById(R.id.way_of_begin_specifying_spinner);
-        durationView = findViewById(R.id.duration_view);
-        beginView = findViewById(R.id.begin_view);
         saveButton = findViewById(R.id.save_button);
         beginTimeContainer = findViewById(R.id.begin_time_container);
-        durationContainer = findViewById(R.id.duration_container);
         durationClearButton = findViewById(R.id.duration_clear_button);
     }
 
-    private void initializeTextViewTimeMap() {
-        textViewTimeMap = new HashMap<>();
-        textViewTimeMap.put(durationView, null);
-        textViewTimeMap.put(beginView, null);
-    }
-
-    private boolean timeViewIsFilled(TextView textView) {
-        return textViewTimeMap.get(textView) != null;
+    private void initTimePickers() {
+        beginTp = new MyTimePicker(findViewById(R.id.begin_view), this,
+                (hour, min) -> setSaveButtonAccessibility(), null, findViewById(R.id.begin_time_container));
+        durationTp = new MyTimePicker(findViewById(R.id.duration_view), this,
+                (hour, min) -> setSaveButtonAccessibility(), null, findViewById(R.id.duration_container));
     }
 
     private enum WayOfBeginSpecifying {
