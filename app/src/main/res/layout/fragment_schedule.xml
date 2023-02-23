@@ -29,23 +29,55 @@
                 android:id="@+id/intervals_box"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:background="@drawable/day_gradient"
                 android:orientation="vertical">
 
             </LinearLayout>
         </ScrollView>
 
-        <ScrollView
+        <RelativeLayout
             android:layout_width="168dp"
             android:layout_height="match_parent">
 
-            <LinearLayout
-                android:id="@+id/not_scheduled_box"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="1dp">
 
+                <LinearLayout
+                    android:id="@+id/not_scheduled_box"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                </LinearLayout>
+            </ScrollView>
+
+            <LinearLayout
+                android:layout_width="110dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:background="@drawable/radial">
+
+                <Button
+                    android:id="@+id/plus_scale_button"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:layout_width="55dp"
+                    android:layout_height="wrap_content"
+                    android:text="+" />
+
+                <Button
+                    android:id="@+id/minus_scale_button"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:layout_width="55dp"
+                    android:layout_height="wrap_content"
+                    android:text="-" />
             </LinearLayout>
-        </ScrollView>
+
+        </RelativeLayout>
+
+
     </LinearLayout>
 
 

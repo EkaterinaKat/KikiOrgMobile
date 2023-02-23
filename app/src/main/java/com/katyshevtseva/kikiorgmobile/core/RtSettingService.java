@@ -25,9 +25,9 @@ public class RtSettingService {
         return komDao.getRtSettingById(id);
     }
 
-    public void saveNewRgSetting(RegularTask regularTask, Time duration, Time beginTime, boolean absoluteWobs) throws Exception {
-        if (komDao.getRtSettingsByRtId(regularTask.getId()).size() > 0) {
-            throw new Exception("Настройка для этой задачи уже существует");
+    public void saveNewRgSetting(RegularTask regularTask, Time duration, Time beginTime, boolean absoluteWobs) {
+        for (RtSetting setting : komDao.getRtSettingsByRtId(regularTask.getId())) {
+            komDao.delete(setting);
         }
         komDao.saveNew(new RtSetting(regularTask.getId(), duration, beginTime, absoluteWobs));
     }

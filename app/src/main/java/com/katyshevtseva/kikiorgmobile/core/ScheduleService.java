@@ -1,5 +1,7 @@
 package com.katyshevtseva.kikiorgmobile.core;
 
+import static com.katyshevtseva.kikiorgmobile.utils.TimeUtils.beforeIgnoreTime;
+import static com.katyshevtseva.kikiorgmobile.utils.TimeUtils.equalsIgnoreTime;
 import static com.katyshevtseva.kikiorgmobile.utils.TimeUtils.plus;
 
 import android.content.Context;
@@ -50,37 +52,55 @@ public class ScheduleService {
                 notScheduledTasks.add(task);
         }
 
-        return formSchedule(settings, notScheduledTasks);
+        return formSchedule(settings, notScheduledTasks, date);
     }
 
-    private Schedule formSchedule(List<Setting> settings, List<Task> notScheduledTasks) {
+    private Schedule formSchedule(List<Setting> settings, List<Task> notScheduledTasks, Date date) {
         settings = settings.stream().sorted(beginTimeComparator).collect(Collectors.toList());
         Time activityStart = PrefService.INSTANCE.getActivityStart();
         Time activityEnd = PrefService.INSTANCE.getActivityEnd();
+        Date today = new Date();
         List<Interval> intervals = new ArrayList<>();
         String warnings = "";
 
         // Создаем интервалы сна и выполнения задач
-        intervals.add(Interval.sleepInterval(startOfDay, activityStart));
+        if (morningSleepIntervalIsNeeded(date, today, activityStart)) {
+            intervals.add(Interval.sleepInterval(startOfDay, activityStart));
+        }
         settings.forEach(setting -> intervals.add(getIntervalBySetting(setting)));
-        intervals.add(Interval.sleepInterval(activityEnd, endOfDay));
+        if (eveningSleepIntervalIsNeeded(date, today)) {
+            intervals.add(Interval.sleepInterval(activityEnd, endOfDay));
+        }
 
         // Добавляем пустые интервалы и проверяем на предупреждение
         List<Interval> resultIntervals = new ArrayList<>();
-        Time prevIntervalEnd = startOfDay;
-        for (Interval interval : intervals) {
-            int comparisonResult = prevIntervalEnd.compareTo(interval.getStart());
+        if (!intervals.isEmpty()) {
+            Time prevIntervalEnd = intervals.get(0).getStart();
+            for (Interval interval : intervals) {
+                int comparisonResult = prevIntervalEnd.compareTo(interval.getStart());
 
-            if (comparisonResult > 0) { //prevIntervalEnd > interval.start
-                warnings += (interval.getTitle() + " накладывается на предыдущий интервал");
-            } else if (comparisonResult < 0) { //prevIntervalEnd < interval.start
-                resultIntervals.add(Interval.emptyInterval(prevIntervalEnd, interval.getStart()));
+                if (comparisonResult > 0) { //prevIntervalEnd > interval.start
+                    warnings += (interval.getTitle() + " накладывается на предыдущий интервал\n");
+                } else if (comparisonResult < 0) { //prevIntervalEnd < interval.start
+                    resultIntervals.add(Interval.emptyInterval(prevIntervalEnd, interval.getStart()));
+                }
+                resultIntervals.add(interval);
+                prevIntervalEnd = interval.getEnd();
             }
-            resultIntervals.add(interval);
-            prevIntervalEnd = interval.getEnd();
         }
 
         return new Schedule(notScheduledTasks, resultIntervals, warnings.equals("") ? null : warnings);
+    }
+
+    private boolean morningSleepIntervalIsNeeded(Date date, Date today, Time activityStart) {
+        if (equalsIgnoreTime(date, today)) {
+            return TimeUtils.afterNow(activityStart);
+        }
+        return !beforeIgnoreTime(date, today);
+    }
+
+    private boolean eveningSleepIntervalIsNeeded(Date date, Date today) {
+        return !beforeIgnoreTime(date, today);
     }
 
     private Interval getIntervalBySetting(Setting setting) {

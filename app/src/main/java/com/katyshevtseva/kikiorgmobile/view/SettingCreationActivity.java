@@ -24,7 +24,6 @@ import com.katyshevtseva.kikiorgmobile.core.model.RegularTask;
 import com.katyshevtseva.kikiorgmobile.core.model.RtSetting;
 import com.katyshevtseva.kikiorgmobile.utils.OneInKnob;
 import com.katyshevtseva.kikiorgmobile.utils.Time;
-import com.katyshevtseva.kikiorgmobile.view.utils.ViewUtils;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -136,14 +135,10 @@ public class SettingCreationActivity extends AppCompatActivity {
                     wobsSpinner.getSelectedItem() == WayOfBeginSpecifying.ABSOLUTE);
             finish();
         } else {
-            try {
-                RtSettingService.INSTANCE.saveNewRgSetting((RegularTask) taskSpinner.getSelectedItem(),
-                        textViewTimeMap.get(durationView), textViewTimeMap.get(beginView),
-                        wobsSpinner.getSelectedItem() == WayOfBeginSpecifying.ABSOLUTE);
-                finish();
-            } catch (Exception e) {
-                ViewUtils.showAlertDialog(this, e.getMessage());
-            }
+            RtSettingService.INSTANCE.saveNewRgSetting((RegularTask) taskSpinner.getSelectedItem(),
+                    textViewTimeMap.get(durationView), textViewTimeMap.get(beginView),
+                    wobsSpinner.getSelectedItem() == WayOfBeginSpecifying.ABSOLUTE);
+            finish();
         }
     }
 

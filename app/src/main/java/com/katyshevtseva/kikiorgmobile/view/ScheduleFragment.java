@@ -27,6 +27,9 @@ import java.util.Date;
 import java.util.List;
 
 public class ScheduleFragment extends Fragment {
+    private static final int MAX_SCALE = 5;
+    private static final int MIN_SCALE = 1;
+    private int scale = 2;
     private LinearLayout intervalsBox;
     private LinearLayout notScheduledBox;
     private TextView alarmTextView;
@@ -39,11 +42,27 @@ public class ScheduleFragment extends Fragment {
         intervalsBox = view.findViewById(R.id.intervals_box);
         notScheduledBox = view.findViewById(R.id.not_scheduled_box);
         alarmTextView = view.findViewById(R.id.schedule_alarm_text_view);
+        tuneScaleButtons(view);
 
         if (schedule != null) {
             showPartsOfSchedule();
         }
         return view;
+    }
+
+    private void tuneScaleButtons(View view) {
+        view.findViewById(R.id.plus_scale_button).setOnClickListener(view1 -> {
+            if (scale < MAX_SCALE) {
+                scale += 1;
+                updateSchedule();
+            }
+        });
+        view.findViewById(R.id.minus_scale_button).setOnClickListener(view1 -> {
+            if (scale > MIN_SCALE) {
+                scale -= 1;
+                updateSchedule();
+            }
+        });
     }
 
     @Override
@@ -84,10 +103,16 @@ public class ScheduleFragment extends Fragment {
         intervalsBox.removeAllViews();
         for (Interval interval : intervals) {
             LinearLayout linearLayout = new LinearLayout(getActivity());
-            linearLayout.setMinimumHeight(interval.getLength() * 2);
+            linearLayout.setMinimumHeight(interval.getLength() * scale);
             linearLayout.setMinimumWidth(600);
             linearLayout.setOrientation(LinearLayout.VERTICAL);
-            linearLayout.setBackgroundColor(Color.parseColor(interval.getColor()));
+            linearLayout.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.border));
+            if (interval.getColor() != null) {
+                linearLayout.setBackgroundColor(Color.parseColor(interval.getColor()));
+            }
+            if (interval.getTask() != null) {
+                linearLayout.setOnClickListener(view -> taskClickListener(interval.getTask()));
+            }
 
             if (!GeneralUtil.isEmpty(interval.getTitle())) {
                 TextView titleView = new TextView(getActivity());
@@ -119,11 +144,11 @@ public class ScheduleFragment extends Fragment {
             params.setMargins(10, 10, 10, 10);
             textView.setLayoutParams(params);
 
-            textView.setOnClickListener(view -> notScheduledTaskClickListener(task));
+            textView.setOnClickListener(view -> taskClickListener(task));
         }
     }
 
-    private void notScheduledTaskClickListener(Task task) {
+    private void taskClickListener(Task task) {
         TaskMenuDialog taskMenuDialog = new TaskMenuDialog(task, this::updateSchedule, date, (AppCompatActivity) getActivity());
         taskMenuDialog.show(getActivity().getSupportFragmentManager(), "TaskMenuDialog");
     }

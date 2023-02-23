@@ -9,8 +9,6 @@ public class Time implements Comparable<Time> {
     private final int minute;
 
     public Time(String s) {
-        this.s = s;
-
         try {
             String[] strings = s.split(":");
             if (strings.length != 2) {
@@ -18,6 +16,8 @@ public class Time implements Comparable<Time> {
             }
             hour = Integer.parseInt(strings[0]);
             minute = Integer.parseInt(strings[1]);
+            this.s = intsToString(hour, minute);
+
         } catch (Exception e) {
             throw new RuntimeException("Ошибка при парсинге строки времени: " + s);
         }
@@ -26,7 +26,13 @@ public class Time implements Comparable<Time> {
     public Time(int hour, int minute) {
         this.hour = hour;
         this.minute = minute;
-        s = hour + ":" + minute;
+        s = intsToString(hour, minute);
+    }
+
+    private String intsToString(int hour, int minute) {
+        String hourStr = hour < 10 ? "0" + hour : "" + hour;
+        String minStr = minute < 10 ? "0" + minute : "" + minute;
+        return hourStr + ":" + minStr;
     }
 
     public Time(int totalMinutes) {
