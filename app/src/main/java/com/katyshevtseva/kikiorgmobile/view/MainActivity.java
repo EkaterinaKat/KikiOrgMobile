@@ -104,12 +104,12 @@ public class MainActivity extends AppCompatActivity {
         datePickerDialog.show();
     }
 
-    private void previousDate() {
+    public void previousDate() {
         date = DateUtils.shiftDate(date, TimeUnit.DAY, -1);
         updateTaskPane();
     }
 
-    private void nextDate() {
+    public void nextDate() {
         date = DateUtils.shiftDate(date, TimeUnit.DAY, 1);
         updateTaskPane();
     }

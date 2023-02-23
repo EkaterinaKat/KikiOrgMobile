@@ -21,6 +21,7 @@ import com.katyshevtseva.kikiorgmobile.core.ScheduleService;
 import com.katyshevtseva.kikiorgmobile.core.ScheduleService.Schedule;
 import com.katyshevtseva.kikiorgmobile.core.model.Task;
 import com.katyshevtseva.kikiorgmobile.utils.GeneralUtil;
+import com.katyshevtseva.kikiorgmobile.view.utils.OnSwipeListener;
 import com.katyshevtseva.kikiorgmobile.view.utils.ViewUtils;
 
 import java.util.Date;
@@ -44,10 +45,24 @@ public class ScheduleFragment extends Fragment {
         alarmTextView = view.findViewById(R.id.schedule_alarm_text_view);
         tuneScaleButtons(view);
 
+        view.findViewById(R.id.not_scheduled_scroll).setOnTouchListener(getSwipeListener());
+
         if (schedule != null) {
             showPartsOfSchedule();
         }
         return view;
+    }
+
+    private OnSwipeListener getSwipeListener() {
+        return new OnSwipeListener(getContext()) {
+            public void onSwipeRight() {
+                ((MainActivity) getActivity()).previousDate();
+            }
+
+            public void onSwipeLeft() {
+                ((MainActivity) getActivity()).nextDate();
+            }
+        };
     }
 
     private void tuneScaleButtons(View view) {

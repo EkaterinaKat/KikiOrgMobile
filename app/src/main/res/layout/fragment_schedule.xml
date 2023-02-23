@@ -40,6 +40,7 @@
             android:layout_height="match_parent">
 
             <ScrollView
+                android:id="@+id/not_scheduled_scroll"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_alignParentTop="true"
@@ -74,11 +75,6 @@
                     android:layout_height="wrap_content"
                     android:text="-" />
             </LinearLayout>
-
         </RelativeLayout>
-
-
     </LinearLayout>
-
-
 </LinearLayout>
