@@ -25,12 +25,9 @@ import java.util.Date;
 public class MainActivity extends AppCompatActivity {
     private Date date;
     private TextView dateView;
-    private final TaskListFragment taskListFragment = new TaskListFragment();
     private final ScheduleFragment scheduleFragment = new ScheduleFragment();
     private TextView alarmTextView;
     private Button datelessTaskButton;
-    private boolean schedulerMode = false;
-    private Button scheduleButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,32 +49,16 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.next_date_button).setOnClickListener(view -> nextDate());
         dateView.setOnClickListener(view -> openDatePicker());
 
-        getSupportFragmentManager().beginTransaction().add(R.id.task_list_container, taskListFragment).commit();
-        taskListFragment.initAdapter(date, this);
+        getSupportFragmentManager().beginTransaction().add(R.id.task_list_container, scheduleFragment).commit();
 
         datelessTaskButton = findViewById(R.id.dateless_task_button);
         datelessTaskButton.setOnClickListener(view ->
                 startActivity(new Intent(getApplicationContext(), DatelessTaskActivity.class)));
 
-        scheduleButton = findViewById(R.id.schedule_button);
-        scheduleButton.setOnClickListener(view -> schedulerButtonListener());
-
         findViewById(R.id.schedule_settings_button).setOnClickListener(view ->
                 startActivity(new Intent(getApplicationContext(), ScheduleSettingsActivity.class)));
 
         updateTaskPane();
-    }
-
-    private void schedulerButtonListener() {
-        schedulerMode = !schedulerMode;
-
-        if (schedulerMode) {
-            scheduleButton.setBackground(ContextCompat.getDrawable(this, R.mipmap.hamburger));
-            getSupportFragmentManager().beginTransaction().replace(R.id.task_list_container, scheduleFragment).commit();
-        } else {
-            scheduleButton.setBackground(ContextCompat.getDrawable(this, R.mipmap.schedule));
-            getSupportFragmentManager().beginTransaction().replace(R.id.task_list_container, taskListFragment).commit();
-        }
     }
 
     @Override
@@ -88,7 +69,6 @@ public class MainActivity extends AppCompatActivity {
 
     private void updateTaskPane() {
         dateView.setText(DateUtils.getDateStringWithWeekDay(date));
-        taskListFragment.setDate(date);
         scheduleFragment.setDate(date);
         setDateViewStyle();
         updateAlarmBanner();

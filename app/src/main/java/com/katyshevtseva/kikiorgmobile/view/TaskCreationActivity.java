@@ -25,12 +25,11 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.kikiorgmobile.R;
 import com.katyshevtseva.kikiorgmobile.core.Service;
-import com.katyshevtseva.kikiorgmobile.core.model.IrregularTask;
 import com.katyshevtseva.kikiorgmobile.core.enums.PeriodType;
+import com.katyshevtseva.kikiorgmobile.core.enums.TaskType;
+import com.katyshevtseva.kikiorgmobile.core.model.IrregularTask;
 import com.katyshevtseva.kikiorgmobile.core.model.RegularTask;
 import com.katyshevtseva.kikiorgmobile.core.model.Task;
-import com.katyshevtseva.kikiorgmobile.core.enums.TaskType;
-import com.katyshevtseva.kikiorgmobile.core.enums.TimeOfDay;
 import com.katyshevtseva.kikiorgmobile.utils.OneInKnob;
 import com.katyshevtseva.kikiorgmobile.view.utils.FragmentUpdateListener;
 
@@ -46,7 +45,6 @@ public class TaskCreationActivity extends AppCompatActivity implements FragmentU
 
     private EditText titleEdit;
     private EditText descEdit;
-    private Spinner timeOfDaySpinner;
     private Spinner taskTypeSpinner;
     private LinearLayout irregularLayout;
     private TextView itDateTextView;
@@ -93,7 +91,6 @@ public class TaskCreationActivity extends AppCompatActivity implements FragmentU
     }
 
     private void setFieldDefaultValues() {
-        selectSpinnerItemByValue(timeOfDaySpinner, TimeOfDay.AFTERNOON);
         selectSpinnerItemByValue(taskTypeSpinner, TaskType.IRREGULAR);
         itDateTextView.setText(getDateString(new Date()));
     }
@@ -112,7 +109,6 @@ public class TaskCreationActivity extends AppCompatActivity implements FragmentU
 
         titleEdit.setText(existing.getTitle());
         descEdit.setText(existing.getDesc());
-        selectSpinnerItemByValue(timeOfDaySpinner, existing.getTimeOfDay());
         selectSpinnerItemByValue(taskTypeSpinner, existing.getType());
         taskTypeSpinner.setEnabled(false);
         switch (existing.getType()) {
@@ -131,7 +127,6 @@ public class TaskCreationActivity extends AppCompatActivity implements FragmentU
     private void initializeControls() {
         titleEdit = findViewById(R.id.title_edit);
         descEdit = findViewById(R.id.desc_edit);
-        timeOfDaySpinner = findViewById(R.id.time_of_day_spinner);
         taskTypeSpinner = findViewById(R.id.task_type_spinner);
         doneButton = findViewById(R.id.save_task_button);
         irregularLayout = findViewById(R.id.irregular_layout);
@@ -146,8 +141,6 @@ public class TaskCreationActivity extends AppCompatActivity implements FragmentU
         adjustSpinner(this, taskTypeSpinner, Arrays.asList(TaskType.values()), taskTypeSpinnerListener);
         adjustSpinner(this, periodTypeSpinner, Arrays.asList(PeriodType.values()),
                 selectedItem -> setDoneButtonAccessibility());
-        adjustSpinner(this, timeOfDaySpinner, Arrays.asList(TimeOfDay.values()),
-                timeOfDay -> setDoneButtonAccessibility());
         doneButton.setOnClickListener(view -> saveTask());
         itDateTextView.setOnClickListener(view -> openDatePicker(itDateTextView));
         setEditTextListener(periodEditText, text -> setDoneButtonAccessibility());
@@ -171,7 +164,6 @@ public class TaskCreationActivity extends AppCompatActivity implements FragmentU
                         (IrregularTask) existing,
                         titleEdit.getText().toString(),
                         descEdit.getText().toString(),
-                        (TimeOfDay) timeOfDaySpinner.getSelectedItem(),
                         getDateByString(itDateTextView.getText().toString())
                 );
                 break;
@@ -180,7 +172,6 @@ public class TaskCreationActivity extends AppCompatActivity implements FragmentU
                         (RegularTask) existing,
                         titleEdit.getText().toString(),
                         descEdit.getText().toString(),
-                        (TimeOfDay) timeOfDaySpinner.getSelectedItem(),
                         (PeriodType) periodTypeSpinner.getSelectedItem(),
                         datesFragment.getDates(),
                         Integer.parseInt(periodEditText.getText().toString()));

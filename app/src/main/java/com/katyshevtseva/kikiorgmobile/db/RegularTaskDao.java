@@ -5,7 +5,6 @@ import static com.katyshevtseva.kikiorgmobile.db.DbConstants.DESC;
 import static com.katyshevtseva.kikiorgmobile.db.DbConstants.ID;
 import static com.katyshevtseva.kikiorgmobile.db.DbConstants.PERIOD;
 import static com.katyshevtseva.kikiorgmobile.db.DbConstants.PERIOD_TYPE;
-import static com.katyshevtseva.kikiorgmobile.db.DbConstants.TIME_OF_DAY;
 import static com.katyshevtseva.kikiorgmobile.db.DbConstants.TITLE;
 import static com.katyshevtseva.kikiorgmobile.db.DbTable.ColumnActualType.BOOLEAN;
 import static com.katyshevtseva.kikiorgmobile.db.DbTable.ColumnActualType.LONG;
@@ -16,7 +15,6 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.katyshevtseva.kikiorgmobile.core.enums.PeriodType;
 import com.katyshevtseva.kikiorgmobile.core.model.RegularTask;
-import com.katyshevtseva.kikiorgmobile.core.enums.TimeOfDay;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,8 +54,6 @@ class RegularTaskDao extends AbstractDao<RegularTask> {
                 (regularTask, o) -> regularTask.setPeriod(((Long) o).intValue())));
         columns.add(new DbTable.Column<>(ARCHIVED, BOOLEAN, RegularTask::isArchived,
                 (regularTask, o) -> regularTask.setArchived((boolean) o)));
-        columns.add(new DbTable.Column<>(TIME_OF_DAY, LONG, regularTask -> regularTask.getTimeOfDay().getCode(),
-                (regularTask, o) -> regularTask.setTimeOfDay(TimeOfDay.findByCode(((Long) o).intValue()))));
 
         return columns;
     }

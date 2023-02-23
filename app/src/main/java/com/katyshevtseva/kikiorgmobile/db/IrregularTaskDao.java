@@ -2,7 +2,6 @@ package com.katyshevtseva.kikiorgmobile.db;
 
 import static com.katyshevtseva.kikiorgmobile.db.DbConstants.DESC;
 import static com.katyshevtseva.kikiorgmobile.db.DbConstants.ID;
-import static com.katyshevtseva.kikiorgmobile.db.DbConstants.TIME_OF_DAY;
 import static com.katyshevtseva.kikiorgmobile.db.DbConstants.TITLE;
 import static com.katyshevtseva.kikiorgmobile.db.DbTable.ColumnActualType.DATE;
 import static com.katyshevtseva.kikiorgmobile.db.DbTable.ColumnActualType.LONG;
@@ -11,7 +10,6 @@ import static com.katyshevtseva.kikiorgmobile.db.DbTable.ColumnActualType.STRING
 import android.database.sqlite.SQLiteDatabase;
 
 import com.katyshevtseva.kikiorgmobile.core.model.IrregularTask;
-import com.katyshevtseva.kikiorgmobile.core.enums.TimeOfDay;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -40,9 +38,6 @@ class IrregularTaskDao extends AbstractDao<IrregularTask> {
 
         columns.add(new DbTable.Column<>(DbConstants.DATE, DATE, IrregularTask::getDate,
                 (irregularTask, o) -> irregularTask.setDate((Date) o)));
-
-        columns.add(new DbTable.Column<>(TIME_OF_DAY, LONG, irregularTask -> irregularTask.getTimeOfDay().getCode(),
-                (irregularTask, o) -> irregularTask.setTimeOfDay(TimeOfDay.findByCode(((Long) o).intValue()))));
 
         return columns;
     }

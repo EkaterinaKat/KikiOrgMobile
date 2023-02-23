@@ -8,15 +8,14 @@ import static com.katyshevtseva.kikiorgmobile.utils.DateUtils.removeIgnoreTime;
 
 import android.content.Context;
 
+import com.katyshevtseva.kikiorgmobile.core.enums.PeriodType;
+import com.katyshevtseva.kikiorgmobile.core.enums.TaskType;
 import com.katyshevtseva.kikiorgmobile.core.model.DatelessTask;
 import com.katyshevtseva.kikiorgmobile.core.model.IrregularTask;
 import com.katyshevtseva.kikiorgmobile.core.model.Log;
 import com.katyshevtseva.kikiorgmobile.core.model.Log.Action;
-import com.katyshevtseva.kikiorgmobile.core.enums.PeriodType;
 import com.katyshevtseva.kikiorgmobile.core.model.RegularTask;
 import com.katyshevtseva.kikiorgmobile.core.model.Task;
-import com.katyshevtseva.kikiorgmobile.core.enums.TaskType;
-import com.katyshevtseva.kikiorgmobile.core.enums.TimeOfDay;
 import com.katyshevtseva.kikiorgmobile.db.KomDaoImpl;
 import com.katyshevtseva.kikiorgmobile.utils.DateUtils;
 
@@ -38,13 +37,12 @@ public class Service {
         this.komDao = new KomDaoImpl(context);
     }
 
-    public void saveIrregularTask(IrregularTask existing, String title, String desc, TimeOfDay timeOfDay, Date date) {
+    public void saveIrregularTask(IrregularTask existing, String title, String desc, Date date) {
         if (existing == null) {
             existing = new IrregularTask();
         }
         existing.setTitle(title);
         existing.setDesc(desc);
-        existing.setTimeOfDay(timeOfDay);
         existing.setDate(date);
 
         if (existing.getId() == 0) {
@@ -56,13 +54,12 @@ public class Service {
         }
     }
 
-    public void saveRegularTask(RegularTask existing, String title, String desc, TimeOfDay timeOfDay,
+    public void saveRegularTask(RegularTask existing, String title, String desc,
                                 PeriodType periodType, List<Date> dates, int period) {
         if (existing == null) {
             RegularTask task = new RegularTask();
             task.setTitle(title);
             task.setDesc(desc);
-            task.setTimeOfDay(timeOfDay);
             task.setPeriodType(periodType);
             task.setPeriod(period);
             task.setDates(dates);
@@ -71,7 +68,6 @@ public class Service {
         } else {
             existing.setTitle(title);
             existing.setDesc(desc);
-            existing.setTimeOfDay(timeOfDay);
             existing.setPeriodType(periodType);
             existing.setPeriod(period);
             existing.setDates(dates);
@@ -178,13 +174,6 @@ public class Service {
         tasks.addAll(komDao.getRegularTasksByDate(date).stream()
                 .filter(regularTask -> !regularTask.isArchived()).collect(Collectors.toList()));
 
-        tasks.sort((t1, t2) -> {
-            int result = t1.getTimeOfDay().getCode().compareTo(t2.getTimeOfDay().getCode());
-            if (result != 0)
-                return result;
-            return t1.getTitle().compareToIgnoreCase(t2.getTitle());
-        });
-
         return tasks;
     }
 
@@ -250,7 +239,6 @@ public class Service {
             saveIrregularTask(null,
                     String.format("%s (перенесено с %s)", regularTask.getTitle(), getDateString(initDate)),
                     regularTask.getDesc(),
-                    regularTask.getTimeOfDay(),
                     targetDate);
         }
         saveLog(Action.RESCHEDULE, regularTask,
@@ -308,7 +296,6 @@ public class Service {
         task.setTitle(regularTask.getTitle());
         task.setDesc(regularTask.getDesc());
         task.setDate(new Date());
-        task.setTimeOfDay(TimeOfDay.AFTERNOON);
         return task;
 
     }

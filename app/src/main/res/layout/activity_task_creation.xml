@@ -28,12 +28,6 @@
         android:textColor="@color/black" />
 
     <Spinner
-        android:id="@+id/time_of_day_spinner"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:layout_margin="20dp" />
-
-    <Spinner
         android:id="@+id/task_type_spinner"
         android:layout_width="200dp"
         android:layout_height="wrap_content"

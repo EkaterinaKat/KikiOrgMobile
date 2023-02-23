@@ -21,7 +21,6 @@ class DbConstants {
     static final String SUBJECT = "subject";
     static final String TASK_ID = "task_id";
     static final String TASK_TYPE = "task_type";
-    static final String TIME_OF_DAY = "time_of_day";
     static final String TITLE = "title";
     static final String VALUE = "value";
 }

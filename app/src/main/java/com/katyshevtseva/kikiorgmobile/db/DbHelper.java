@@ -16,7 +16,6 @@ import static com.katyshevtseva.kikiorgmobile.db.DbConstants.RT_ID;
 import static com.katyshevtseva.kikiorgmobile.db.DbConstants.SUBJECT;
 import static com.katyshevtseva.kikiorgmobile.db.DbConstants.TASK_ID;
 import static com.katyshevtseva.kikiorgmobile.db.DbConstants.TASK_TYPE;
-import static com.katyshevtseva.kikiorgmobile.db.DbConstants.TIME_OF_DAY;
 import static com.katyshevtseva.kikiorgmobile.db.DbConstants.TITLE;
 import static com.katyshevtseva.kikiorgmobile.db.DbConstants.VALUE;
 
@@ -39,14 +38,12 @@ public class DbHelper extends SQLiteOpenHelper {
                 ID + " INTEGER primary key autoincrement, " +
                 TITLE + " TEXT, " +
                 DESC + " TEXT, " +
-                TIME_OF_DAY + " INTEGER, " +
                 DATE + " TEXT )");
 
         database.execSQL("create table " + RegularTaskDao.NAME + "(" +
                 ID + " INTEGER primary key autoincrement, " +
                 TITLE + " TEXT, " +
                 DESC + " TEXT, " +
-                TIME_OF_DAY + " INTEGER, " +
                 PERIOD_TYPE + " INTEGER, " +
                 PERIOD + " INTEGER, " +
                 ARCHIVED + " INTEGER )");
