@@ -27,7 +27,6 @@ public class LogsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_logs);
-        GeneralUtil.setImmersiveStickyMode(getWindow());
 
         RecyclerView logList = findViewById(R.id.log_list);
         logList.setLayoutManager(new LinearLayoutManager(this));
@@ -79,5 +78,11 @@ public class LogsActivity extends AppCompatActivity {
         public int getItemCount() {
             return logs.size();
         }
+    }
+
+    @Override
+    protected void onResume() {
+        GeneralUtil.setImmersiveStickyMode(getWindow());
+        super.onResume();
     }
 }

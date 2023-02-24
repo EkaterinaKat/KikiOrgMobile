@@ -28,7 +28,6 @@ public class ArchiveTasksActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_archived_tasks);
-        GeneralUtil.setImmersiveStickyMode(getWindow());
 
         RecyclerView taskList = findViewById(R.id.archived_task_list);
         taskList.setLayoutManager(new LinearLayoutManager(this));
@@ -36,6 +35,12 @@ public class ArchiveTasksActivity extends AppCompatActivity {
 
         swipeManager = new SwipeManager(this);
         swipeManager.setLeftSwipeListener(this::finish);
+    }
+
+    @Override
+    protected void onResume() {
+        GeneralUtil.setImmersiveStickyMode(getWindow());
+        super.onResume();
     }
 
     @Override

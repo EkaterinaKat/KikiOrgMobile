@@ -20,7 +20,6 @@ public class DatelessTaskActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dateless_task);
-        GeneralUtil.setImmersiveStickyMode(getWindow());
 
         findViewById(R.id.add_dateless_task_button).setOnClickListener(view -> {
             DatelessTaskEditDialog dialog = new DatelessTaskEditDialog(null, this::updateTaskList);
@@ -46,5 +45,11 @@ public class DatelessTaskActivity extends AppCompatActivity {
 
     private void updateTaskList() {
         taskListAdapter.updateContent();
+    }
+
+    @Override
+    protected void onResume() {
+        GeneralUtil.setImmersiveStickyMode(getWindow());
+        super.onResume();
     }
 }

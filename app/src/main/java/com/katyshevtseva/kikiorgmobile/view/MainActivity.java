@@ -37,7 +37,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        GeneralUtil.setImmersiveStickyMode(getWindow());
 
         Service.init(this);
         PrefService.init(this);
@@ -73,6 +72,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onResume() {
+        GeneralUtil.setImmersiveStickyMode(getWindow());
         updateTaskPane();
         super.onResume();
     }

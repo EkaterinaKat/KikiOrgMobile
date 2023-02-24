@@ -78,7 +78,6 @@ public class TaskCreationActivity extends AppCompatActivity implements FragmentU
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task_creation);
-        GeneralUtil.setImmersiveStickyMode(getWindow());
 
         initializeControls();
         setDoneButtonAccessibility();
@@ -236,5 +235,11 @@ public class TaskCreationActivity extends AppCompatActivity implements FragmentU
     @Override
     public void onUpdate() {
         setDoneButtonAccessibility();
+    }
+
+    @Override
+    protected void onResume() {
+        GeneralUtil.setImmersiveStickyMode(getWindow());
+        super.onResume();
     }
 }

@@ -62,7 +62,6 @@ public class SettingCreationActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting_creation);
-        GeneralUtil.setImmersiveStickyMode(getWindow());
 
         initializeControls();
         initTimePickers();
@@ -170,5 +169,11 @@ public class SettingCreationActivity extends AppCompatActivity {
 
     private enum WayOfBeginSpecifying {
         NONE, RELATIVE, ABSOLUTE
+    }
+
+    @Override
+    protected void onResume() {
+        GeneralUtil.setImmersiveStickyMode(getWindow());
+        super.onResume();
     }
 }

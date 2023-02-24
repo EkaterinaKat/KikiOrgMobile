@@ -24,7 +24,6 @@ public class AdminActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin);
-        GeneralUtil.setImmersiveStickyMode(getWindow());
 
         findViewById(R.id.new_task_button).setOnClickListener(view ->
                 startActivity(TaskCreationActivity.newIntent(AdminActivity.this, null)));
