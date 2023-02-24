@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -20,6 +21,7 @@ import com.katyshevtseva.kikiorgmobile.core.Service;
 import com.katyshevtseva.kikiorgmobile.utils.DateUtils;
 import com.katyshevtseva.kikiorgmobile.utils.DateUtils.TimeUnit;
 import com.katyshevtseva.kikiorgmobile.utils.GeneralUtil;
+import com.katyshevtseva.kikiorgmobile.view.utils.SwipeManager;
 
 import java.util.Date;
 
@@ -29,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
     private final ScheduleFragment scheduleFragment = new ScheduleFragment();
     private TextView alarmTextView;
     private Button datelessTaskButton;
+    private SwipeManager swipeManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +64,16 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(getApplicationContext(), ScheduleSettingsActivity.class)));
 
         updateTaskPane();
+
+        swipeManager = new SwipeManager(this);
+        swipeManager.setLeftSwipeListener(this::previousDate);
+        swipeManager.setRightSwipeListener(this::nextDate);
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        Boolean result = swipeManager.dispatchTouchEvent(ev);
+        return result == null ? super.dispatchTouchEvent(ev) : result;
     }
 
     @Override
@@ -104,12 +117,12 @@ public class MainActivity extends AppCompatActivity {
         datePickerDialog.show();
     }
 
-    public void previousDate() {
+    private void previousDate() {
         date = DateUtils.shiftDate(date, TimeUnit.DAY, -1);
         updateTaskPane();
     }
 
-    public void nextDate() {
+    private void nextDate() {
         date = DateUtils.shiftDate(date, TimeUnit.DAY, 1);
         updateTaskPane();
     }

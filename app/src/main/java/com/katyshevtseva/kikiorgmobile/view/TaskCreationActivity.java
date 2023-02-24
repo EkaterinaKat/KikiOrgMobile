@@ -12,6 +12,7 @@ import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -33,6 +34,7 @@ import com.katyshevtseva.kikiorgmobile.core.model.Task;
 import com.katyshevtseva.kikiorgmobile.utils.GeneralUtil;
 import com.katyshevtseva.kikiorgmobile.utils.OneInKnob;
 import com.katyshevtseva.kikiorgmobile.view.utils.FragmentUpdateListener;
+import com.katyshevtseva.kikiorgmobile.view.utils.SwipeManager;
 
 import java.util.Arrays;
 import java.util.Date;
@@ -43,6 +45,7 @@ public class TaskCreationActivity extends AppCompatActivity implements FragmentU
     private static final String EXTRA_REG_TO_IRREG = "reg_to_irreg";
     private Task existing;
     private final DatesSelectFragment datesFragment = new DatesSelectFragment();
+    private SwipeManager swipeManager;
 
     private EditText titleEdit;
     private EditText descEdit;
@@ -81,6 +84,22 @@ public class TaskCreationActivity extends AppCompatActivity implements FragmentU
         setDoneButtonAccessibility();
         setControlListeners();
         setInitFieldValues();
+
+        swipeManager = new SwipeManager(this);
+        swipeManager.setLeftSwipeListener(this::askToFinish);
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        Boolean result = swipeManager.dispatchTouchEvent(ev);
+        return result == null ? super.dispatchTouchEvent(ev) : result;
+    }
+
+    private void askToFinish() {
+        new QuestionDialog("Exit?", answer -> {
+            if (answer)
+                finish();
+        }).show(getSupportFragmentManager(), "exitDialog");
     }
 
     private void setInitFieldValues() {

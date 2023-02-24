@@ -6,6 +6,7 @@ import static com.katyshevtseva.kikiorgmobile.view.utils.ViewUtils.selectSpinner
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -23,11 +24,13 @@ import com.katyshevtseva.kikiorgmobile.core.model.RtSetting;
 import com.katyshevtseva.kikiorgmobile.utils.GeneralUtil;
 import com.katyshevtseva.kikiorgmobile.utils.OneInKnob;
 import com.katyshevtseva.kikiorgmobile.view.utils.MyTimePicker;
+import com.katyshevtseva.kikiorgmobile.view.utils.SwipeManager;
 
 import java.util.Arrays;
 
 public class SettingCreationActivity extends AppCompatActivity {
     private static final String EXTRA_SETTING_ID = "setting_id";
+    private SwipeManager swipeManager;
 
     private RtSetting existing;
     private MyTimePicker beginTp;
@@ -58,6 +61,22 @@ public class SettingCreationActivity extends AppCompatActivity {
         setSaveButtonAccessibility();
         setControlListeners();
         setInitFieldValues();
+
+        swipeManager = new SwipeManager(this);
+        swipeManager.setLeftSwipeListener(this::askToFinish);
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        Boolean result = swipeManager.dispatchTouchEvent(ev);
+        return result == null ? super.dispatchTouchEvent(ev) : result;
+    }
+
+    private void askToFinish() {
+        new QuestionDialog("Exit?", answer -> {
+            if (answer)
+                finish();
+        }).show(getSupportFragmentManager(), "exitDialog");
     }
 
     private void setInitFieldValues() {

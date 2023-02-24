@@ -94,8 +94,12 @@ public class ScheduleService {
 
     private Time getInitPie(Date date, Interval firstInterval, Time activityStart) {
         Date today = new Date();
+        Time now = getNow();
         if (TimeUtils.equalsIgnoreTime(today, date)) {
-            return getNow();
+            if (TimeUtils.after(firstInterval.getStart(), now))
+                return now;
+            else
+                return firstInterval.getStart();
         }
         if (TimeUtils.beforeIgnoreTime(date, today)) {
             return firstInterval.getStart();

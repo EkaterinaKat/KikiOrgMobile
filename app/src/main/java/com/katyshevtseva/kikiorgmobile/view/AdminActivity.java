@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.MotionEvent;
 import android.widget.EditText;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,9 +14,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.kikiorgmobile.R;
 import com.katyshevtseva.kikiorgmobile.utils.GeneralUtil;
 import com.katyshevtseva.kikiorgmobile.view.utils.AdminTaskRecycleView.TaskListAdapter;
+import com.katyshevtseva.kikiorgmobile.view.utils.SwipeManager;
 
 public class AdminActivity extends AppCompatActivity {
     private TaskListAdapter taskListAdapter;
+    private SwipeManager swipeManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +35,15 @@ public class AdminActivity extends AppCompatActivity {
         taskList.setLayoutManager(new LinearLayoutManager(this));
         taskListAdapter = new TaskListAdapter(this);
         taskList.setAdapter(taskListAdapter);
+
+        swipeManager = new SwipeManager(this);
+        swipeManager.setLeftSwipeListener(this::finish);
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        Boolean result = swipeManager.dispatchTouchEvent(ev);
+        return result == null ? super.dispatchTouchEvent(ev) : result;
     }
 
     private final TextWatcher searchTextWatcher = new TextWatcher() {
@@ -55,5 +67,11 @@ public class AdminActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         taskListAdapter.updateContent();
+    }
+
+    @Override
+    protected void onResume() {
+        GeneralUtil.setImmersiveStickyMode(getWindow());
+        super.onResume();
     }
 }

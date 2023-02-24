@@ -2,6 +2,7 @@ package com.katyshevtseva.kikiorgmobile.view;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -15,11 +16,13 @@ import com.example.kikiorgmobile.R;
 import com.katyshevtseva.kikiorgmobile.core.Service;
 import com.katyshevtseva.kikiorgmobile.core.model.RegularTask;
 import com.katyshevtseva.kikiorgmobile.utils.GeneralUtil;
+import com.katyshevtseva.kikiorgmobile.view.utils.SwipeManager;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ArchiveTasksActivity extends AppCompatActivity {
+    private SwipeManager swipeManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +33,15 @@ public class ArchiveTasksActivity extends AppCompatActivity {
         RecyclerView taskList = findViewById(R.id.archived_task_list);
         taskList.setLayoutManager(new LinearLayoutManager(this));
         taskList.setAdapter(new TaskListAdapter(this));
+
+        swipeManager = new SwipeManager(this);
+        swipeManager.setLeftSwipeListener(this::finish);
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        Boolean result = swipeManager.dispatchTouchEvent(ev);
+        return result == null ? super.dispatchTouchEvent(ev) : result;
     }
 
     private static class TaskHolder extends RecyclerView.ViewHolder {
