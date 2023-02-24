@@ -1,5 +1,6 @@
 package com.katyshevtseva.kikiorgmobile.view.utils;
 
+import android.app.Activity;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.view.View;
@@ -8,6 +9,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.katyshevtseva.kikiorgmobile.utils.GeneralUtil;
 import com.katyshevtseva.kikiorgmobile.utils.Time;
 import com.katyshevtseva.kikiorgmobile.utils.TwoInKnob;
 
@@ -33,11 +35,16 @@ public class MyTimePicker {
     }
 
     private void openTimePicker(Context context) {
-        new TimePickerDialog(context,
+        TimePickerDialog timePickerDialog = new TimePickerDialog(context,
                 (timePicker, hour, min) -> {
                     setTime(new Time(hour, min));
                     onTimeSetListener.execute(hour, min);
-                }, time == null ? 0 : time.getHour(), time == null ? 0 : time.getMinute(), true).show();
+                }, time == null ? 0 : time.getHour(), time == null ? 0 : time.getMinute(), true);
+
+        timePickerDialog.setOnDismissListener(dialogInterface ->
+                GeneralUtil.setImmersiveStickyMode(((Activity) context).getWindow()));
+
+        timePickerDialog.show();
     }
 
     public void setTime(Time time) {

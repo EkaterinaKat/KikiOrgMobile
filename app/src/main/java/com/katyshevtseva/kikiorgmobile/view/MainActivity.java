@@ -50,8 +50,6 @@ public class MainActivity extends AppCompatActivity {
         dateView = findViewById(R.id.main_date_text_view);
         findViewById(R.id.admin_button).setOnClickListener(view ->
                 startActivity(new Intent(getApplicationContext(), AdminActivity.class)));
-        findViewById(R.id.prev_date_button).setOnClickListener(view -> previousDate());
-        findViewById(R.id.next_date_button).setOnClickListener(view -> nextDate());
         dateView.setOnClickListener(view -> openDatePicker());
 
         getSupportFragmentManager().beginTransaction().add(R.id.task_list_container, scheduleFragment).commit();
@@ -59,9 +57,6 @@ public class MainActivity extends AppCompatActivity {
         datelessTaskButton = findViewById(R.id.dateless_task_button);
         datelessTaskButton.setOnClickListener(view ->
                 startActivity(new Intent(getApplicationContext(), DatelessTaskActivity.class)));
-
-        findViewById(R.id.schedule_settings_button).setOnClickListener(view ->
-                startActivity(new Intent(getApplicationContext(), ScheduleSettingsActivity.class)));
 
         updateTaskPane();
 

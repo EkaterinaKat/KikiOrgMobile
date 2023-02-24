@@ -28,9 +28,12 @@ public class AdminActivity extends AppCompatActivity {
 
         findViewById(R.id.new_task_button).setOnClickListener(view ->
                 startActivity(TaskCreationActivity.newIntent(AdminActivity.this, null)));
+        findViewById(R.id.add_setting_button).setOnClickListener(view ->
+                startActivity(SettingCreationActivity.newIntent(this, null)));
         findViewById(R.id.archive_button).setOnClickListener(view -> startActivity(new Intent(this, ArchiveTasksActivity.class)));
         findViewById(R.id.logs_button).setOnClickListener(view -> startActivity(new Intent(this, LogsActivity.class)));
         ((EditText) findViewById(R.id.search_edit_text)).addTextChangedListener(searchTextWatcher);
+        getSupportFragmentManager().beginTransaction().add(R.id.activity_period_container, new ActivityPeriodFragment()).commit();
         RecyclerView taskList = findViewById(R.id.admin_task_list);
         taskList.setLayoutManager(new LinearLayoutManager(this));
         taskListAdapter = new TaskListAdapter(this);

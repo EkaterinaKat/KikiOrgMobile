@@ -32,6 +32,13 @@ public class RtSettingService {
         komDao.saveNew(new RtSetting(regularTask.getId(), duration, beginTime, absoluteWobs));
     }
 
+    public String getSettingDesc(RegularTask regularTask) throws Exception {
+        RtSetting setting = getRtSettingOrNull(regularTask);
+        if (setting == null)
+            return "";
+        return getRtSettingDesc(setting);
+    }
+
     public RtSetting getRtSettingOrNull(RegularTask task) throws Exception {
         List<RtSetting> settings = komDao.getRtSettingsByRtId(task.getId());
         if (settings.size() > 1) {
@@ -54,13 +61,14 @@ public class RtSettingService {
         komDao.update(setting);
     }
 
-    public void deleteRtSetting(RtSetting setting) {
-        komDao.delete(setting);
+    public void deleteRtSetting(RegularTask task) throws Exception {
+        RtSetting setting = getRtSettingOrNull(task);
+        if (setting != null)
+            komDao.delete(setting);
     }
 
     public String getRtSettingDesc(RtSetting setting) {
-        RegularTask task = komDao.getRegularTaskById(setting.getRtId());
-        String result = task.getTitle();
+        String result = "";
         if (setting.getDuration() != null) {
             result += ("\nDuration: " + setting.getDuration().getS());
         }

@@ -42,10 +42,18 @@ public class SettingCreationActivity extends AppCompatActivity {
     private LinearLayout beginTimeContainer;
     private Button durationClearButton;
 
-    public static Intent newIntent(Context context, @Nullable RtSetting rtSetting) {
+    public static Intent newIntent(Context context, @Nullable RegularTask task) {
         Intent intent = new Intent(context, SettingCreationActivity.class);
-        if (rtSetting != null) {
-            intent.putExtra(EXTRA_SETTING_ID, rtSetting.getId());
+
+        if (task != null) {
+            try {
+                RtSetting rtSetting = RtSettingService.INSTANCE.getRtSettingOrNull(task);
+                if (rtSetting != null) {
+                    intent.putExtra(EXTRA_SETTING_ID, rtSetting.getId());
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
         return intent;
     }

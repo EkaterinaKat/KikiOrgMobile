@@ -13,11 +13,13 @@ import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.kikiorgmobile.R;
+import com.katyshevtseva.kikiorgmobile.core.RtSettingService;
 import com.katyshevtseva.kikiorgmobile.core.Service;
 import com.katyshevtseva.kikiorgmobile.core.model.IrregularTask;
 import com.katyshevtseva.kikiorgmobile.core.model.RegularTask;
 import com.katyshevtseva.kikiorgmobile.view.QuestionDialog;
 import com.katyshevtseva.kikiorgmobile.view.QuestionDialog.AnswerHandler;
+import com.katyshevtseva.kikiorgmobile.view.SettingCreationActivity;
 import com.katyshevtseva.kikiorgmobile.view.TaskCreationActivity;
 
 import java.util.ArrayList;
@@ -35,7 +37,7 @@ public class AdminTaskRecycleView {
             this.context = context;
         }
 
-        void bind(TaskListItem item) {
+        void bind(TaskListItem item) throws Exception {
             switch (item.getType()) {
                 case HEADER:
                     ((TextView) itemView.findViewById(R.id.header_text_view)).setText(item.getText());
@@ -48,9 +50,10 @@ public class AdminTaskRecycleView {
             }
         }
 
-        private void bindRegularTask(final RegularTask task) {
+        private void bindRegularTask(final RegularTask task) throws Exception {
             ((TextView) itemView.findViewById(R.id.task_title_view)).setText(task.getTitle());
-            ((TextView) itemView.findViewById(R.id.task_desc_view)).setText(task.getAdminTaskListDesk());
+            ((TextView) itemView.findViewById(R.id.task_desc_view)).setText(task.getAdminTaskListDesk()
+                    + RtSettingService.INSTANCE.getSettingDesc(task));
             itemView.findViewById(R.id.edit_task_button).setOnClickListener(
                     view -> context.startActivity(TaskCreationActivity.newIntent(context, task)));
             Button archiveButton = itemView.findViewById(R.id.delete_task_button);
@@ -60,6 +63,33 @@ public class AdminTaskRecycleView {
                 Toast.makeText(context, "Archived!", Toast.LENGTH_LONG).show();
                 taskListAdapter.updateContent();
             });
+
+            //Edit setting
+            Button editSettingButton = itemView.findViewById(R.id.edit_setting_button);
+            editSettingButton.setVisibility(View.VISIBLE);
+            editSettingButton.setOnClickListener(view ->
+                    context.startActivity(SettingCreationActivity.newIntent(context, task)));
+
+            //Delete setting
+            Button deleteSettingButton = itemView.findViewById(R.id.delete_setting_button);
+            deleteSettingButton.setVisibility(View.VISIBLE);
+            deleteSettingButton.setOnClickListener(view ->
+                    new QuestionDialog("Delete setting?", getDeletionDialogAnswerHandler(task))
+                            .show(context.getSupportFragmentManager(), "dialog111"));
+        }
+
+        private QuestionDialog.AnswerHandler getDeletionDialogAnswerHandler(final RegularTask task) {
+            return answer -> {
+                if (answer) {
+                    try {
+                        RtSettingService.INSTANCE.deleteRtSetting(task);
+                    } catch (Exception e) {
+                        ViewUtils.showAlertDialog(context, e.getMessage());
+                    }
+                    Toast.makeText(context, "Deleted!", Toast.LENGTH_LONG).show();
+                    taskListAdapter.updateContent();
+                }
+            };
         }
 
         private void bindIrregularTask(final IrregularTask task) {
@@ -67,6 +97,8 @@ public class AdminTaskRecycleView {
             ((TextView) itemView.findViewById(R.id.task_desc_view)).setText(task.getAdminTaskListDesk());
             itemView.findViewById(R.id.edit_task_button).setOnClickListener(
                     view -> context.startActivity(TaskCreationActivity.newIntent(context, task)));
+            itemView.findViewById(R.id.edit_setting_button).setVisibility(View.GONE);
+            itemView.findViewById(R.id.delete_setting_button).setVisibility(View.GONE);
             Button deleteButton = itemView.findViewById(R.id.delete_task_button);
             deleteButton.setText("Delete");
             deleteButton.setOnClickListener(view -> {
@@ -105,7 +137,11 @@ public class AdminTaskRecycleView {
         @Override
         public void onBindViewHolder(@NonNull TaskHolder holder, int position) {
             TaskListItem item = items.get(position);
-            holder.bind(item);
+            try {
+                holder.bind(item);
+            } catch (Exception e) {
+                ViewUtils.showAlertDialog(context, e.getMessage());
+            }
         }
 
         @Override
