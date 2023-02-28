@@ -3,9 +3,7 @@ package com.katyshevtseva.kikiorgmobile.db;
 import static com.katyshevtseva.kikiorgmobile.db.DbConstants.DATE;
 import static com.katyshevtseva.kikiorgmobile.db.DbConstants.DATE_FORMAT;
 import static com.katyshevtseva.kikiorgmobile.db.DbConstants.ID;
-import static com.katyshevtseva.kikiorgmobile.db.DbConstants.RT_ID;
 import static com.katyshevtseva.kikiorgmobile.db.DbConstants.TASK_ID;
-import static com.katyshevtseva.kikiorgmobile.db.DbConstants.TASK_TYPE;
 import static com.katyshevtseva.kikiorgmobile.db.DbConstants.TITLE;
 import static com.katyshevtseva.kikiorgmobile.db.DbConstants.VALUE;
 
@@ -13,14 +11,12 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.katyshevtseva.kikiorgmobile.core.KomDao;
-import com.katyshevtseva.kikiorgmobile.core.enums.TaskType;
 import com.katyshevtseva.kikiorgmobile.core.model.DatelessTask;
 import com.katyshevtseva.kikiorgmobile.core.model.IrregularTask;
 import com.katyshevtseva.kikiorgmobile.core.model.Log;
 import com.katyshevtseva.kikiorgmobile.core.model.OneDaySetting;
 import com.katyshevtseva.kikiorgmobile.core.model.PrefEntity;
 import com.katyshevtseva.kikiorgmobile.core.model.RegularTask;
-import com.katyshevtseva.kikiorgmobile.core.model.RtSetting;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -33,7 +29,6 @@ public class KomDaoImpl implements KomDao {
     private final DatelessTaskDao datelessTaskDao;
     private final LogDao logDao;
     private final PrefDao prefDao;
-    private final RtSettingDao rtSettingDao;
     private final OneDaySettingDao oneDaySettingDao;
 
     public KomDaoImpl(Context context) {
@@ -44,7 +39,6 @@ public class KomDaoImpl implements KomDao {
         datelessTaskDao = new DatelessTaskDao(database);
         logDao = new LogDao(database);
         prefDao = new PrefDao(database);
-        rtSettingDao = new RtSettingDao(database);
         oneDaySettingDao = new OneDaySettingDao(database);
     }
 
@@ -98,45 +92,13 @@ public class KomDaoImpl implements KomDao {
         prefDao.update(pref);
     }
 
-    ////////////////////////////  RtSetting  //////////////////////////////////
-
-    @Override
-    public RtSetting getRtSettingById(long id) {
-        return rtSettingDao.findFirst(ID, "" + id);
-    }
-
-    @Override
-    public void saveNew(RtSetting setting) {
-        rtSettingDao.saveNew(setting);
-    }
-
-    @Override
-    public void update(RtSetting setting) {
-        rtSettingDao.update(setting);
-    }
-
-    @Override
-    public void delete(RtSetting setting) {
-        rtSettingDao.delete(setting);
-    }
-
-    @Override
-    public List<RtSetting> getAllRtSettings() {
-        return rtSettingDao.findAll();
-    }
-
-    @Override
-    public List<RtSetting> getRtSettingsByRtId(Long rtId) {
-        return rtSettingDao.find(RT_ID, rtId.toString());
-    }
-
     ////////////////////////////  OneDaySetting  //////////////////////////////////
 
     @Override
-    public List<OneDaySetting> findOneDaySetting(long taskId, TaskType taskType, Date date) {
+    public List<OneDaySetting> findOneDaySetting(long taskId, Date date) {
         return oneDaySettingDao.find(
-                new String[]{TASK_ID, TASK_TYPE, DATE},
-                new String[]{"" + taskId, "" + taskType.getCode(), DATE_FORMAT.format(date)});
+                new String[]{TASK_ID, DATE},
+                new String[]{"" + taskId, DATE_FORMAT.format(date)});
     }
 
     @Override

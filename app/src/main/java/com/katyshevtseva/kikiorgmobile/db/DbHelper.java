@@ -23,9 +23,10 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 public class DbHelper extends SQLiteOpenHelper {
-    private static final int VERSION = 20;
+    private static final int VERSION = 24;
     private static final String DATABASE_NAME = "kom.db";
 
     DbHelper(Context context) {
@@ -38,6 +39,8 @@ public class DbHelper extends SQLiteOpenHelper {
                 ID + " INTEGER primary key autoincrement, " +
                 TITLE + " TEXT, " +
                 DESC + " TEXT, " +
+                DURATION + " TEXT, " +
+                BEGIN_TIME + " TEXT, " +
                 DATE + " TEXT )");
 
         database.execSQL("create table " + RegularTaskDao.NAME + "(" +
@@ -46,7 +49,10 @@ public class DbHelper extends SQLiteOpenHelper {
                 DESC + " TEXT, " +
                 PERIOD_TYPE + " INTEGER, " +
                 PERIOD + " INTEGER, " +
-                ARCHIVED + " INTEGER )");
+                ARCHIVED + " INTEGER, " +
+                DURATION + " TEXT, " +
+                BEGIN_TIME + " TEXT, " +
+                ABSOLUTE_WOBS + " INTEGER )");
 
         database.execSQL("create table " + RtDateDao.NAME + "(" +
                 ID + " INTEGER primary key autoincrement, " +
@@ -74,17 +80,9 @@ public class DbHelper extends SQLiteOpenHelper {
         database.insert(PrefDao.NAME, null,
                 getPrefContentValues(ACTIVITY_PERIOD_END.toString(), "22:00"));
 
-        database.execSQL("create table " + RtSettingDao.NAME + "(" +
-                ID + " INTEGER primary key autoincrement, " +
-                RT_ID + " INTEGER, " +
-                DURATION + " TEXT, " +
-                BEGIN_TIME + " TEXT, " +
-                ABSOLUTE_WOBS + " INTEGER )");
-
         database.execSQL("create table " + OneDaySettingDao.NAME + "(" +
                 ID + " INTEGER primary key autoincrement, " +
                 TASK_ID + " INTEGER, " +
-                TASK_TYPE + " INTEGER, " +
                 DURATION + " TEXT, " +
                 BEGIN_TIME + " TEXT, " +
                 DATE + " TEXT )");
@@ -92,6 +90,11 @@ public class DbHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase database, int oldVersion, int newVersion) {
+//        database.execSQL("ALTER TABLE irregular_task ADD duration TEXT; ");
+//        database.execSQL("ALTER TABLE irregular_task ADD begin_time TEXT; ");
+//        database.execSQL("ALTER TABLE regular_task ADD absolute_wobs INTEGER; ");
+
+//        database.execSQL("delete from one_day_setting; ");
     }
 
     private static ContentValues getPrefContentValues(String title, String value) {

@@ -27,16 +27,8 @@
                 android:id="@+id/activity_period_container"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toStartOf="@id/add_setting_button"
-                android:orientation="horizontal" />
-
-            <Button
-                android:id="@+id/add_setting_button"
-                android:layout_width="45dp"
-                android:layout_height="45dp"
-                android:layout_margin="5dp"
                 android:layout_toStartOf="@id/logs_button"
-                android:background="@mipmap/add_setting" />
+                android:orientation="horizontal" />
 
             <ImageButton
                 android:id="@+id/logs_button"

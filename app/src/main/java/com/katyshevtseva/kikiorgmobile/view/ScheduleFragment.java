@@ -44,6 +44,10 @@ public class ScheduleFragment extends Fragment {
         alarmTextView = view.findViewById(R.id.schedule_alarm_text_view);
         tuneScaleButtons(view);
 
+        view.findViewById(R.id.add_irt_button).setOnClickListener(view1 -> {
+            getContext().startActivity(IrtEditActivity.newIntent(getContext(), null));
+        });
+
         if (schedule != null) {
             showPartsOfSchedule();
         }
@@ -136,12 +140,11 @@ public class ScheduleFragment extends Fragment {
             textView.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.task_block));
             textView.setText(task.getTitle());
             textView.setSingleLine(false);
-            textView.setWidth(200);
-            textView.setPadding(10, 10, 10, 10);
+            textView.setPadding(15, 15, 15, 15);
             notScheduledBox.addView(textView);
 
             LayoutParams params = new LayoutParams(WRAP_CONTENT, WRAP_CONTENT);
-            params.setMargins(10, 10, 10, 10);
+            params.setMargins(15, 15, 15, 15);
             textView.setLayoutParams(params);
 
             textView.setOnClickListener(view -> taskClickListener(task));

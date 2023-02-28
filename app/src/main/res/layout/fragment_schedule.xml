@@ -22,8 +22,9 @@
         android:orientation="horizontal">
 
         <ScrollView
-            android:layout_width="244dp"
-            android:layout_height="match_parent">
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
 
             <LinearLayout
                 android:id="@+id/intervals_box"
@@ -36,43 +37,56 @@
         </ScrollView>
 
         <RelativeLayout
-            android:layout_width="168dp"
-            android:layout_height="match_parent">
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="3">
+
+            <Button
+                android:id="@+id/add_irt_button"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:background="@drawable/task_block"
+                android:text="+" />
 
             <ScrollView
                 android:id="@+id/not_scheduled_scroll"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_alignParentTop="true"
-                android:layout_marginTop="1dp">
+                android:layout_height="wrap_content"
+                android:layout_below="@id/add_irt_button">
 
                 <LinearLayout
                     android:id="@+id/not_scheduled_box"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:gravity="center"
                     android:orientation="vertical">
 
                 </LinearLayout>
             </ScrollView>
 
             <LinearLayout
-                android:layout_width="110dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:background="@drawable/radial">
+                android:layout_alignParentBottom="true">
 
                 <Button
                     android:id="@+id/plus_scale_button"
                     style="?android:attr/buttonBarButtonStyle"
-                    android:layout_width="55dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/radial"
                     android:text="+" />
 
                 <Button
                     android:id="@+id/minus_scale_button"
                     style="?android:attr/buttonBarButtonStyle"
-                    android:layout_width="55dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/radial"
                     android:text="-" />
             </LinearLayout>
         </RelativeLayout>

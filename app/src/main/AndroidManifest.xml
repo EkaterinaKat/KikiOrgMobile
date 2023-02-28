@@ -12,11 +12,11 @@
         android:roundIcon="@mipmap/icon"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="com.katyshevtseva.kikiorgmobile.view.SettingCreationActivity" />
+        <activity android:name="com.katyshevtseva.kikiorgmobile.view.RtEditActivity" />
         <activity android:name="com.katyshevtseva.kikiorgmobile.view.DatelessTaskActivity" />
         <activity android:name="com.katyshevtseva.kikiorgmobile.view.LogsActivity" />
         <activity android:name="com.katyshevtseva.kikiorgmobile.view.ArchiveTasksActivity" />
-        <activity android:name="com.katyshevtseva.kikiorgmobile.view.TaskCreationActivity" />
+        <activity android:name="com.katyshevtseva.kikiorgmobile.view.IrtEditActivity" />
         <activity android:name="com.katyshevtseva.kikiorgmobile.view.AdminActivity" />
         <activity android:name="com.katyshevtseva.kikiorgmobile.view.MainActivity">
             <intent-filter>

@@ -16,17 +16,14 @@ public class OneDaySetting implements Entity, Setting {
 
     private long taskId;
 
-    private TaskType taskType;
-
     private Time duration;
 
     private Time beginTime;
 
     private Date date;
 
-    public OneDaySetting(long taskId, TaskType taskType, Time duration, Time beginTime, Date date) {
+    public OneDaySetting(long taskId, Time duration, Time beginTime, Date date) {
         this.taskId = taskId;
-        this.taskType = taskType;
         this.duration = duration;
         this.beginTime = beginTime;
         this.date = date;
@@ -35,5 +32,10 @@ public class OneDaySetting implements Entity, Setting {
     @Override
     public boolean isAbsoluteWobs() {
         return true;
+    }
+
+    @Override
+    public TaskType getTaskType() {
+        return TaskType.REGULAR;
     }
 }

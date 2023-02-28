@@ -3,10 +3,7 @@ package com.katyshevtseva.kikiorgmobile.core;
 import android.util.Log;
 
 import com.katyshevtseva.kikiorgmobile.core.model.DatelessTask;
-import com.katyshevtseva.kikiorgmobile.core.model.IrregularTask;
 import com.katyshevtseva.kikiorgmobile.core.model.RegularTask;
-
-import java.util.List;
 
 class SimpleBackupService {
     private static final String tag = "Backup";
@@ -25,11 +22,11 @@ class SimpleBackupService {
             Log.i(tag, regularTask.toString());
         }
 
-        Log.i(tag, "*** IRREGULAR TASKS ***");
-        List<IrregularTask> currentTasks = service.getIrregularTasks(null);
-        for (IrregularTask irregularTask : currentTasks) {
-            Log.i(tag, irregularTask.toString());
-        }
+//        Log.i(tag, "*** IRREGULAR TASKS ***");
+//        List<IrregularTask> currentTasks = service.getIrregularTasks(null);
+//        for (IrregularTask irregularTask : currentTasks) {
+//            Log.i(tag, irregularTask.toString());
+//        }
 
         Log.i(tag, "*** DATELESS TASKS ***");
         for (DatelessTask datelessTask : komDao.getAllDatelessTasks()) {

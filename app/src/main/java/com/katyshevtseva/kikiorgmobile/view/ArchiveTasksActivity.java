@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.kikiorgmobile.R;
-import com.katyshevtseva.kikiorgmobile.core.Service;
+import com.katyshevtseva.kikiorgmobile.core.RegularTaskService;
 import com.katyshevtseva.kikiorgmobile.core.model.RegularTask;
 import com.katyshevtseva.kikiorgmobile.utils.GeneralUtil;
 import com.katyshevtseva.kikiorgmobile.view.utils.SwipeManager;
@@ -61,7 +61,7 @@ public class ArchiveTasksActivity extends AppCompatActivity {
             ((TextView) itemView.findViewById(R.id.archive_task_title_view)).setText(regularTask.getTitle());
             ((TextView) itemView.findViewById(R.id.archive_task_desc_view)).setText(regularTask.getAdminTaskListDesk());
             itemView.findViewById(R.id.resume_archive_task_button).setOnClickListener(view -> {
-                Service.INSTANCE.resumeTask(regularTask);
+                RegularTaskService.INSTANCE.resume(regularTask);
                 taskListAdapter.updateContent();
             });
         }
@@ -95,7 +95,7 @@ public class ArchiveTasksActivity extends AppCompatActivity {
         }
 
         void updateContent() {
-            tasks = new ArrayList<>(Service.INSTANCE.getArchivedRegularTasks());
+            tasks = new ArrayList<>(RegularTaskService.INSTANCE.getArchivedRt());
             notifyDataSetChanged();
         }
     }

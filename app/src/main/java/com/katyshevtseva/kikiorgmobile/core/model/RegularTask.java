@@ -4,6 +4,7 @@ import com.katyshevtseva.kikiorgmobile.core.enums.PeriodType;
 import com.katyshevtseva.kikiorgmobile.core.enums.TaskType;
 import com.katyshevtseva.kikiorgmobile.db.Entity;
 import com.katyshevtseva.kikiorgmobile.utils.DateUtils;
+import com.katyshevtseva.kikiorgmobile.utils.Time;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -16,7 +17,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class RegularTask implements Task, Entity {
+public class RegularTask implements Task, Entity, Setting {
     private long id;
     private String title;
     private String desc;
@@ -24,10 +25,20 @@ public class RegularTask implements Task, Entity {
     private int period;
     private boolean archived;
     private List<Date> dates;
+    private Time duration;
+    private Time beginTime;
+    private boolean absoluteWobs;
 
     public String getAdminTaskListDesk() {
-        return String.format("%s\n\n%s %s\n%s",
+        String result = String.format("%s\n\n%s %s\n%s",
                 desc, period, periodType, getLoppedDateListString());
+        if (duration != null) {
+            result += ("\nDuration: " + duration.getS());
+        }
+        if (beginTime != null) {
+            result += ("\nBegin: " + beginTime.getS() + (absoluteWobs ? " abs" : " rel"));
+        }
+        return result;
     }
 
     public String getLogTaskDesk() {
@@ -56,5 +67,15 @@ public class RegularTask implements Task, Entity {
     @Override
     public TaskType getType() {
         return TaskType.REGULAR;
+    }
+
+    @Override
+    public TaskType getTaskType() { //todo дублируется метод
+        return TaskType.REGULAR;
+    }
+
+    @Override
+    public long getTaskId() {
+        return id;
     }
 }

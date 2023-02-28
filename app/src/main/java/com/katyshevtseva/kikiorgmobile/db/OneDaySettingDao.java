@@ -4,14 +4,12 @@ import static com.katyshevtseva.kikiorgmobile.db.DbConstants.BEGIN_TIME;
 import static com.katyshevtseva.kikiorgmobile.db.DbConstants.DURATION;
 import static com.katyshevtseva.kikiorgmobile.db.DbConstants.ID;
 import static com.katyshevtseva.kikiorgmobile.db.DbConstants.TASK_ID;
-import static com.katyshevtseva.kikiorgmobile.db.DbConstants.TASK_TYPE;
 import static com.katyshevtseva.kikiorgmobile.db.DbTable.ColumnActualType.DATE;
 import static com.katyshevtseva.kikiorgmobile.db.DbTable.ColumnActualType.LONG;
 import static com.katyshevtseva.kikiorgmobile.db.DbTable.ColumnActualType.STRING;
 
 import android.database.sqlite.SQLiteDatabase;
 
-import com.katyshevtseva.kikiorgmobile.core.enums.TaskType;
 import com.katyshevtseva.kikiorgmobile.core.model.OneDaySetting;
 import com.katyshevtseva.kikiorgmobile.utils.Time;
 
@@ -36,9 +34,6 @@ public class OneDaySettingDao extends AbstractDao<OneDaySetting> {
 
         columns.add(new DbTable.Column<>(TASK_ID, LONG, OneDaySetting::getTaskId,
                 (setting, o) -> setting.setTaskId((Long) o)));
-
-        columns.add(new DbTable.Column<>(TASK_TYPE, LONG, setting -> setting.getTaskType().getCode(),
-                (setting, o) -> setting.setTaskType(TaskType.findByCode(((Long) o).intValue()))));
 
         columns.add(new DbTable.Column<>(DURATION, STRING, setting -> setting.getDuration().getS(),
                 (setting, o) -> setting.setDuration(new Time((String) o))));

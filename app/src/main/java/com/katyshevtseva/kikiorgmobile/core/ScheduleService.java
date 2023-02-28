@@ -7,9 +7,7 @@ import static com.katyshevtseva.kikiorgmobile.utils.TimeUtils.plus;
 import android.content.Context;
 
 import com.katyshevtseva.kikiorgmobile.core.enums.TaskType;
-import com.katyshevtseva.kikiorgmobile.core.model.OneDaySetting;
 import com.katyshevtseva.kikiorgmobile.core.model.RegularTask;
-import com.katyshevtseva.kikiorgmobile.core.model.RtSetting;
 import com.katyshevtseva.kikiorgmobile.core.model.Setting;
 import com.katyshevtseva.kikiorgmobile.core.model.Task;
 import com.katyshevtseva.kikiorgmobile.db.KomDaoImpl;
@@ -43,7 +41,7 @@ public class ScheduleService {
         List<Task> notScheduledTasks = new ArrayList<>();
 
         for (Task task : tasks) {
-            Setting setting = getSettingOrNullByTask(task, date);
+            Setting setting = getCompleteSettingForScheduleOrNull(task, date);
             if (setting != null)
                 settings.add(setting);
             else
@@ -66,7 +64,9 @@ public class ScheduleService {
         // Добавляем пустые интервалы и проверяем на предупреждение
         List<Interval> resultIntervals = new ArrayList<>();
 
-        if (!intervals.isEmpty()) {
+        if (intervals.isEmpty()) {
+            resultIntervals.add(new Interval(null, activityStart, activityEnd));
+        } else {
             Time prevIntervalEnd = getInitPie(date, intervals.get(0), activityStart);
             for (Interval interval : intervals) {
                 int comparisonResult = prevIntervalEnd.compareTo(interval.getStart());
@@ -131,28 +131,14 @@ public class ScheduleService {
                 : plus(PrefService.INSTANCE.getActivityStart(), setting.getBeginTime());
     }
 
-    private Setting getSettingOrNullByTask(Task task, Date date) throws Exception {
-        OneDaySetting oneDaySetting = OneDaySettingService.INSTANCE.getSettingOrNull(task, date);
-        if (oneDaySetting != null) {
-            return oneDaySetting;
-        }
+    private Setting getCompleteSettingForScheduleOrNull(Task task, Date date) throws Exception {
+        Setting setting = (Setting) task;
+        if (setting.getDuration() != null && setting.getBeginTime() != null)
+            return setting;
+
 
         if (task.getType() == TaskType.REGULAR) {
-            RtSetting setting = RtSettingService.INSTANCE.getRtSettingOrNull((RegularTask) task);
-            if (setting != null && setting.getDuration() != null && setting.getBeginTime() != null)
-                return setting;
-        }
-        return null;
-    }
-
-    public Setting getAnySettingByTaskOrNull(Task task, Date date) throws Exception {
-        OneDaySetting oneDaySetting = OneDaySettingService.INSTANCE.getSettingOrNull(task, date);
-        if (oneDaySetting != null) {
-            return oneDaySetting;
-        }
-
-        if (task.getType() == TaskType.REGULAR) {
-            return RtSettingService.INSTANCE.getRtSettingOrNull((RegularTask) task);
+            return OneDaySettingService.INSTANCE.getSettingOrNull((RegularTask) task, date);
         }
 
         return null;

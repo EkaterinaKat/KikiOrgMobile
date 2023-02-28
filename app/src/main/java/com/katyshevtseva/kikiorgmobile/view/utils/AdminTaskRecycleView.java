@@ -13,14 +13,14 @@ import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.kikiorgmobile.R;
-import com.katyshevtseva.kikiorgmobile.core.RtSettingService;
-import com.katyshevtseva.kikiorgmobile.core.Service;
+import com.katyshevtseva.kikiorgmobile.core.IrregularTaskService;
+import com.katyshevtseva.kikiorgmobile.core.RegularTaskService;
 import com.katyshevtseva.kikiorgmobile.core.model.IrregularTask;
 import com.katyshevtseva.kikiorgmobile.core.model.RegularTask;
+import com.katyshevtseva.kikiorgmobile.view.IrtEditActivity;
 import com.katyshevtseva.kikiorgmobile.view.QuestionDialog;
 import com.katyshevtseva.kikiorgmobile.view.QuestionDialog.AnswerHandler;
-import com.katyshevtseva.kikiorgmobile.view.SettingCreationActivity;
-import com.katyshevtseva.kikiorgmobile.view.TaskCreationActivity;
+import com.katyshevtseva.kikiorgmobile.view.RtEditActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +37,7 @@ public class AdminTaskRecycleView {
             this.context = context;
         }
 
-        void bind(TaskListItem item) throws Exception {
+        void bind(TaskListItem item) {
             switch (item.getType()) {
                 case HEADER:
                     ((TextView) itemView.findViewById(R.id.header_text_view)).setText(item.getText());
@@ -50,55 +50,25 @@ public class AdminTaskRecycleView {
             }
         }
 
-        private void bindRegularTask(final RegularTask task) throws Exception {
+        private void bindRegularTask(final RegularTask task) {
             ((TextView) itemView.findViewById(R.id.task_title_view)).setText(task.getTitle());
-            ((TextView) itemView.findViewById(R.id.task_desc_view)).setText(task.getAdminTaskListDesk()
-                    + RtSettingService.INSTANCE.getSettingDesc(task));
+            ((TextView) itemView.findViewById(R.id.task_desc_view)).setText(task.getAdminTaskListDesk());
             itemView.findViewById(R.id.edit_task_button).setOnClickListener(
-                    view -> context.startActivity(TaskCreationActivity.newIntent(context, task)));
+                    view -> context.startActivity(RtEditActivity.newIntent(context, task)));
             Button archiveButton = itemView.findViewById(R.id.delete_task_button);
             archiveButton.setText("Archive");
             archiveButton.setOnClickListener(view -> {
-                Service.INSTANCE.archiveTask(task);
+                RegularTaskService.INSTANCE.archive(task);
                 Toast.makeText(context, "Archived!", Toast.LENGTH_LONG).show();
                 taskListAdapter.updateContent();
             });
-
-            //Edit setting
-            Button editSettingButton = itemView.findViewById(R.id.edit_setting_button);
-            editSettingButton.setVisibility(View.VISIBLE);
-            editSettingButton.setOnClickListener(view ->
-                    context.startActivity(SettingCreationActivity.newIntent(context, task)));
-
-            //Delete setting
-            Button deleteSettingButton = itemView.findViewById(R.id.delete_setting_button);
-            deleteSettingButton.setVisibility(View.VISIBLE);
-            deleteSettingButton.setOnClickListener(view ->
-                    new QuestionDialog("Delete setting?", getDeletionDialogAnswerHandler(task))
-                            .show(context.getSupportFragmentManager(), "dialog111"));
-        }
-
-        private QuestionDialog.AnswerHandler getDeletionDialogAnswerHandler(final RegularTask task) {
-            return answer -> {
-                if (answer) {
-                    try {
-                        RtSettingService.INSTANCE.deleteRtSetting(task);
-                    } catch (Exception e) {
-                        ViewUtils.showAlertDialog(context, e.getMessage());
-                    }
-                    Toast.makeText(context, "Deleted!", Toast.LENGTH_LONG).show();
-                    taskListAdapter.updateContent();
-                }
-            };
         }
 
         private void bindIrregularTask(final IrregularTask task) {
             ((TextView) itemView.findViewById(R.id.task_title_view)).setText(task.getTitle());
             ((TextView) itemView.findViewById(R.id.task_desc_view)).setText(task.getAdminTaskListDesk());
             itemView.findViewById(R.id.edit_task_button).setOnClickListener(
-                    view -> context.startActivity(TaskCreationActivity.newIntent(context, task)));
-            itemView.findViewById(R.id.edit_setting_button).setVisibility(View.GONE);
-            itemView.findViewById(R.id.delete_setting_button).setVisibility(View.GONE);
+                    view -> context.startActivity(IrtEditActivity.newIntent(context, task)));
             Button deleteButton = itemView.findViewById(R.id.delete_task_button);
             deleteButton.setText("Delete");
             deleteButton.setOnClickListener(view -> {
@@ -110,7 +80,7 @@ public class AdminTaskRecycleView {
         private AnswerHandler getDeletionDialogAnswerHandler(final IrregularTask task) {
             return answer -> {
                 if (answer) {
-                    Service.INSTANCE.deleteTask(task);
+                    IrregularTaskService.INSTANCE.delete(task);
                     Toast.makeText(context, "Deleted!", Toast.LENGTH_LONG).show();
                     taskListAdapter.updateContent();
                 }
@@ -137,11 +107,7 @@ public class AdminTaskRecycleView {
         @Override
         public void onBindViewHolder(@NonNull TaskHolder holder, int position) {
             TaskListItem item = items.get(position);
-            try {
-                holder.bind(item);
-            } catch (Exception e) {
-                ViewUtils.showAlertDialog(context, e.getMessage());
-            }
+            holder.bind(item);
         }
 
         @Override
@@ -170,11 +136,11 @@ public class AdminTaskRecycleView {
     private static List<TaskListItem> getTaskListItems(String s) {
         List<TaskListItem> items = new ArrayList<>();
         items.add(getHeader("Irregular tasks"));
-        for (IrregularTask irregularTask : Service.INSTANCE.getIrregularTasks(s)) {
+        for (IrregularTask irregularTask : IrregularTaskService.INSTANCE.getIrregularTasks(s)) {
             items.add(toListItem(irregularTask));
         }
         items.add(getHeader("Regular tasks"));
-        for (RegularTask regularTask : Service.INSTANCE.getNotArchivedRegularTasks(s)) {
+        for (RegularTask regularTask : RegularTaskService.INSTANCE.getNotArchivedRt(s)) {
             items.add(toListItem(regularTask));
         }
         return items;

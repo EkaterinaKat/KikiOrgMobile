@@ -38,7 +38,8 @@ public class MyTimePicker {
         TimePickerDialog timePickerDialog = new TimePickerDialog(context,
                 (timePicker, hour, min) -> {
                     setTime(new Time(hour, min));
-                    onTimeSetListener.execute(hour, min);
+                    if (onTimeSetListener != null)
+                        onTimeSetListener.execute(hour, min);
                 }, time == null ? 0 : time.getHour(), time == null ? 0 : time.getMinute(), true);
 
         timePickerDialog.setOnDismissListener(dialogInterface ->

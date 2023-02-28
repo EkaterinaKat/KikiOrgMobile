@@ -5,7 +5,7 @@ import static com.katyshevtseva.kikiorgmobile.utils.DateUtils.getDateString;
 import android.content.Context;
 
 import com.katyshevtseva.kikiorgmobile.core.model.OneDaySetting;
-import com.katyshevtseva.kikiorgmobile.core.model.Task;
+import com.katyshevtseva.kikiorgmobile.core.model.RegularTask;
 import com.katyshevtseva.kikiorgmobile.db.KomDaoImpl;
 import com.katyshevtseva.kikiorgmobile.utils.Time;
 
@@ -24,23 +24,23 @@ public class OneDaySettingService {
         this.komDao = new KomDaoImpl(context);
     }
 
-    public void saveNew(Task task, Time duration, Time beginTime, Date date) throws Exception {
+    public void saveNew(RegularTask task, Time duration, Time beginTime, Date date) throws Exception {
         if (duration == null && beginTime == null && date == null && task == null) {
             throw new Exception("Предоставлены не все необходимые параметры");
         }
 
-        for (OneDaySetting setting : komDao.findOneDaySetting(task.getId(), task.getType(), date)) {
+        for (OneDaySetting setting : komDao.findOneDaySetting(task.getId(), date)) {
             komDao.delete(setting);
         }
-        komDao.saveNew(new OneDaySetting(task.getId(), task.getType(), duration, beginTime, date));
+        komDao.saveNew(new OneDaySetting(task.getId(), duration, beginTime, date));
     }
 
     public List<OneDaySetting> getAll() {
         return komDao.getAllOneDaySettings();
     }
 
-    public OneDaySetting getSettingOrNull(Task task, Date date) throws Exception {
-        List<OneDaySetting> settings = komDao.findOneDaySetting(task.getId(), task.getType(), date);
+    public OneDaySetting getSettingOrNull(RegularTask task, Date date) throws Exception {
+        List<OneDaySetting> settings = komDao.findOneDaySetting(task.getId(), date);
 
         if (settings.size() > 1)
             throw new Exception(String.format("Найдено более одной настройки для задачи %s на дату %s",

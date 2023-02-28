@@ -1,0 +1,84 @@
+package com.katyshevtseva.kikiorgmobile.core;
+
+import static com.katyshevtseva.kikiorgmobile.utils.DateUtils.getDateString;
+import static com.katyshevtseva.kikiorgmobile.utils.GeneralUtil.taskFilter;
+
+import android.content.Context;
+
+import com.katyshevtseva.kikiorgmobile.core.model.IrregularTask;
+import com.katyshevtseva.kikiorgmobile.core.model.Log;
+import com.katyshevtseva.kikiorgmobile.db.KomDaoImpl;
+import com.katyshevtseva.kikiorgmobile.utils.DateUtils;
+import com.katyshevtseva.kikiorgmobile.utils.Time;
+
+import java.util.Comparator;
+import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
+
+public class IrregularTaskService {
+    public static IrregularTaskService INSTANCE;
+    private final KomDao komDao;
+
+    public static void init(Context context) {
+        INSTANCE = new IrregularTaskService(context);
+    }
+
+    private IrregularTaskService(Context context) {
+        this.komDao = new KomDaoImpl(context);
+    }
+
+
+    public IrregularTask findById(long id) {
+        return komDao.getIrregularTaskById(id);
+    }
+
+    public void save(IrregularTask existing, String title, String desc, Date date, Time duration, Time begin) {
+        if (existing == null) {
+            existing = new IrregularTask();
+        }
+        existing.setTitle(title);
+        existing.setDesc(desc);
+        existing.setDate(date);
+        existing.setDuration(duration);
+        existing.setBeginTime(begin);
+
+        if (existing.getId() == 0) {
+            komDao.saveNew(existing);
+            Service.INSTANCE.saveLog(Log.Action.CREATION, existing);
+        } else {
+            komDao.update(existing);
+            Service.INSTANCE.saveLog(Log.Action.EDITING, existing);
+        }
+    }
+
+    public List<IrregularTask> getIrregularTasks(String s) {
+        return komDao.getAllIrregularTasks().stream()
+                .filter(task -> taskFilter(task, s))
+                .sorted(Comparator.comparing(task -> task.getTitle().toLowerCase()))
+                .collect(Collectors.toList());
+    }
+
+    public void delete(IrregularTask irregularTask) {
+        komDao.delete(irregularTask);
+        Service.INSTANCE.saveLog(Log.Action.DELETION, irregularTask);
+    }
+
+    public void done(IrregularTask irregularTask) {
+        komDao.delete(irregularTask);
+        Service.INSTANCE.saveLog(Log.Action.COMPLETION, irregularTask);
+    }
+
+    public void rescheduleForOneDay(IrregularTask irregularTask) {
+        rescheduleToCertainDate(irregularTask,
+                DateUtils.shiftDate(irregularTask.getDate(), DateUtils.TimeUnit.DAY, 1));
+    }
+
+    public void rescheduleToCertainDate(IrregularTask irregularTask, Date date) {
+        Date initDate = irregularTask.getDate();
+        irregularTask.setDate(date);
+        komDao.update(irregularTask);
+        Service.INSTANCE.saveLog(Log.Action.RESCHEDULE, irregularTask,
+                String.format("Reschedule from %s to %s", getDateString(initDate), getDateString(date)));
+    }
+}

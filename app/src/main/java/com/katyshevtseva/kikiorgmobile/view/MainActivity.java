@@ -13,9 +13,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import com.example.kikiorgmobile.R;
+import com.katyshevtseva.kikiorgmobile.core.IrregularTaskService;
 import com.katyshevtseva.kikiorgmobile.core.OneDaySettingService;
 import com.katyshevtseva.kikiorgmobile.core.PrefService;
-import com.katyshevtseva.kikiorgmobile.core.RtSettingService;
+import com.katyshevtseva.kikiorgmobile.core.RegularTaskService;
 import com.katyshevtseva.kikiorgmobile.core.ScheduleService;
 import com.katyshevtseva.kikiorgmobile.core.Service;
 import com.katyshevtseva.kikiorgmobile.utils.DateUtils;
@@ -40,9 +41,10 @@ public class MainActivity extends AppCompatActivity {
 
         Service.init(this);
         PrefService.init(this);
-        RtSettingService.init(this);
         ScheduleService.init(this);
         OneDaySettingService.init(this);
+        RegularTaskService.init(this);
+        IrregularTaskService.init(this);
         alarmTextView = findViewById(R.id.alarm_text_view);
 
         date = new Date();

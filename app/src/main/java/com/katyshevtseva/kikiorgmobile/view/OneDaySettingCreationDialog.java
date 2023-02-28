@@ -14,18 +14,20 @@ import androidx.fragment.app.DialogFragment;
 import com.example.kikiorgmobile.R;
 import com.katyshevtseva.kikiorgmobile.core.OneDaySettingService;
 import com.katyshevtseva.kikiorgmobile.core.ScheduleService;
+import com.katyshevtseva.kikiorgmobile.core.model.OneDaySetting;
+import com.katyshevtseva.kikiorgmobile.core.model.RegularTask;
 import com.katyshevtseva.kikiorgmobile.core.model.Setting;
-import com.katyshevtseva.kikiorgmobile.core.model.Task;
 import com.katyshevtseva.kikiorgmobile.utils.DateUtils;
 import com.katyshevtseva.kikiorgmobile.utils.GeneralUtil;
 import com.katyshevtseva.kikiorgmobile.utils.NoArgKnob;
+import com.katyshevtseva.kikiorgmobile.utils.Time;
 import com.katyshevtseva.kikiorgmobile.view.utils.MyTimePicker;
 import com.katyshevtseva.kikiorgmobile.view.utils.ViewUtils;
 
 import java.util.Date;
 
 public class OneDaySettingCreationDialog extends DialogFragment {
-    private final Task task;
+    private final RegularTask task;
     private final NoArgKnob activityUpdateKnob;
     private final Date date;
 
@@ -35,7 +37,7 @@ public class OneDaySettingCreationDialog extends DialogFragment {
     private Button saveButton;
 
 
-    public OneDaySettingCreationDialog(Task task, NoArgKnob activityUpdateKnob, Date date) {
+    public OneDaySettingCreationDialog(RegularTask task, NoArgKnob activityUpdateKnob, Date date) {
         this.task = task;
         this.activityUpdateKnob = activityUpdateKnob;
         this.date = date;
@@ -51,7 +53,8 @@ public class OneDaySettingCreationDialog extends DialogFragment {
                 .setText(task.getTitle() + "\n" + DateUtils.getDateString(date));
 
         try {
-            initTimePickers(v, ScheduleService.INSTANCE.getAnySettingByTaskOrNull(task, date));
+            OneDaySetting ods = OneDaySettingService.INSTANCE.getSettingOrNull(task, date);
+            initTimePickers(v, ods != null ? ods : task);
         } catch (Exception e) {
             ViewUtils.showAlertDialog(getContext(), e.getMessage());
         }
@@ -81,11 +84,14 @@ public class OneDaySettingCreationDialog extends DialogFragment {
     }
 
     private void initTimePickers(View v, Setting existing) {
+        Time absoluteBeginTime = existing != null && existing.getBeginTime() != null ?
+                ScheduleService.INSTANCE.getAbsoluteBeginTime(existing) : null;
+
         beginTp = new MyTimePicker(
                 v.findViewById(R.id.begin_view),
                 getContext(),
                 (hour, min) -> setSaveButtonAccessibility(),
-                existing != null ? ScheduleService.INSTANCE.getAbsoluteBeginTime(existing) : null,
+                absoluteBeginTime,
                 v.findViewById(R.id.begin_time_container));
 
         durationTp = new MyTimePicker(
