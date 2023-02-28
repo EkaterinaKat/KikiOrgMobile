@@ -11,7 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
 
 import com.example.kikiorgmobile.R;
-import com.katyshevtseva.kikiorgmobile.core.Service;
+import com.katyshevtseva.kikiorgmobile.core.DatelessTaskService;
 import com.katyshevtseva.kikiorgmobile.core.model.DatelessTask;
 import com.katyshevtseva.kikiorgmobile.utils.GeneralUtil;
 import com.katyshevtseva.kikiorgmobile.utils.NoArgKnob;
@@ -34,7 +34,7 @@ public class DatelessTaskEditDialog extends DialogFragment {
             editText.setText(datelessTask.getTitle());
         }
         v.findViewById(R.id.ok_button).setOnClickListener(view -> {
-            Service.INSTANCE.saveDatelessTask(datelessTask, editText.getText().toString());
+            DatelessTaskService.INSTANCE.saveDatelessTask(datelessTask, editText.getText().toString());
             dismiss();
         });
 

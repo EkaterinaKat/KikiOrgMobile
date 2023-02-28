@@ -33,10 +33,10 @@ class SimpleBackupService {
             Log.i(tag, datelessTask.toString());
         }
 
-        Log.i(tag, "*** LOGS ***");
-        for (com.katyshevtseva.kikiorgmobile.core.model.Log log : service.getLogs()) {
-            Log.i(tag, log.getFullDesc());
-        }
+//        Log.i(tag, "*** LOGS ***");
+//        for (com.katyshevtseva.kikiorgmobile.core.model.Log log : service.getLogs()) {
+//            Log.i(tag, log.getFullDesc());
+//        }
 
         Log.i(tag, "--- END ---");
     }

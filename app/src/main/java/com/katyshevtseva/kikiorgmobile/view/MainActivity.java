@@ -13,12 +13,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import com.example.kikiorgmobile.R;
+import com.katyshevtseva.kikiorgmobile.core.DatelessTaskService;
 import com.katyshevtseva.kikiorgmobile.core.IrregularTaskService;
+import com.katyshevtseva.kikiorgmobile.core.KomDao;
+import com.katyshevtseva.kikiorgmobile.core.LogService;
 import com.katyshevtseva.kikiorgmobile.core.OneDaySettingService;
 import com.katyshevtseva.kikiorgmobile.core.PrefService;
 import com.katyshevtseva.kikiorgmobile.core.RegularTaskService;
 import com.katyshevtseva.kikiorgmobile.core.ScheduleService;
 import com.katyshevtseva.kikiorgmobile.core.Service;
+import com.katyshevtseva.kikiorgmobile.db.KomDaoImpl;
 import com.katyshevtseva.kikiorgmobile.utils.DateUtils;
 import com.katyshevtseva.kikiorgmobile.utils.DateUtils.TimeUnit;
 import com.katyshevtseva.kikiorgmobile.utils.GeneralUtil;
@@ -39,12 +43,15 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Service.init(this);
-        PrefService.init(this);
-        ScheduleService.init(this);
-        OneDaySettingService.init(this);
-        RegularTaskService.init(this);
-        IrregularTaskService.init(this);
+        KomDao komDao = new KomDaoImpl(this);
+        Service.init(komDao);
+        PrefService.init(komDao);
+        ScheduleService.init(komDao);
+        OneDaySettingService.init(komDao);
+        RegularTaskService.init(komDao);
+        IrregularTaskService.init(komDao);
+        LogService.init(komDao);
+        DatelessTaskService.init(komDao);
         alarmTextView = findViewById(R.id.alarm_text_view);
 
         date = new Date();
@@ -84,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
         scheduleFragment.setDate(date);
         setDateViewStyle();
         updateAlarmBanner();
-        datelessTaskButton.setText("" + Service.INSTANCE.countDatelessTasks());
+        datelessTaskButton.setText("" + DatelessTaskService.INSTANCE.countDatelessTasks());
     }
 
     private void setDateViewStyle() {

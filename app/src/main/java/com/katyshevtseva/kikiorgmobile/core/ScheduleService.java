@@ -4,13 +4,10 @@ import static com.katyshevtseva.kikiorgmobile.utils.TimeUtils.after;
 import static com.katyshevtseva.kikiorgmobile.utils.TimeUtils.getNow;
 import static com.katyshevtseva.kikiorgmobile.utils.TimeUtils.plus;
 
-import android.content.Context;
-
 import com.katyshevtseva.kikiorgmobile.core.enums.TaskType;
 import com.katyshevtseva.kikiorgmobile.core.model.RegularTask;
 import com.katyshevtseva.kikiorgmobile.core.model.Setting;
 import com.katyshevtseva.kikiorgmobile.core.model.Task;
-import com.katyshevtseva.kikiorgmobile.db.KomDaoImpl;
 import com.katyshevtseva.kikiorgmobile.utils.Time;
 import com.katyshevtseva.kikiorgmobile.utils.TimeUtils;
 
@@ -27,12 +24,12 @@ public class ScheduleService {
     public static ScheduleService INSTANCE;
     private final KomDao komDao;
 
-    public static void init(Context context) {
-        INSTANCE = new ScheduleService(context);
+    public static void init(KomDao komDao) {
+        INSTANCE = new ScheduleService(komDao);
     }
 
-    private ScheduleService(Context context) {
-        this.komDao = new KomDaoImpl(context);
+    private ScheduleService(KomDao komDao) {
+        this.komDao = komDao;
     }
 
     public Schedule getSchedule(Date date) throws Exception {
@@ -114,13 +111,10 @@ public class ScheduleService {
     }
 
     private Task getTaskBySetting(Setting setting) {
-        switch (setting.getTaskType()) {
-            case REGULAR:
-                return komDao.getRegularTaskById(setting.getTaskId());
-            case IRREGULAR:
-                return komDao.getIrregularTaskById(setting.getTaskId());
+        if (setting.isTask()) {
+            return (Task) setting;
         }
-        throw new RuntimeException();
+        return komDao.getRegularTaskById(setting.getTaskId());
     }
 
     private final Comparator<Setting> beginTimeComparator = Comparator.comparing(this::getAbsoluteBeginTime);

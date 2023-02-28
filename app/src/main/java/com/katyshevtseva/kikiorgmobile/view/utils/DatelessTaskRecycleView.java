@@ -11,7 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.kikiorgmobile.R;
-import com.katyshevtseva.kikiorgmobile.core.Service;
+import com.katyshevtseva.kikiorgmobile.core.DatelessTaskService;
 import com.katyshevtseva.kikiorgmobile.core.model.DatelessTask;
 import com.katyshevtseva.kikiorgmobile.view.DatelessTaskEditDialog;
 import com.katyshevtseva.kikiorgmobile.view.QuestionDialog;
@@ -46,7 +46,7 @@ public class DatelessTaskRecycleView {
         private QuestionDialog.AnswerHandler getDeletionDialogAnswerHandler(final DatelessTask task) {
             return answer -> {
                 if (answer) {
-                    Service.INSTANCE.deleteTask(task);
+                    DatelessTaskService.INSTANCE.deleteTask(task);
                     Toast.makeText(context, "Deleted!", Toast.LENGTH_LONG).show();
                     taskListAdapter.updateContent();
                 }
@@ -56,7 +56,7 @@ public class DatelessTaskRecycleView {
         private QuestionDialog.AnswerHandler getMoveToEndDialogAnswerHandler(final DatelessTask task) {
             return answer -> {
                 if (answer) {
-                    Service.INSTANCE.moveDatelessTaskToEnd(task);
+                    DatelessTaskService.INSTANCE.moveDatelessTaskToEnd(task);
                     taskListAdapter.updateContent();
                 }
             };
@@ -91,7 +91,7 @@ public class DatelessTaskRecycleView {
         }
 
         public void updateContent() {
-            tasks = Service.INSTANCE.getAllDatelessTasks();
+            tasks = DatelessTaskService.INSTANCE.getAllDatelessTasks();
             notifyDataSetChanged();
         }
     }

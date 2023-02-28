@@ -2,11 +2,8 @@ package com.katyshevtseva.kikiorgmobile.core;
 
 import static com.katyshevtseva.kikiorgmobile.utils.DateUtils.getDateString;
 
-import android.content.Context;
-
 import com.katyshevtseva.kikiorgmobile.core.model.OneDaySetting;
 import com.katyshevtseva.kikiorgmobile.core.model.RegularTask;
-import com.katyshevtseva.kikiorgmobile.db.KomDaoImpl;
 import com.katyshevtseva.kikiorgmobile.utils.Time;
 
 import java.util.Date;
@@ -16,12 +13,12 @@ public class OneDaySettingService {
     public static OneDaySettingService INSTANCE;
     private final KomDao komDao;
 
-    public static void init(Context context) {
-        INSTANCE = new OneDaySettingService(context);
+    public static void init(KomDao komDao) {
+        INSTANCE = new OneDaySettingService(komDao);
     }
 
-    private OneDaySettingService(Context context) {
-        this.komDao = new KomDaoImpl(context);
+    private OneDaySettingService(KomDao komDao) {
+        this.komDao = komDao;
     }
 
     public void saveNew(RegularTask task, Time duration, Time beginTime, Date date) throws Exception {

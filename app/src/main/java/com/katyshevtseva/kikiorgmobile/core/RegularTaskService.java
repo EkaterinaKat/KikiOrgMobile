@@ -6,12 +6,9 @@ import static com.katyshevtseva.kikiorgmobile.utils.DateUtils.getDateString;
 import static com.katyshevtseva.kikiorgmobile.utils.DateUtils.removeIgnoreTime;
 import static com.katyshevtseva.kikiorgmobile.utils.GeneralUtil.taskFilter;
 
-import android.content.Context;
-
 import com.katyshevtseva.kikiorgmobile.core.enums.PeriodType;
 import com.katyshevtseva.kikiorgmobile.core.model.Log;
 import com.katyshevtseva.kikiorgmobile.core.model.RegularTask;
-import com.katyshevtseva.kikiorgmobile.db.KomDaoImpl;
 import com.katyshevtseva.kikiorgmobile.utils.DateUtils;
 import com.katyshevtseva.kikiorgmobile.utils.Time;
 
@@ -24,12 +21,12 @@ public class RegularTaskService {
     public static RegularTaskService INSTANCE;
     private final KomDao komDao;
 
-    public static void init(Context context) {
-        INSTANCE = new RegularTaskService(context);
+    public static void init(KomDao komDao) {
+        INSTANCE = new RegularTaskService(komDao);
     }
 
-    private RegularTaskService(Context context) {
-        this.komDao = new KomDaoImpl(context);
+    private RegularTaskService(KomDao komDao) {
+        this.komDao = komDao;
     }
 
     public RegularTask findById(long id) {
@@ -49,7 +46,7 @@ public class RegularTaskService {
             task.setBeginTime(begin);
             task.setAbsoluteWobs(wobs);
             komDao.saveNew(task);
-            Service.INSTANCE.saveLog(Log.Action.CREATION, task);
+            LogService.INSTANCE.saveLog(Log.Action.CREATION, task);
         } else {
             existing.setTitle(title);
             existing.setDesc(desc);
@@ -60,7 +57,7 @@ public class RegularTaskService {
             existing.setBeginTime(begin);
             existing.setAbsoluteWobs(wobs);
             komDao.update(existing);
-            Service.INSTANCE.saveLog(Log.Action.EDITING, existing);
+            LogService.INSTANCE.saveLog(Log.Action.EDITING, existing);
         }
     }
 
@@ -82,13 +79,13 @@ public class RegularTaskService {
     public void archive(RegularTask regularTask) {
         regularTask.setArchived(true);
         komDao.update(regularTask);
-        Service.INSTANCE.saveLog(Log.Action.ARCHIVATION, regularTask);
+        LogService.INSTANCE.saveLog(Log.Action.ARCHIVATION, regularTask);
     }
 
     public void resume(RegularTask regularTask) {
         regularTask.setArchived(false);
         komDao.update(regularTask);
-        Service.INSTANCE.saveLog(Log.Action.RESUME, regularTask);
+        LogService.INSTANCE.saveLog(Log.Action.RESUME, regularTask);
     }
 
     public void done(RegularTask regularTask, Date date) {
@@ -100,7 +97,7 @@ public class RegularTaskService {
         regularTask.getDates().add(shiftDate(regularTask, date));
 
         komDao.update(regularTask);
-        Service.INSTANCE.saveLog(Log.Action.COMPLETION, regularTask);
+        LogService.INSTANCE.saveLog(Log.Action.COMPLETION, regularTask);
     }
 
     private Date shiftDate(RegularTask regularTask, Date date) {
@@ -137,7 +134,7 @@ public class RegularTaskService {
                     regularTask.getDesc(),
                     targetDate, regularTask.getDuration(), regularTask.getBeginTime());
         }
-        Service.INSTANCE.saveLog(Log.Action.RESCHEDULE, regularTask,
+        LogService.INSTANCE.saveLog(Log.Action.RESCHEDULE, regularTask,
                 String.format("Reschedule from %s to %s \n%s", getDateString(initDate), getDateString(targetDate),
                         shiftAllCycle ? "shift all cycle" : "shift single iteration"));
     }

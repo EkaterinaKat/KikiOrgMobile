@@ -1,6 +1,5 @@
 package com.katyshevtseva.kikiorgmobile.core.model;
 
-import com.katyshevtseva.kikiorgmobile.core.enums.TaskType;
 import com.katyshevtseva.kikiorgmobile.db.Entity;
 import com.katyshevtseva.kikiorgmobile.utils.Time;
 
@@ -35,7 +34,7 @@ public class OneDaySetting implements Entity, Setting {
     }
 
     @Override
-    public TaskType getTaskType() {
-        return TaskType.REGULAR;
+    public boolean isTask() {
+        return false;
     }
 }

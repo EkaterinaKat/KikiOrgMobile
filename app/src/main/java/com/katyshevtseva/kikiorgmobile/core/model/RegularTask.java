@@ -70,12 +70,12 @@ public class RegularTask implements Task, Entity, Setting {
     }
 
     @Override
-    public TaskType getTaskType() { //todo дублируется метод
-        return TaskType.REGULAR;
+    public long getTaskId() {
+        return id;
     }
 
     @Override
-    public long getTaskId() {
-        return id;
+    public boolean isTask() {
+        return true;
     }
 }

@@ -3,22 +3,19 @@ package com.katyshevtseva.kikiorgmobile.core;
 import static com.katyshevtseva.kikiorgmobile.core.model.PrefEntity.Pref.ACTIVITY_PERIOD_END;
 import static com.katyshevtseva.kikiorgmobile.core.model.PrefEntity.Pref.ACTIVITY_PERIOD_START;
 
-import android.content.Context;
-
 import com.katyshevtseva.kikiorgmobile.core.model.PrefEntity;
-import com.katyshevtseva.kikiorgmobile.db.KomDaoImpl;
 import com.katyshevtseva.kikiorgmobile.utils.Time;
 
 public class PrefService {
     public static PrefService INSTANCE;
     private final KomDao komDao;
 
-    public static void init(Context context) {
-        INSTANCE = new PrefService(context);
+    public static void init(KomDao komDao) {
+        INSTANCE = new PrefService(komDao);
     }
 
-    private PrefService(Context context) {
-        this.komDao = new KomDaoImpl(context);
+    private PrefService(KomDao komDao) {
+        this.komDao = komDao;
     }
 
     public Time getActivityStart() {

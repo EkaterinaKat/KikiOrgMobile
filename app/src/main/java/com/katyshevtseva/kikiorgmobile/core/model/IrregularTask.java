@@ -54,12 +54,12 @@ public class IrregularTask implements Task, Entity, Setting {
     }
 
     @Override
-    public TaskType getTaskType() {//todo дублир
-        return TaskType.IRREGULAR;
+    public long getTaskId() {
+        return id;
     }
 
     @Override
-    public long getTaskId() {
-        return id;
+    public boolean isTask() {
+        return true;
     }
 }

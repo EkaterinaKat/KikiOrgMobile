@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.kikiorgmobile.R;
-import com.katyshevtseva.kikiorgmobile.core.Service;
+import com.katyshevtseva.kikiorgmobile.core.LogService;
 import com.katyshevtseva.kikiorgmobile.core.model.Log;
 import com.katyshevtseva.kikiorgmobile.utils.GeneralUtil;
 import com.katyshevtseva.kikiorgmobile.view.utils.SwipeManager;
@@ -59,7 +59,7 @@ public class LogsActivity extends AppCompatActivity {
 
         LogListAdapter(LogsActivity context) {
             this.context = context;
-            logs = Service.INSTANCE.getLogs();
+            logs = LogService.INSTANCE.getLogs();
         }
 
         @NonNull
