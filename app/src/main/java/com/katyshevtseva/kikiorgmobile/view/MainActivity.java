@@ -4,12 +4,10 @@ import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import com.example.kikiorgmobile.R;
@@ -25,18 +23,23 @@ import com.katyshevtseva.kikiorgmobile.core.Service;
 import com.katyshevtseva.kikiorgmobile.db.KomDaoImpl;
 import com.katyshevtseva.kikiorgmobile.utils.DateUtils;
 import com.katyshevtseva.kikiorgmobile.utils.DateUtils.TimeUnit;
-import com.katyshevtseva.kikiorgmobile.utils.GeneralUtil;
-import com.katyshevtseva.kikiorgmobile.view.utils.SwipeManager;
+import com.katyshevtseva.kikiorgmobile.view.utils.KomActivity;
 
 import java.util.Date;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends KomActivity {
     private Date date;
     private TextView dateView;
     private final ScheduleFragment scheduleFragment = new ScheduleFragment();
     private TextView alarmTextView;
     private Button datelessTaskButton;
-    private SwipeManager swipeManager;
+
+    public MainActivity() {
+        setOnStart(this::updateTaskPane);
+        setImmersiveStickyMode(true);
+        setOnLeftSwipe(this::previousDate);
+        setOnRightSwipe(this::nextDate);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,23 +70,6 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(getApplicationContext(), DatelessTaskActivity.class)));
 
         updateTaskPane();
-
-        swipeManager = new SwipeManager(this);
-        swipeManager.setLeftSwipeListener(this::previousDate);
-        swipeManager.setRightSwipeListener(this::nextDate);
-    }
-
-    @Override
-    public boolean dispatchTouchEvent(MotionEvent ev) {
-        Boolean result = swipeManager.dispatchTouchEvent(ev);
-        return result == null ? super.dispatchTouchEvent(ev) : result;
-    }
-
-    @Override
-    protected void onResume() {
-        GeneralUtil.setImmersiveStickyMode(getWindow());
-        updateTaskPane();
-        super.onResume();
     }
 
     private void updateTaskPane() {

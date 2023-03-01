@@ -17,7 +17,6 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.kikiorgmobile.R;
 import com.katyshevtseva.kikiorgmobile.core.RegularTaskService;
@@ -26,11 +25,12 @@ import com.katyshevtseva.kikiorgmobile.core.enums.WayOfBeginSpecifying;
 import com.katyshevtseva.kikiorgmobile.core.model.RegularTask;
 import com.katyshevtseva.kikiorgmobile.utils.OneInKnob;
 import com.katyshevtseva.kikiorgmobile.view.utils.FragmentUpdateListener;
+import com.katyshevtseva.kikiorgmobile.view.utils.KomActivity;
 import com.katyshevtseva.kikiorgmobile.view.utils.MyTimePicker;
 
 import java.util.Arrays;
 
-public class RtEditActivity extends AppCompatActivity implements FragmentUpdateListener {
+public class RtEditActivity extends KomActivity implements FragmentUpdateListener {
     private static final String EXTRA_TASK_ID = "task_id";
     private RegularTask existing;
     private final DatesSelectFragment datesFragment = new DatesSelectFragment();

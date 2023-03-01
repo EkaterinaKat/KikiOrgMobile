@@ -21,6 +21,7 @@ import com.katyshevtseva.kikiorgmobile.utils.DateUtils;
 import com.katyshevtseva.kikiorgmobile.utils.GeneralUtil;
 import com.katyshevtseva.kikiorgmobile.utils.NoArgKnob;
 import com.katyshevtseva.kikiorgmobile.utils.Time;
+import com.katyshevtseva.kikiorgmobile.view.utils.KomActivity;
 import com.katyshevtseva.kikiorgmobile.view.utils.MyTimePicker;
 import com.katyshevtseva.kikiorgmobile.view.utils.ViewUtils;
 
@@ -89,14 +90,14 @@ public class OneDaySettingCreationDialog extends DialogFragment {
 
         beginTp = new MyTimePicker(
                 v.findViewById(R.id.begin_view),
-                getContext(),
+                (KomActivity) getActivity(),
                 (hour, min) -> setSaveButtonAccessibility(),
                 absoluteBeginTime,
                 v.findViewById(R.id.begin_time_container));
 
         durationTp = new MyTimePicker(
                 v.findViewById(R.id.duration_view),
-                getContext(),
+                (KomActivity) getActivity(),
                 (hour, min) -> setSaveButtonAccessibility(),
                 existing != null ? existing.getDuration() : null,
                 v.findViewById(R.id.duration_container));

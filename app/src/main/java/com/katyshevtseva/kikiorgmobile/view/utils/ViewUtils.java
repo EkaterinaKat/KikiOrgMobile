@@ -104,7 +104,7 @@ public class ViewUtils {
         return editText.getText() == null || editText.getText().toString().trim().equals("");
     }
 
-    public static void setEditTextListener(final EditText editText, final EditTextListener listener) {
+    public static void setEditTextListener(final EditText editText, final OneInKnob<String> listener) {
         editText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -118,13 +118,9 @@ public class ViewUtils {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                listener.run(editable.toString());
+                listener.execute(editable.toString());
             }
         });
-    }
-
-    public interface EditTextListener {
-        void run(String text);
     }
 
     public static <T> void selectSpinnerItemByValue(Spinner spinner, T value) {

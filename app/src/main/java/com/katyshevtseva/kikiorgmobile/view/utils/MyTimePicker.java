@@ -1,6 +1,5 @@
 package com.katyshevtseva.kikiorgmobile.view.utils;
 
-import android.app.Activity;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.view.View;
@@ -9,7 +8,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.katyshevtseva.kikiorgmobile.utils.GeneralUtil;
 import com.katyshevtseva.kikiorgmobile.utils.Time;
 import com.katyshevtseva.kikiorgmobile.utils.TwoInKnob;
 
@@ -18,19 +16,21 @@ public class MyTimePicker {
     private final TextView textView;
     private Time time;
     private final TwoInKnob<Integer, Integer> onTimeSetListener;
+    private final KomActivity activity;
 
-    public MyTimePicker(@NonNull TextView textView, @NonNull Context context,
+    public MyTimePicker(@NonNull TextView textView, @NonNull KomActivity komActivity,
                         @Nullable TwoInKnob<Integer, Integer> onTimeSetListener,
                         @Nullable Time time, @Nullable View container) {
         this.textView = textView;
         this.onTimeSetListener = onTimeSetListener;
+        this.activity = komActivity;
 
         setTime(time);
 
         if (container != null) {
-            container.setOnClickListener(view -> openTimePicker(context));
+            container.setOnClickListener(view -> openTimePicker(komActivity));
         } else {
-            textView.setOnClickListener(view -> openTimePicker(context));
+            textView.setOnClickListener(view -> openTimePicker(komActivity));
         }
     }
 
@@ -42,9 +42,7 @@ public class MyTimePicker {
                         onTimeSetListener.execute(hour, min);
                 }, time == null ? 0 : time.getHour(), time == null ? 0 : time.getMinute(), true);
 
-        timePickerDialog.setOnDismissListener(dialogInterface ->
-                GeneralUtil.setImmersiveStickyMode(((Activity) context).getWindow()));
-
+        timePickerDialog.setOnDismissListener(dialogInterface -> activity.setImstModeIfNeeded());
         timePickerDialog.show();
     }
 

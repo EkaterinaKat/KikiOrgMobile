@@ -2,27 +2,28 @@ package com.katyshevtseva.kikiorgmobile.view;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.kikiorgmobile.R;
 import com.katyshevtseva.kikiorgmobile.core.RegularTaskService;
 import com.katyshevtseva.kikiorgmobile.core.model.RegularTask;
-import com.katyshevtseva.kikiorgmobile.utils.GeneralUtil;
-import com.katyshevtseva.kikiorgmobile.view.utils.SwipeManager;
+import com.katyshevtseva.kikiorgmobile.view.utils.KomActivity;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ArchiveTasksActivity extends AppCompatActivity {
-    private SwipeManager swipeManager;
+public class ArchiveTasksActivity extends KomActivity {
+
+    public ArchiveTasksActivity() {
+        setImmersiveStickyMode(true);
+        setOnLeftSwipe(this::finish);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,21 +33,6 @@ public class ArchiveTasksActivity extends AppCompatActivity {
         RecyclerView taskList = findViewById(R.id.archived_task_list);
         taskList.setLayoutManager(new LinearLayoutManager(this));
         taskList.setAdapter(new TaskListAdapter(this));
-
-        swipeManager = new SwipeManager(this);
-        swipeManager.setLeftSwipeListener(this::finish);
-    }
-
-    @Override
-    protected void onResume() {
-        GeneralUtil.setImmersiveStickyMode(getWindow());
-        super.onResume();
-    }
-
-    @Override
-    public boolean dispatchTouchEvent(MotionEvent ev) {
-        Boolean result = swipeManager.dispatchTouchEvent(ev);
-        return result == null ? super.dispatchTouchEvent(ev) : result;
     }
 
     private static class TaskHolder extends RecyclerView.ViewHolder {

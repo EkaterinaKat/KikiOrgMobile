@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.kikiorgmobile.R;
 import com.katyshevtseva.kikiorgmobile.core.PrefService;
+import com.katyshevtseva.kikiorgmobile.view.utils.KomActivity;
 import com.katyshevtseva.kikiorgmobile.view.utils.MyTimePicker;
 import com.katyshevtseva.kikiorgmobile.view.utils.ViewUtils;
 
@@ -24,9 +25,9 @@ public class ActivityPeriodFragment extends Fragment {
     }
 
     private void initTimePickers(View v) {
-        startTp = new MyTimePicker(v.findViewById(R.id.activity_period_start_view), getContext(),
+        startTp = new MyTimePicker(v.findViewById(R.id.activity_period_start_view), (KomActivity) getActivity(),
                 this::startTimeUpdateListener, PrefService.INSTANCE.getActivityStart(), null);
-        endTp = new MyTimePicker(v.findViewById(R.id.activity_period_end_view), getContext(),
+        endTp = new MyTimePicker(v.findViewById(R.id.activity_period_end_view), (KomActivity) getActivity(),
                 this::endTimeUpdateListener, PrefService.INSTANCE.getActivityEnd(), null);
     }
 

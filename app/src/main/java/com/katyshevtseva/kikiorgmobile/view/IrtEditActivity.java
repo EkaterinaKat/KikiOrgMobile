@@ -16,18 +16,18 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.kikiorgmobile.R;
 import com.katyshevtseva.kikiorgmobile.core.IrregularTaskService;
 import com.katyshevtseva.kikiorgmobile.core.Service;
 import com.katyshevtseva.kikiorgmobile.core.model.IrregularTask;
 import com.katyshevtseva.kikiorgmobile.core.model.RegularTask;
+import com.katyshevtseva.kikiorgmobile.view.utils.KomActivity;
 import com.katyshevtseva.kikiorgmobile.view.utils.MyTimePicker;
 
 import java.util.Date;
 
-public class IrtEditActivity extends AppCompatActivity {
+public class IrtEditActivity extends KomActivity {
     private static final String EXTRA_TASK_ID = "task_id";
     private static final String EXTRA_REG_TO_IRREG = "reg_to_irreg";
     private IrregularTask existing;

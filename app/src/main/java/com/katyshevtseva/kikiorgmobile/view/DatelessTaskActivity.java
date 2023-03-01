@@ -1,20 +1,21 @@
 package com.katyshevtseva.kikiorgmobile.view;
 
 import android.os.Bundle;
-import android.view.MotionEvent;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.kikiorgmobile.R;
-import com.katyshevtseva.kikiorgmobile.utils.GeneralUtil;
 import com.katyshevtseva.kikiorgmobile.view.utils.DatelessTaskRecycleView.TaskListAdapter;
-import com.katyshevtseva.kikiorgmobile.view.utils.SwipeManager;
+import com.katyshevtseva.kikiorgmobile.view.utils.KomActivity;
 
-public class DatelessTaskActivity extends AppCompatActivity {
+public class DatelessTaskActivity extends KomActivity {
     private TaskListAdapter taskListAdapter;
-    private SwipeManager swipeManager;
+
+    public DatelessTaskActivity() {
+        setImmersiveStickyMode(true);
+        setOnLeftSwipe(this::finish);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,24 +33,9 @@ public class DatelessTaskActivity extends AppCompatActivity {
         taskList.setAdapter(taskListAdapter);
 
         updateTaskList();
-
-        swipeManager = new SwipeManager(this);
-        swipeManager.setLeftSwipeListener(this::finish);
-    }
-
-    @Override
-    public boolean dispatchTouchEvent(MotionEvent ev) {
-        Boolean result = swipeManager.dispatchTouchEvent(ev);
-        return result == null ? super.dispatchTouchEvent(ev) : result;
     }
 
     private void updateTaskList() {
         taskListAdapter.updateContent();
-    }
-
-    @Override
-    protected void onResume() {
-        GeneralUtil.setImmersiveStickyMode(getWindow());
-        super.onResume();
     }
 }
