@@ -30,9 +30,10 @@ import java.util.Date;
 public class MainActivity extends KomActivity {
     private Date date;
     private TextView dateView;
-    private final ScheduleFragment scheduleFragment = new ScheduleFragment();
+    private final ScheduleFragment scheduleFragment = new ScheduleFragment(this::fragmentUpdateListener);
     private TextView alarmTextView;
     private Button datelessTaskButton;
+    private boolean prevDateIsAvailable;
 
     public MainActivity() {
         setOnStart(this::updateTaskPane);
@@ -78,6 +79,12 @@ public class MainActivity extends KomActivity {
         setDateViewStyle();
         updateAlarmBanner();
         datelessTaskButton.setText("" + DatelessTaskService.INSTANCE.countDatelessTasks());
+        prevDateIsAvailable = DateUtils.beforeIgnoreTime(Service.INSTANCE.getEarliestTaskDate(), date);
+    }
+
+    private void fragmentUpdateListener() {
+        updateAlarmBanner();
+        prevDateIsAvailable = DateUtils.beforeIgnoreTime(Service.INSTANCE.getEarliestTaskDate(), date);
     }
 
     private void setDateViewStyle() {
@@ -108,8 +115,10 @@ public class MainActivity extends KomActivity {
     }
 
     private void previousDate() {
-        date = DateUtils.shiftDate(date, TimeUnit.DAY, -1);
-        updateTaskPane();
+        if (prevDateIsAvailable) {
+            date = DateUtils.shiftDate(date, TimeUnit.DAY, -1);
+            updateTaskPane();
+        }
     }
 
     private void nextDate() {

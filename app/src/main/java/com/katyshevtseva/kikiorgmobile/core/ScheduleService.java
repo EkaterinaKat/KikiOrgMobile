@@ -5,6 +5,7 @@ import static com.katyshevtseva.kikiorgmobile.utils.TimeUtils.getNow;
 import static com.katyshevtseva.kikiorgmobile.utils.TimeUtils.plus;
 
 import com.katyshevtseva.kikiorgmobile.core.enums.TaskType;
+import com.katyshevtseva.kikiorgmobile.core.model.OneDaySetting;
 import com.katyshevtseva.kikiorgmobile.core.model.RegularTask;
 import com.katyshevtseva.kikiorgmobile.core.model.Setting;
 import com.katyshevtseva.kikiorgmobile.core.model.Task;
@@ -126,14 +127,15 @@ public class ScheduleService {
     }
 
     private Setting getCompleteSettingForScheduleOrNull(Task task, Date date) throws Exception {
+        if (task.getType() == TaskType.REGULAR) {
+            OneDaySetting ods = OneDaySettingService.INSTANCE.getSettingOrNull((RegularTask) task, date);
+            if (ods != null)
+                return ods;
+        }
+
         Setting setting = (Setting) task;
         if (setting.getDuration() != null && setting.getBeginTime() != null)
             return setting;
-
-
-        if (task.getType() == TaskType.REGULAR) {
-            return OneDaySettingService.INSTANCE.getSettingOrNull((RegularTask) task, date);
-        }
 
         return null;
     }

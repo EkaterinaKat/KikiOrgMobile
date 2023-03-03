@@ -1,15 +1,15 @@
 package com.katyshevtseva.kikiorgmobile.core;
 
-import static com.katyshevtseva.kikiorgmobile.utils.DateUtils.beforeIgnoreTime;
-
 import com.katyshevtseva.kikiorgmobile.core.model.IrregularTask;
 import com.katyshevtseva.kikiorgmobile.core.model.RegularTask;
 import com.katyshevtseva.kikiorgmobile.core.model.Task;
+import com.katyshevtseva.kikiorgmobile.utils.DateUtils;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class Service {
     public static Service INSTANCE;
@@ -33,20 +33,18 @@ public class Service {
         return tasks;
     }
 
+    public Date getEarliestTaskDate() {
+        Stream<Date> irtDatesStream = komDao.getAllIrregularTasks().stream()
+                .map(IrregularTask::getDate);
+
+        Stream<Date> rtDatesStream = RegularTaskService.INSTANCE.getNotArchivedRt(null).stream()
+                .flatMap(task -> task.getDates().stream());
+
+        return Stream.concat(irtDatesStream, rtDatesStream).sorted().findFirst().orElse(null);
+    }
+
     public boolean overdueTasksExist() {
-        for (IrregularTask irregularTask : komDao.getAllIrregularTasks()) {
-            if (beforeIgnoreTime(irregularTask.getDate(), new Date()))
-                return true;
-        }
-        for (RegularTask regularTask : komDao.getAllRegularTasks()) {
-            if (!regularTask.isArchived()) {
-                for (Date date : regularTask.getDates()) {
-                    if (beforeIgnoreTime(date, new Date()))
-                        return true;
-                }
-            }
-        }
-        return false;
+        return DateUtils.beforeIgnoreTime(getEarliestTaskDate(), new Date());
     }
 
     public IrregularTask makeIrregularTaskFromRegular(long regularTaskId) {

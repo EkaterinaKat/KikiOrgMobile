@@ -21,11 +21,15 @@ import com.katyshevtseva.kikiorgmobile.core.ScheduleService;
 import com.katyshevtseva.kikiorgmobile.core.ScheduleService.Schedule;
 import com.katyshevtseva.kikiorgmobile.core.model.Task;
 import com.katyshevtseva.kikiorgmobile.utils.GeneralUtil;
+import com.katyshevtseva.kikiorgmobile.utils.NoArgKnob;
 import com.katyshevtseva.kikiorgmobile.view.utils.ViewUtils;
 
 import java.util.Date;
 import java.util.List;
 
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
 public class ScheduleFragment extends Fragment {
     private static final int MAX_SCALE = 5;
     private static final int MIN_SCALE = 1;
@@ -35,6 +39,7 @@ public class ScheduleFragment extends Fragment {
     private TextView alarmTextView;
     private Date date;
     private Schedule schedule;
+    private final NoArgKnob activityUpdateKnob;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -152,7 +157,10 @@ public class ScheduleFragment extends Fragment {
     }
 
     private void taskClickListener(Task task) {
-        TaskMenuDialog taskMenuDialog = new TaskMenuDialog(task, this::updateSchedule, date, (AppCompatActivity) getActivity());
+        TaskMenuDialog taskMenuDialog = new TaskMenuDialog(task, () -> {
+            updateSchedule();
+            activityUpdateKnob.execute();
+        }, date, (AppCompatActivity) getActivity());
         taskMenuDialog.show(getActivity().getSupportFragmentManager(), "TaskMenuDialog");
     }
 
