@@ -1,5 +1,7 @@
 package com.katyshevtseva.kikiorgmobile.core;
 
+import com.katyshevtseva.kikiorgmobile.core.enums.TaskType;
+import com.katyshevtseva.kikiorgmobile.core.enums.TaskUrgency;
 import com.katyshevtseva.kikiorgmobile.core.model.IrregularTask;
 import com.katyshevtseva.kikiorgmobile.core.model.RegularTask;
 import com.katyshevtseva.kikiorgmobile.core.model.Task;
@@ -58,5 +60,15 @@ public class Service {
             task.setBeginTime(ScheduleService.INSTANCE.getAbsoluteBeginTime(regularTask));
         }
         return task;
+    }
+
+    public void setUrgency(Task task, TaskUrgency urgency) {
+        task.setUrgency(urgency);
+
+        if(task.getType()== TaskType.REGULAR) {
+            komDao.update((RegularTask)task);
+        }else {
+            komDao.update((IrregularTask) task);
+        }
     }
 }

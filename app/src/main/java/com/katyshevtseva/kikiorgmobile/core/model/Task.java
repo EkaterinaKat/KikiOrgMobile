@@ -1,6 +1,7 @@
 package com.katyshevtseva.kikiorgmobile.core.model;
 
 import com.katyshevtseva.kikiorgmobile.core.enums.TaskType;
+import com.katyshevtseva.kikiorgmobile.core.enums.TaskUrgency;
 
 public interface Task {
     long getId();
@@ -10,4 +11,8 @@ public interface Task {
     String getTitle();
 
     String getDesc();
+
+    TaskUrgency getUrgency();
+
+    void setUrgency(TaskUrgency urgency);
 }

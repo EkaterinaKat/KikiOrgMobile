@@ -5,12 +5,14 @@ import static com.katyshevtseva.kikiorgmobile.db.DbConstants.DESC;
 import static com.katyshevtseva.kikiorgmobile.db.DbConstants.DURATION;
 import static com.katyshevtseva.kikiorgmobile.db.DbConstants.ID;
 import static com.katyshevtseva.kikiorgmobile.db.DbConstants.TITLE;
+import static com.katyshevtseva.kikiorgmobile.db.DbConstants.URGENCY;
 import static com.katyshevtseva.kikiorgmobile.db.DbTable.ColumnActualType.DATE;
 import static com.katyshevtseva.kikiorgmobile.db.DbTable.ColumnActualType.LONG;
 import static com.katyshevtseva.kikiorgmobile.db.DbTable.ColumnActualType.STRING;
 
 import android.database.sqlite.SQLiteDatabase;
 
+import com.katyshevtseva.kikiorgmobile.core.enums.TaskUrgency;
 import com.katyshevtseva.kikiorgmobile.core.model.IrregularTask;
 import com.katyshevtseva.kikiorgmobile.utils.Time;
 
@@ -41,6 +43,9 @@ class IrregularTaskDao extends AbstractDao<IrregularTask> {
 
         columns.add(new DbTable.Column<>(DbConstants.DATE, DATE, IrregularTask::getDate,
                 (irregularTask, o) -> irregularTask.setDate((Date) o)));
+
+        columns.add(new DbTable.Column<>(URGENCY, LONG, irregularTask -> irregularTask.getUrgency().getCode(),
+                (irregularTask, o) -> irregularTask.setUrgency(TaskUrgency.findByCode(((Long) o).intValue()))));
 
         columns.add(new DbTable.Column<>(DURATION, STRING,
                 irregularTask -> irregularTask.getDuration() != null ? irregularTask.getDuration().getS() : null,

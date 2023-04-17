@@ -3,7 +3,7 @@ package com.katyshevtseva.kikiorgmobile.core.enums;
 public enum PeriodType {
     DAY(1), WEEK(2), MONTH(3), YEAR(4);
 
-    private int code;
+    private final int code;
 
     PeriodType(int code) {
         this.code = code;

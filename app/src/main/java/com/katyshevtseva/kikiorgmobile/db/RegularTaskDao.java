@@ -9,6 +9,7 @@ import static com.katyshevtseva.kikiorgmobile.db.DbConstants.ID;
 import static com.katyshevtseva.kikiorgmobile.db.DbConstants.PERIOD;
 import static com.katyshevtseva.kikiorgmobile.db.DbConstants.PERIOD_TYPE;
 import static com.katyshevtseva.kikiorgmobile.db.DbConstants.TITLE;
+import static com.katyshevtseva.kikiorgmobile.db.DbConstants.URGENCY;
 import static com.katyshevtseva.kikiorgmobile.db.DbTable.ColumnActualType.BOOLEAN;
 import static com.katyshevtseva.kikiorgmobile.db.DbTable.ColumnActualType.LONG;
 import static com.katyshevtseva.kikiorgmobile.db.DbTable.ColumnActualType.STRING;
@@ -17,6 +18,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.katyshevtseva.kikiorgmobile.core.enums.PeriodType;
+import com.katyshevtseva.kikiorgmobile.core.enums.TaskUrgency;
 import com.katyshevtseva.kikiorgmobile.core.model.RegularTask;
 import com.katyshevtseva.kikiorgmobile.utils.Time;
 
@@ -58,6 +60,8 @@ class RegularTaskDao extends AbstractDao<RegularTask> {
                 (regularTask, o) -> regularTask.setPeriod(((Long) o).intValue())));
         columns.add(new DbTable.Column<>(ARCHIVED, BOOLEAN, RegularTask::isArchived,
                 (regularTask, o) -> regularTask.setArchived((boolean) o)));
+        columns.add(new DbTable.Column<>(URGENCY, LONG, regularTask -> regularTask.getUrgency().getCode(),
+                (regularTask, o) -> regularTask.setUrgency(TaskUrgency.findByCode(((Long) o).intValue()))));
 
         columns.add(new DbTable.Column<>(DURATION, STRING,
                 regularTask -> regularTask.getDuration() != null ? regularTask.getDuration().getS() : null,

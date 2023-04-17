@@ -11,7 +11,6 @@ import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import com.example.kikiorgmobile.R;
@@ -91,7 +90,6 @@ public class ScheduleFragment extends Fragment {
 
     private void showIntervals(List<Interval> intervals) {
         intervalsBox.removeAllViews();
-        intervalsBox.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.border));
         for (Interval interval : intervals) {
             LinearLayout linearLayout = new LinearLayout(getActivity());
             linearLayout.setMinimumHeight(interval.getLength() * scale);
@@ -99,7 +97,7 @@ public class ScheduleFragment extends Fragment {
             linearLayout.setOrientation(LinearLayout.VERTICAL);
             if (!interval.isEmpty()) {
                 linearLayout.setOnClickListener(view -> taskClickListener(interval.getTask()));
-                linearLayout.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.task_block));
+                linearLayout.setBackground(ViewUtils.getBackground(interval.getTask().getUrgency(), getContext()));
             }
 
             if (!GeneralUtil.isEmpty(interval.getTitle())) {
@@ -121,7 +119,7 @@ public class ScheduleFragment extends Fragment {
         notScheduledBox.removeAllViews();
         for (Task task : tasks) {
             TextView textView = new TextView(getContext());
-            textView.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.task_block));
+            textView.setBackground(ViewUtils.getBackground(task.getUrgency(), getContext()));
             textView.setText(task.getTitle());
             textView.setSingleLine(false);
             textView.setPadding(15, 15, 15, 15);

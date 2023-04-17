@@ -2,6 +2,7 @@ package com.katyshevtseva.kikiorgmobile.view.utils;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -12,6 +13,10 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 
+import androidx.core.content.ContextCompat;
+
+import com.example.kikiorgmobile.R;
+import com.katyshevtseva.kikiorgmobile.core.enums.TaskUrgency;
 import com.katyshevtseva.kikiorgmobile.utils.OneInKnob;
 
 import java.util.Arrays;
@@ -130,5 +135,17 @@ public class ViewUtils {
                 return;
             }
         }
+    }
+
+    public static Drawable getBackground(TaskUrgency urgency, Context context) {
+        switch (urgency) {
+            case LOW:
+                return ContextCompat.getDrawable(context, R.drawable.task_block_low_urgency);
+            case MEDIUM:
+                return ContextCompat.getDrawable(context, R.drawable.task_block_medium_urgency);
+            case HIGH:
+                return ContextCompat.getDrawable(context, R.drawable.task_block_high_urgency);
+        }
+        throw new RuntimeException();
     }
 }

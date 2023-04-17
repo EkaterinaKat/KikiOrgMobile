@@ -2,6 +2,7 @@ package com.katyshevtseva.kikiorgmobile.core.model;
 
 import com.katyshevtseva.kikiorgmobile.core.enums.PeriodType;
 import com.katyshevtseva.kikiorgmobile.core.enums.TaskType;
+import com.katyshevtseva.kikiorgmobile.core.enums.TaskUrgency;
 import com.katyshevtseva.kikiorgmobile.db.Entity;
 import com.katyshevtseva.kikiorgmobile.utils.DateUtils;
 import com.katyshevtseva.kikiorgmobile.utils.Time;
@@ -28,6 +29,7 @@ public class RegularTask implements Task, Entity, Setting {
     private Time duration;
     private Time beginTime;
     private boolean absoluteWobs;
+    private TaskUrgency urgency;
 
     public String getAdminTaskListDesk() {
         String result = String.format("%s\n\n%s %s\n%s",

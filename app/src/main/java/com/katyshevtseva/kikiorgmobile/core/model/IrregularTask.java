@@ -3,6 +3,7 @@ package com.katyshevtseva.kikiorgmobile.core.model;
 import static com.katyshevtseva.kikiorgmobile.utils.DateUtils.getDateString;
 
 import com.katyshevtseva.kikiorgmobile.core.enums.TaskType;
+import com.katyshevtseva.kikiorgmobile.core.enums.TaskUrgency;
 import com.katyshevtseva.kikiorgmobile.db.Entity;
 import com.katyshevtseva.kikiorgmobile.utils.DateUtils;
 import com.katyshevtseva.kikiorgmobile.utils.Time;
@@ -23,6 +24,7 @@ public class IrregularTask implements Task, Entity, Setting {
     private Date date;
     private Time duration;
     private Time beginTime;
+    private TaskUrgency urgency;
 
     public String getAdminTaskListDesk() {
         return String.format("%s\n\n%s",

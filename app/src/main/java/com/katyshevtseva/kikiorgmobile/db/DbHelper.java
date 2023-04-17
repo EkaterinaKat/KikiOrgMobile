@@ -15,6 +15,7 @@ import static com.katyshevtseva.kikiorgmobile.db.DbConstants.PERIOD_TYPE;
 import static com.katyshevtseva.kikiorgmobile.db.DbConstants.SUBJECT;
 import static com.katyshevtseva.kikiorgmobile.db.DbConstants.TASK_ID;
 import static com.katyshevtseva.kikiorgmobile.db.DbConstants.TITLE;
+import static com.katyshevtseva.kikiorgmobile.db.DbConstants.URGENCY;
 import static com.katyshevtseva.kikiorgmobile.db.DbConstants.VALUE;
 
 import android.content.ContentValues;
@@ -23,7 +24,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 public class DbHelper extends SQLiteOpenHelper {
-    private static final int VERSION = 24;
+    private static final int VERSION = 25;
     private static final String DATABASE_NAME = "kom.db";
 
     DbHelper(Context context) {
@@ -38,6 +39,7 @@ public class DbHelper extends SQLiteOpenHelper {
                 DESC + " TEXT, " +
                 DURATION + " TEXT, " +
                 BEGIN_TIME + " TEXT, " +
+                URGENCY + " INTEGER, " +
                 DATE + " TEXT )");
 
         database.execSQL("create table " + RegularTaskDao.NAME + "(" +
@@ -45,6 +47,7 @@ public class DbHelper extends SQLiteOpenHelper {
                 TITLE + " TEXT, " +
                 DESC + " TEXT, " +
                 PERIOD_TYPE + " INTEGER, " +
+                URGENCY + " INTEGER, " +
                 PERIOD + " INTEGER, " +
                 ARCHIVED + " INTEGER, " +
                 DURATION + " TEXT, " +
@@ -86,7 +89,6 @@ public class DbHelper extends SQLiteOpenHelper {
 //        database.execSQL("ALTER TABLE irregular_task ADD duration TEXT; ");
 //        database.execSQL("ALTER TABLE irregular_task ADD begin_time TEXT; ");
 //        database.execSQL("ALTER TABLE regular_task ADD absolute_wobs INTEGER; ");
-
 //        database.execSQL("delete from one_day_setting; ");
     }
 
