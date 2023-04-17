@@ -45,6 +45,8 @@ public interface KomDao {
 
     List<Log> getAllLogs();
 
+    void delete(Log log);
+
     PrefEntity getPrefByTitle(String title);
 
     void update(PrefEntity pref);

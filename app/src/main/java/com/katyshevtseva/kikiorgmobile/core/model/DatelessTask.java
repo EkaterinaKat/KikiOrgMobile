@@ -21,8 +21,7 @@ public class DatelessTask implements Entity {
         return id + ") " + title;
     }
 
-    @Override
-    public String toString() {
+    public String getBackupString() {
         return "DatelessTask{" +
                 "id=" + id +
                 ", title='" + title + '\'' +

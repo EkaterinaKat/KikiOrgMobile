@@ -64,6 +64,21 @@ public class RegularTask implements Task, Entity, Setting {
         return title;
     }
 
+    public String getBackupString() {
+        return "RegularTask{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", desc='" + desc + '\'' +
+                ", periodType=" + periodType +
+                ", period=" + period +
+                ", archived=" + archived +
+                ", dates=" + dates +
+                ", duration=" + duration +
+                ", beginTime=" + beginTime +
+                ", absoluteWobs=" + absoluteWobs +
+                '}';
+    }
+
     @Override
     public TaskType getType() {
         return TaskType.REGULAR;

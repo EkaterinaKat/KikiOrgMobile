@@ -31,9 +31,7 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public class ScheduleFragment extends Fragment {
-    private static final int MAX_SCALE = 5;
-    private static final int MIN_SCALE = 1;
-    private int scale = 2;
+    private static final int scale = 2;
     private LinearLayout intervalsBox;
     private LinearLayout notScheduledBox;
     private TextView alarmTextView;
@@ -47,7 +45,6 @@ public class ScheduleFragment extends Fragment {
         intervalsBox = view.findViewById(R.id.intervals_box);
         notScheduledBox = view.findViewById(R.id.not_scheduled_box);
         alarmTextView = view.findViewById(R.id.schedule_alarm_text_view);
-        tuneScaleButtons(view);
 
         view.findViewById(R.id.add_irt_button).setOnClickListener(view1 -> {
             getContext().startActivity(IrtEditActivity.newIntent(getContext(), null));
@@ -57,21 +54,6 @@ public class ScheduleFragment extends Fragment {
             showPartsOfSchedule();
         }
         return view;
-    }
-
-    private void tuneScaleButtons(View view) {
-        view.findViewById(R.id.plus_scale_button).setOnClickListener(view1 -> {
-            if (scale < MAX_SCALE) {
-                scale += 1;
-                updateSchedule();
-            }
-        });
-        view.findViewById(R.id.minus_scale_button).setOnClickListener(view1 -> {
-            if (scale > MIN_SCALE) {
-                scale -= 1;
-                updateSchedule();
-            }
-        });
     }
 
     @Override

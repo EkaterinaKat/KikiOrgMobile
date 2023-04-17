@@ -38,13 +38,14 @@ public class IrregularTask implements Task, Entity, Setting {
         return TaskType.IRREGULAR;
     }
 
-    @Override
-    public String toString() {
+    public String getBackupString() {
         return "IrregularTask{" +
                 "id=" + id +
                 ", title='" + title + '\'' +
                 ", desc='" + desc + '\'' +
                 ", date=" + date +
+                ", duration=" + duration +
+                ", beginTime=" + beginTime +
                 '}';
     }
 

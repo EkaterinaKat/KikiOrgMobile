@@ -76,6 +76,11 @@ public class KomDaoImpl implements KomDao {
         return logDao.findAll();
     }
 
+    @Override
+    public void delete(Log log) {
+        logDao.delete(log);
+    }
+
     ////////////////////////////  Pref  //////////////////////////////////
 
     @Override

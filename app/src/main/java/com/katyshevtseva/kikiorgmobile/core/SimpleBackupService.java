@@ -3,40 +3,55 @@ package com.katyshevtseva.kikiorgmobile.core;
 import android.util.Log;
 
 import com.katyshevtseva.kikiorgmobile.core.model.DatelessTask;
+import com.katyshevtseva.kikiorgmobile.core.model.IrregularTask;
 import com.katyshevtseva.kikiorgmobile.core.model.RegularTask;
 
-class SimpleBackupService {
-    private static final String tag = "Backup";
-    private final KomDao komDao;
-    private final Service service;
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
 
-    SimpleBackupService(KomDao komDao, Service service) {
+class SimpleBackupService {
+    private static final String tag = "KikiBackup";
+    private final KomDao komDao;
+
+    SimpleBackupService(KomDao komDao) {
         this.komDao = komDao;
-        this.service = service;
     }
 
     void execute() {
         Log.i(tag, "*** START ***");
         Log.i(tag, "*** REGULAR TASKS ***");
         for (RegularTask regularTask : komDao.getAllRegularTasks()) {
-            Log.i(tag, regularTask.toString());
+            Log.i(tag, regularTask.getBackupString());
         }
 
-//        Log.i(tag, "*** IRREGULAR TASKS ***");
-//        List<IrregularTask> currentTasks = service.getIrregularTasks(null);
-//        for (IrregularTask irregularTask : currentTasks) {
-//            Log.i(tag, irregularTask.toString());
-//        }
+        Log.i(tag, "*** IRREGULAR TASKS ***");
+        for (IrregularTask irregularTask : komDao.getAllIrregularTasks()) {
+            Log.i(tag, irregularTask.getBackupString());
+        }
 
         Log.i(tag, "*** DATELESS TASKS ***");
         for (DatelessTask datelessTask : komDao.getAllDatelessTasks()) {
-            Log.i(tag, datelessTask.toString());
+            Log.i(tag, datelessTask.getBackupString());
         }
 
-//        Log.i(tag, "*** LOGS ***");
-//        for (com.katyshevtseva.kikiorgmobile.core.model.Log log : service.getLogs()) {
-//            Log.i(tag, log.getFullDesc());
-//        }
+        Log.i(tag, "*** LOGS ***");
+        List<com.katyshevtseva.kikiorgmobile.core.model.Log> logs = komDao.getAllLogs().stream()
+                .sorted(Comparator.comparing(com.katyshevtseva.kikiorgmobile.core.model.Log::getId))
+                .collect(Collectors.toList());
+
+        for (com.katyshevtseva.kikiorgmobile.core.model.Log log : logs) {
+            Log.i(tag, log.getBackupString());
+        }
+
+        if (logs.size() > 100) {
+            int numOfLogsToDelete = logs.size() - 30;
+            for (int i = 0; i < numOfLogsToDelete; i++) {
+                komDao.delete(logs.get(i));
+            }
+            Log.i(tag, numOfLogsToDelete + " logs were deleted");
+        }
+
 
         Log.i(tag, "--- END ---");
     }

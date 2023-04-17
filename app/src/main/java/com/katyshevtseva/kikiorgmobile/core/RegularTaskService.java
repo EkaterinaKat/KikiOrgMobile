@@ -130,7 +130,7 @@ public class RegularTaskService {
         } else {
             RegularTaskService.INSTANCE.done(regularTask, initDate);
             IrregularTaskService.INSTANCE.save(null,
-                    String.format("%s (перенесено с %s)", regularTask.getTitle(), getDateString(initDate)),
+                    regularTask.getTitle() + "*",
                     regularTask.getDesc(),
                     targetDate, regularTask.getDuration(), regularTask.getBeginTime());
         }

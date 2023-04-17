@@ -38,4 +38,14 @@ public class Log implements Entity {
     public String getFullDesc() {
         return String.format("%d) %s %s \n%s\n%s", id, action, subject, desc, getDateTimeString(date));
     }
+
+    public String getBackupString() {
+        return "Log{" +
+                "id=" + id +
+                ", date=" + date +
+                ", action=" + action +
+                ", subject=" + subject +
+                ", desc='" + desc + '\'' +
+                '}';
+    }
 }

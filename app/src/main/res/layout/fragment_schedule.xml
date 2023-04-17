@@ -65,30 +65,6 @@
 
                 </LinearLayout>
             </ScrollView>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true">
-
-                <Button
-                    android:id="@+id/plus_scale_button"
-                    style="?android:attr/buttonBarButtonStyle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="@drawable/radial"
-                    android:text="+" />
-
-                <Button
-                    android:id="@+id/minus_scale_button"
-                    style="?android:attr/buttonBarButtonStyle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="@drawable/radial"
-                    android:text="-" />
-            </LinearLayout>
         </RelativeLayout>
     </LinearLayout>
 </LinearLayout>
