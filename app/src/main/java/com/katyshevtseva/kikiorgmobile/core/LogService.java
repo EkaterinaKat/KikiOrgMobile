@@ -1,6 +1,5 @@
 package com.katyshevtseva.kikiorgmobile.core;
 
-import com.katyshevtseva.kikiorgmobile.core.model.DatelessTask;
 import com.katyshevtseva.kikiorgmobile.core.model.IrregularTask;
 import com.katyshevtseva.kikiorgmobile.core.model.Log;
 import com.katyshevtseva.kikiorgmobile.core.model.RegularTask;
@@ -36,10 +35,6 @@ public class LogService {
 
     public void saveLog(Log.Action action, IrregularTask irregularTask) {
         saveLog(action, Log.Subject.IRREGULAR_TASK, irregularTask.getLogTaskDesk());
-    }
-
-    public void saveLog(Log.Action action, DatelessTask datelessTask) {
-        saveLog(action, Log.Subject.DATELESS_TASK, datelessTask.getLogTaskDesk());
     }
 
     public void saveLog(Log.Action action, Log.Subject subject, String desc) {

@@ -32,7 +32,7 @@ public class Log implements Entity {
     }
 
     public enum Subject {
-        REGULAR_TASK, IRREGULAR_TASK, DATELESS_TASK
+        REGULAR_TASK, IRREGULAR_TASK
     }
 
     public String getFullDesc() {

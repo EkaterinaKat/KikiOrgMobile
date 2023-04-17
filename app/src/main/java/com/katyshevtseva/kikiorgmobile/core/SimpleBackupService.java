@@ -2,7 +2,6 @@ package com.katyshevtseva.kikiorgmobile.core;
 
 import android.util.Log;
 
-import com.katyshevtseva.kikiorgmobile.core.model.DatelessTask;
 import com.katyshevtseva.kikiorgmobile.core.model.IrregularTask;
 import com.katyshevtseva.kikiorgmobile.core.model.RegularTask;
 
@@ -28,11 +27,6 @@ class SimpleBackupService {
         Log.i(tag, "*** IRREGULAR TASKS ***");
         for (IrregularTask irregularTask : komDao.getAllIrregularTasks()) {
             Log.i(tag, irregularTask.getBackupString());
-        }
-
-        Log.i(tag, "*** DATELESS TASKS ***");
-        for (DatelessTask datelessTask : komDao.getAllDatelessTasks()) {
-            Log.i(tag, datelessTask.getBackupString());
         }
 
         Log.i(tag, "*** LOGS ***");

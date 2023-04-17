@@ -1,6 +1,5 @@
 package com.katyshevtseva.kikiorgmobile.core;
 
-import com.katyshevtseva.kikiorgmobile.core.model.DatelessTask;
 import com.katyshevtseva.kikiorgmobile.core.model.IrregularTask;
 import com.katyshevtseva.kikiorgmobile.core.model.Log;
 import com.katyshevtseva.kikiorgmobile.core.model.OneDaySetting;
@@ -32,14 +31,6 @@ public interface KomDao {
     RegularTask getRegularTaskById(long id);
 
     IrregularTask getIrregularTaskById(long id);
-
-    void saveNew(DatelessTask datelessTask);
-
-    List<DatelessTask> getAllDatelessTasks();
-
-    void update(DatelessTask datelessTask);
-
-    void delete(DatelessTask datelessTask);
 
     void saveNew(Log log);
 

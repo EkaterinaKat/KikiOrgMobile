@@ -12,10 +12,8 @@ import static com.katyshevtseva.kikiorgmobile.db.DbConstants.DURATION;
 import static com.katyshevtseva.kikiorgmobile.db.DbConstants.ID;
 import static com.katyshevtseva.kikiorgmobile.db.DbConstants.PERIOD;
 import static com.katyshevtseva.kikiorgmobile.db.DbConstants.PERIOD_TYPE;
-import static com.katyshevtseva.kikiorgmobile.db.DbConstants.RT_ID;
 import static com.katyshevtseva.kikiorgmobile.db.DbConstants.SUBJECT;
 import static com.katyshevtseva.kikiorgmobile.db.DbConstants.TASK_ID;
-import static com.katyshevtseva.kikiorgmobile.db.DbConstants.TASK_TYPE;
 import static com.katyshevtseva.kikiorgmobile.db.DbConstants.TITLE;
 import static com.katyshevtseva.kikiorgmobile.db.DbConstants.VALUE;
 
@@ -23,7 +21,6 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
 public class DbHelper extends SQLiteOpenHelper {
     private static final int VERSION = 24;
@@ -58,10 +55,6 @@ public class DbHelper extends SQLiteOpenHelper {
                 ID + " INTEGER primary key autoincrement, " +
                 TASK_ID + " INTEGER, " +
                 VALUE + " TEXT )");
-
-        database.execSQL("create table " + DatelessTaskDao.NAME + "(" +
-                ID + " INTEGER primary key autoincrement, " +
-                TITLE + " TEXT )");
 
         database.execSQL("create table " + LogDao.NAME + "(" +
                 ID + " INTEGER primary key autoincrement, " +

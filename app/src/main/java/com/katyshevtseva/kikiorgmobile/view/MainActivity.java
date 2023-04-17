@@ -5,13 +5,11 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
 
 import com.example.kikiorgmobile.R;
-import com.katyshevtseva.kikiorgmobile.core.DatelessTaskService;
 import com.katyshevtseva.kikiorgmobile.core.IrregularTaskService;
 import com.katyshevtseva.kikiorgmobile.core.KomDao;
 import com.katyshevtseva.kikiorgmobile.core.LogService;
@@ -32,7 +30,6 @@ public class MainActivity extends KomActivity {
     private TextView dateView;
     private final ScheduleFragment scheduleFragment = new ScheduleFragment(this::fragmentUpdateListener);
     private TextView alarmTextView;
-    private Button datelessTaskButton;
     private boolean prevDateIsAvailable;
 
     public MainActivity() {
@@ -55,7 +52,6 @@ public class MainActivity extends KomActivity {
         RegularTaskService.init(komDao);
         IrregularTaskService.init(komDao);
         LogService.init(komDao);
-        DatelessTaskService.init(komDao);
         alarmTextView = findViewById(R.id.alarm_text_view);
 
         date = new Date();
@@ -66,10 +62,6 @@ public class MainActivity extends KomActivity {
 
         getSupportFragmentManager().beginTransaction().add(R.id.task_list_container, scheduleFragment).commit();
 
-        datelessTaskButton = findViewById(R.id.dateless_task_button);
-        datelessTaskButton.setOnClickListener(view ->
-                startActivity(new Intent(getApplicationContext(), DatelessTaskActivity.class)));
-
         updateTaskPane();
     }
 
@@ -78,7 +70,6 @@ public class MainActivity extends KomActivity {
         scheduleFragment.setDate(date);
         setDateViewStyle();
         updateAlarmBanner();
-        datelessTaskButton.setText("" + DatelessTaskService.INSTANCE.countDatelessTasks());
         prevDateIsAvailable = DateUtils.beforeIgnoreTime(Service.INSTANCE.getEarliestTaskDate(), date);
     }
 

@@ -2,7 +2,6 @@ package com.katyshevtseva.kikiorgmobile.view;
 
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -92,17 +91,15 @@ public class ScheduleFragment extends Fragment {
 
     private void showIntervals(List<Interval> intervals) {
         intervalsBox.removeAllViews();
+        intervalsBox.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.border));
         for (Interval interval : intervals) {
             LinearLayout linearLayout = new LinearLayout(getActivity());
             linearLayout.setMinimumHeight(interval.getLength() * scale);
             linearLayout.setMinimumWidth(600);
             linearLayout.setOrientation(LinearLayout.VERTICAL);
-            linearLayout.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.border));
-            if (interval.isEmpty()) {
-                linearLayout.setBackgroundColor(Color.parseColor("#FFFFFF"));
-            }
-            if (interval.getTask() != null) {
+            if (!interval.isEmpty()) {
                 linearLayout.setOnClickListener(view -> taskClickListener(interval.getTask()));
+                linearLayout.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.task_block));
             }
 
             if (!GeneralUtil.isEmpty(interval.getTitle())) {

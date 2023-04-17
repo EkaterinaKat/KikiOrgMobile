@@ -11,7 +11,6 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.katyshevtseva.kikiorgmobile.core.KomDao;
-import com.katyshevtseva.kikiorgmobile.core.model.DatelessTask;
 import com.katyshevtseva.kikiorgmobile.core.model.IrregularTask;
 import com.katyshevtseva.kikiorgmobile.core.model.Log;
 import com.katyshevtseva.kikiorgmobile.core.model.OneDaySetting;
@@ -26,7 +25,6 @@ public class KomDaoImpl implements KomDao {
     private final IrregularTaskDao irregularTaskDao;
     private final RegularTaskDao regularTaskDao;
     private final RtDateDao rtDateDao;
-    private final DatelessTaskDao datelessTaskDao;
     private final LogDao logDao;
     private final PrefDao prefDao;
     private final OneDaySettingDao oneDaySettingDao;
@@ -36,32 +34,9 @@ public class KomDaoImpl implements KomDao {
         irregularTaskDao = new IrregularTaskDao(database);
         regularTaskDao = new RegularTaskDao(database);
         rtDateDao = new RtDateDao(database);
-        datelessTaskDao = new DatelessTaskDao(database);
         logDao = new LogDao(database);
         prefDao = new PrefDao(database);
         oneDaySettingDao = new OneDaySettingDao(database);
-    }
-
-    ////////////////////////////  DatelessTask  //////////////////////////////////
-
-    @Override
-    public void saveNew(DatelessTask datelessTask) {
-        datelessTaskDao.saveNew(datelessTask);
-    }
-
-    @Override
-    public List<DatelessTask> getAllDatelessTasks() {
-        return datelessTaskDao.findAll();
-    }
-
-    @Override
-    public void update(DatelessTask datelessTask) {
-        datelessTaskDao.update(datelessTask);
-    }
-
-    @Override
-    public void delete(DatelessTask datelessTask) {
-        datelessTaskDao.delete(datelessTask);
     }
 
     ////////////////////////////  Log  //////////////////////////////////
