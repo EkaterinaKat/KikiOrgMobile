@@ -9,7 +9,6 @@
         android:id="@+id/log_text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/log"
         android:textSize="18sp" />
 
 </LinearLayout>

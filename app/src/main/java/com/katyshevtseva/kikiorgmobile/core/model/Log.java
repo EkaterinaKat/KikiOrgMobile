@@ -28,11 +28,27 @@ public class Log implements Entity {
     }
 
     public enum Action {
-        CREATION, DELETION, RESCHEDULE, COMPLETION, ARCHIVATION, EDITING, RESUME
+        CREATION("#5CCBFF"),
+        DELETION("#FF685C"),
+        RESCHEDULE("#FFEC5C"),
+        COMPLETION("#67FF5C"),
+        ARCHIVATION("#999999"),
+        EDITING("#CB5CFF"),
+        RESUME("#1F75FE");
+
+        private final String color;
+
+        Action(String color) {
+            this.color = color;
+        }
+
+        public String getColor() {
+            return color;
+        }
     }
 
     public enum Subject {
-        REGULAR_TASK, IRREGULAR_TASK
+        REGULAR_TASK, IRREGULAR_TASK, DATELESS_TASK
     }
 
     public String getFullDesc() {

@@ -1,5 +1,6 @@
 package com.katyshevtseva.kikiorgmobile.view;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -41,7 +42,9 @@ public class LogsActivity extends KomActivity {
         }
 
         void bind(final Log log) {
-            ((TextView) itemView.findViewById(R.id.log_text_view)).setText(log.getFullDesc());
+            TextView textView = itemView.findViewById(R.id.log_text_view);
+            textView.setText(log.getFullDesc());
+            textView.setBackgroundColor(Color.parseColor(log.getAction().getColor()));
         }
     }
 

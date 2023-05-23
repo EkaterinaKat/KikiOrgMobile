@@ -46,6 +46,7 @@ public class ScheduleService {
                 notScheduledTasks.add(task);
         }
 
+        notScheduledTasks.sort(Comparator.comparing(task -> ((Task) task).getUrgency().getCode()).reversed());
         return formSchedule(settings, notScheduledTasks, date);
     }
 

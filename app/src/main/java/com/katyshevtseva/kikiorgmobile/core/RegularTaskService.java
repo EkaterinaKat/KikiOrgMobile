@@ -7,6 +7,7 @@ import static com.katyshevtseva.kikiorgmobile.utils.DateUtils.removeIgnoreTime;
 import static com.katyshevtseva.kikiorgmobile.utils.GeneralUtil.taskFilter;
 
 import com.katyshevtseva.kikiorgmobile.core.enums.PeriodType;
+import com.katyshevtseva.kikiorgmobile.core.enums.TaskUrgency;
 import com.katyshevtseva.kikiorgmobile.core.model.Log;
 import com.katyshevtseva.kikiorgmobile.core.model.RegularTask;
 import com.katyshevtseva.kikiorgmobile.utils.DateUtils;
@@ -34,9 +35,10 @@ public class RegularTaskService {
     }
 
     public void save(RegularTask existing, String title, String desc, PeriodType periodType,
-                     List<Date> dates, int period, Time duration, Time begin, boolean wobs) {
+                     List<Date> dates, int period, Time duration, Time begin, boolean wobs) { //todo рефакторить
         if (existing == null) {
             RegularTask task = new RegularTask();
+            task.setUrgency(TaskUrgency.LOW);
             task.setTitle(title);
             task.setDesc(desc);
             task.setPeriodType(periodType);

@@ -52,6 +52,7 @@ public class Service {
     public IrregularTask makeIrregularTaskFromRegular(long regularTaskId) {
         RegularTask regularTask = komDao.getRegularTaskById(regularTaskId);
         IrregularTask task = new IrregularTask();
+        task.setUrgency(regularTask.getUrgency());
         task.setTitle(regularTask.getTitle());
         task.setDesc(regularTask.getDesc());
         task.setDate(new Date());
@@ -65,9 +66,9 @@ public class Service {
     public void setUrgency(Task task, TaskUrgency urgency) {
         task.setUrgency(urgency);
 
-        if(task.getType()== TaskType.REGULAR) {
-            komDao.update((RegularTask)task);
-        }else {
+        if (task.getType() == TaskType.REGULAR) {
+            komDao.update((RegularTask) task);
+        } else {
             komDao.update((IrregularTask) task);
         }
     }
