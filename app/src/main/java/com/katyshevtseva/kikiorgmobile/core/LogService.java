@@ -19,6 +19,27 @@ public class LogService {
 
     private LogService(KomDao komDao) {
         this.komDao = komDao;
+        clearLogsIfNeeded();
+    }
+
+    private void clearLogsIfNeeded() {
+        List<com.katyshevtseva.kikiorgmobile.core.model.Log> logs = komDao.getAllLogs();
+
+        if (logs.size() > 100) {
+            List<com.katyshevtseva.kikiorgmobile.core.model.Log> sortedLogs = logs.stream()
+                    .sorted(Comparator.comparing(com.katyshevtseva.kikiorgmobile.core.model.Log::getId))
+                    .collect(Collectors.toList());
+
+            int numOfLogsToDelete = sortedLogs.size() - 30;
+            for (int i = 0; i < numOfLogsToDelete; i++) {
+                komDao.delete(sortedLogs.get(i));
+            }
+            android.util.Log.i("logs clearing",
+                    logs.size() + " logs initially. " + numOfLogsToDelete + " logs were deleted");
+        } else {
+            android.util.Log.i("logs clearing",
+                    logs.size() + " logs initially. Clearing not done");
+        }
     }
 
     public void saveLog(Log.Action action, RegularTask regularTask, String additionalInfo) {
@@ -42,6 +63,7 @@ public class LogService {
     }
 
     public List<Log> getLogs() {
+//        new SimpleBackupService(komDao).execute();
         return komDao.getAllLogs().stream().sorted(Comparator.comparing(Log::getId).reversed()).collect(Collectors.toList());
     }
 }
