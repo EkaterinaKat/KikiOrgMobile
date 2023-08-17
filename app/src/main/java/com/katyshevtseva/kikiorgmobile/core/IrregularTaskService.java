@@ -4,6 +4,7 @@ import static com.katyshevtseva.kikiorgmobile.utils.DateUtils.getDateString;
 import static com.katyshevtseva.kikiorgmobile.utils.GeneralUtil.taskFilter;
 
 import com.katyshevtseva.kikiorgmobile.core.enums.TaskUrgency;
+import com.katyshevtseva.kikiorgmobile.core.enums.TimeOfDay;
 import com.katyshevtseva.kikiorgmobile.core.model.IrregularTask;
 import com.katyshevtseva.kikiorgmobile.core.model.Log;
 import com.katyshevtseva.kikiorgmobile.utils.DateUtils;
@@ -29,12 +30,13 @@ public class IrregularTaskService {
         return komDao.getIrregularTaskById(id);
     }
 
-    public void save(IrregularTask existing, String title, String desc, Date date) {
+    public void save(IrregularTask existing, String title, String desc, TimeOfDay timeOfDay, Date date) {
         if (existing == null) {
             existing = new IrregularTask();
             existing.setUrgency(TaskUrgency.LOW);
         }
         existing.setTitle(title);
+        existing.setTimeOfDay(timeOfDay);
         existing.setDesc(desc);
         existing.setDate(date);
 

@@ -3,6 +3,7 @@ package com.katyshevtseva.kikiorgmobile.core.model;
 import com.katyshevtseva.kikiorgmobile.core.enums.PeriodType;
 import com.katyshevtseva.kikiorgmobile.core.enums.TaskType;
 import com.katyshevtseva.kikiorgmobile.core.enums.TaskUrgency;
+import com.katyshevtseva.kikiorgmobile.core.enums.TimeOfDay;
 import com.katyshevtseva.kikiorgmobile.db.lib.Entity;
 import com.katyshevtseva.kikiorgmobile.utils.DateUtils;
 
@@ -26,14 +27,15 @@ public class RegularTask implements Task, Entity {
     private boolean archived;
     private List<Date> dates;
     private TaskUrgency urgency;
+    private TimeOfDay timeOfDay;
 
     public String getAdminTaskListDesk() {
-        return String.format("%s\n\n%s %s\n%s",
-                desc, period, periodType, getLoppedDateListString());
+        return String.format("%s\n\n%s\n%s %s\n%s",
+                desc, timeOfDay, period, periodType, getLoppedDateListString());
     }
 
     public String getLogTaskDesk() {
-        return String.format("[(%d) %s \n%s \n(%d %s)]", id, title, desc, period, periodType);
+        return String.format("[(%d) %s \n%s \n(%s, %d %s)]", id, title, desc, timeOfDay, period, periodType);
     }
 
     private String getLoppedDateListString() {

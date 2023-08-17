@@ -3,7 +3,9 @@ package com.katyshevtseva.kikiorgmobile.view;
 import static com.katyshevtseva.kikiorgmobile.utils.DateUtils.getDateByString;
 import static com.katyshevtseva.kikiorgmobile.utils.DateUtils.getDateString;
 import static com.katyshevtseva.kikiorgmobile.utils.DateUtils.isDate;
+import static com.katyshevtseva.kikiorgmobile.view.utils.ViewUtils.adjustSpinner;
 import static com.katyshevtseva.kikiorgmobile.view.utils.ViewUtils.isEmpty;
+import static com.katyshevtseva.kikiorgmobile.view.utils.ViewUtils.selectSpinnerItemByValue;
 import static com.katyshevtseva.kikiorgmobile.view.utils.ViewUtils.setEditTextListener;
 
 import android.app.DatePickerDialog;
@@ -12,6 +14,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -20,10 +23,12 @@ import androidx.annotation.Nullable;
 import com.example.kikiorgmobile.R;
 import com.katyshevtseva.kikiorgmobile.core.IrregularTaskService;
 import com.katyshevtseva.kikiorgmobile.core.Service;
+import com.katyshevtseva.kikiorgmobile.core.enums.TimeOfDay;
 import com.katyshevtseva.kikiorgmobile.core.model.IrregularTask;
 import com.katyshevtseva.kikiorgmobile.core.model.RegularTask;
 import com.katyshevtseva.kikiorgmobile.view.utils.KomActivity;
 
+import java.util.Arrays;
 import java.util.Date;
 
 public class IrtEditActivity extends KomActivity {
@@ -34,6 +39,7 @@ public class IrtEditActivity extends KomActivity {
     private EditText titleEdit;
     private EditText descEdit;
     private TextView dateTextView;
+    private Spinner timeOfDaySpinner;
     private Button doneButton;
 
     public static Intent newIntent(Context context, @Nullable IrregularTask task) {
@@ -58,7 +64,7 @@ public class IrtEditActivity extends KomActivity {
         setContentView(R.layout.activity_irt_edit);
 
         initializeControls();
-        setControlListeners();
+        adjustControls();
         setInitFieldValues();
         setDoneButtonAccessibility();
     }
@@ -66,9 +72,10 @@ public class IrtEditActivity extends KomActivity {
     private void setInitFieldValues() {
         boolean intentIsEmpty = getIntent().getLongExtra(EXTRA_TASK_ID, -1) == -1;
 
-        if (intentIsEmpty)
+        if (intentIsEmpty) {
             dateTextView.setText(getDateString(new Date()));
-        else
+            selectSpinnerItemByValue(timeOfDaySpinner, TimeOfDay.AFTERNOON);
+        } else
             handleIntent();
     }
 
@@ -86,6 +93,7 @@ public class IrtEditActivity extends KomActivity {
         titleEdit.setText(existing.getTitle());
         descEdit.setText(existing.getDesc());
         dateTextView.setText(getDateString(existing.getDate()));
+        selectSpinnerItemByValue(timeOfDaySpinner, existing.getTimeOfDay());
     }
 
     private void initializeControls() {
@@ -93,9 +101,13 @@ public class IrtEditActivity extends KomActivity {
         descEdit = findViewById(R.id.desc_edit);
         doneButton = findViewById(R.id.save_task_button);
         dateTextView = findViewById(R.id.it_date_text_view);
+        timeOfDaySpinner = findViewById(R.id.time_of_day_spinner);
     }
 
-    private void setControlListeners() {
+    private void adjustControls() {
+        adjustSpinner(this, timeOfDaySpinner, Arrays.asList(TimeOfDay.values()),
+                timeOfDay -> setDoneButtonAccessibility());
+
         doneButton.setOnClickListener(view -> saveTask());
         dateTextView.setOnClickListener(view -> openDatePicker(dateTextView));
 
@@ -117,6 +129,7 @@ public class IrtEditActivity extends KomActivity {
                 existing,
                 titleEdit.getText().toString(),
                 descEdit.getText().toString(),
+                (TimeOfDay) timeOfDaySpinner.getSelectedItem(),
                 getDateByString(dateTextView.getText().toString())
         );
         finish();

@@ -5,6 +5,7 @@ import static com.katyshevtseva.kikiorgmobile.db.DbConstants.DESC;
 import static com.katyshevtseva.kikiorgmobile.db.DbConstants.ID;
 import static com.katyshevtseva.kikiorgmobile.db.DbConstants.PERIOD;
 import static com.katyshevtseva.kikiorgmobile.db.DbConstants.PERIOD_TYPE;
+import static com.katyshevtseva.kikiorgmobile.db.DbConstants.TIME_OF_DAY;
 import static com.katyshevtseva.kikiorgmobile.db.DbConstants.TITLE;
 import static com.katyshevtseva.kikiorgmobile.db.DbConstants.URGENCY;
 import static com.katyshevtseva.kikiorgmobile.db.lib.DbTable.ColumnActualType.BOOLEAN;
@@ -16,6 +17,7 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.katyshevtseva.kikiorgmobile.core.enums.PeriodType;
 import com.katyshevtseva.kikiorgmobile.core.enums.TaskUrgency;
+import com.katyshevtseva.kikiorgmobile.core.enums.TimeOfDay;
 import com.katyshevtseva.kikiorgmobile.core.model.RegularTask;
 import com.katyshevtseva.kikiorgmobile.db.lib.AbstractDao;
 import com.katyshevtseva.kikiorgmobile.db.lib.DbTable;
@@ -60,6 +62,8 @@ class RegularTaskDao extends AbstractDao<RegularTask> {
                 (regularTask, o) -> regularTask.setArchived((boolean) o)));
         columns.add(new DbTable.Column<>(URGENCY, LONG, regularTask -> regularTask.getUrgency().getCode(),
                 (regularTask, o) -> regularTask.setUrgency(TaskUrgency.findByCode(((Long) o).intValue()))));
+        columns.add(new DbTable.Column<>(TIME_OF_DAY, LONG, regularTask -> regularTask.getTimeOfDay().getCode(),
+                (regularTask, o) -> regularTask.setTimeOfDay(TimeOfDay.findByCode(((Long) o).intValue()))));
 
         return columns;
     }

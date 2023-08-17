@@ -8,6 +8,7 @@ import static com.katyshevtseva.kikiorgmobile.utils.GeneralUtil.taskFilter;
 
 import com.katyshevtseva.kikiorgmobile.core.enums.PeriodType;
 import com.katyshevtseva.kikiorgmobile.core.enums.TaskUrgency;
+import com.katyshevtseva.kikiorgmobile.core.enums.TimeOfDay;
 import com.katyshevtseva.kikiorgmobile.core.model.Log;
 import com.katyshevtseva.kikiorgmobile.core.model.RegularTask;
 import com.katyshevtseva.kikiorgmobile.utils.DateUtils;
@@ -33,7 +34,7 @@ public class RegularTaskService {
         return komDao.getRegularTaskById(id);
     }
 
-    public void save(RegularTask existing, String title, String desc, PeriodType periodType,
+    public void save(RegularTask existing, String title, String desc, TimeOfDay timeOfDay, PeriodType periodType,
                      List<Date> dates, int period) { //todo рефакторить
         if (existing == null) {
             RegularTask task = new RegularTask();
@@ -41,6 +42,7 @@ public class RegularTaskService {
             task.setTitle(title);
             task.setDesc(desc);
             task.setPeriodType(periodType);
+            task.setTimeOfDay(timeOfDay);
             task.setPeriod(period);
             task.setDates(dates);
             komDao.saveNew(task);
@@ -49,6 +51,7 @@ public class RegularTaskService {
             existing.setTitle(title);
             existing.setDesc(desc);
             existing.setPeriodType(periodType);
+            existing.setTimeOfDay(timeOfDay);
             existing.setPeriod(period);
             existing.setDates(dates);
             komDao.update(existing);
@@ -127,6 +130,7 @@ public class RegularTaskService {
             IrregularTaskService.INSTANCE.save(null,
                     regularTask.getTitle() + "*",
                     regularTask.getDesc(),
+                    regularTask.getTimeOfDay(),
                     targetDate);
         }
         LogService.INSTANCE.saveLog(Log.Action.RESCHEDULE, regularTask,

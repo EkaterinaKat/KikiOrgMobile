@@ -18,4 +18,5 @@ class DbConstants {
     static final String TITLE = "title";
     static final String VALUE = "value";
     static final String URGENCY = "urgency";
+    static final String TIME_OF_DAY = "time_of_day";
 }

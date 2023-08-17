@@ -17,6 +17,7 @@ import androidx.annotation.Nullable;
 import com.example.kikiorgmobile.R;
 import com.katyshevtseva.kikiorgmobile.core.RegularTaskService;
 import com.katyshevtseva.kikiorgmobile.core.enums.PeriodType;
+import com.katyshevtseva.kikiorgmobile.core.enums.TimeOfDay;
 import com.katyshevtseva.kikiorgmobile.core.model.RegularTask;
 import com.katyshevtseva.kikiorgmobile.view.utils.FragmentUpdateListener;
 import com.katyshevtseva.kikiorgmobile.view.utils.KomActivity;
@@ -31,6 +32,7 @@ public class RtEditActivity extends KomActivity implements FragmentUpdateListene
     private EditText titleEdit;
     private EditText descEdit;
     private Spinner periodTypeSpinner;
+    private Spinner timeOfDaySpinner;
     private EditText periodEditText;
     private Button doneButton;
 
@@ -49,7 +51,7 @@ public class RtEditActivity extends KomActivity implements FragmentUpdateListene
 
         initializeControls();
         setDoneButtonAccessibility();
-        setControlListeners();
+        adjustControls();
         setInitFieldValues();
     }
 
@@ -60,6 +62,7 @@ public class RtEditActivity extends KomActivity implements FragmentUpdateListene
         periodTypeSpinner = findViewById(R.id.period_type_spinner);
         periodEditText = findViewById(R.id.period_edit_text);
         getSupportFragmentManager().beginTransaction().add(R.id.rt_dates_container, datesFragment).commit();
+        timeOfDaySpinner = findViewById(R.id.time_of_day_spinner);
     }
 
     private void setDoneButtonAccessibility() {
@@ -70,9 +73,11 @@ public class RtEditActivity extends KomActivity implements FragmentUpdateListene
 
     }
 
-    private void setControlListeners() {
+    private void adjustControls() {
         adjustSpinner(this, periodTypeSpinner, Arrays.asList(PeriodType.values()),
                 selectedItem -> setDoneButtonAccessibility());
+        adjustSpinner(this, timeOfDaySpinner, Arrays.asList(TimeOfDay.values()),
+                timeOfDay -> setDoneButtonAccessibility());
         doneButton.setOnClickListener(view -> saveTask());
         setEditTextListener(periodEditText, text -> setDoneButtonAccessibility());
         setEditTextListener(titleEdit, text -> setDoneButtonAccessibility());
@@ -83,6 +88,7 @@ public class RtEditActivity extends KomActivity implements FragmentUpdateListene
                 existing,
                 titleEdit.getText().toString(),
                 descEdit.getText().toString(),
+                (TimeOfDay) timeOfDaySpinner.getSelectedItem(),
                 (PeriodType) periodTypeSpinner.getSelectedItem(),
                 datesFragment.getDates(),
                 Integer.parseInt(periodEditText.getText().toString()));
@@ -92,7 +98,9 @@ public class RtEditActivity extends KomActivity implements FragmentUpdateListene
     private void setInitFieldValues() {
         boolean intentIsEmpty = getIntent().getLongExtra(EXTRA_TASK_ID, -1) == -1;
 
-        if (!intentIsEmpty)
+        if (intentIsEmpty)
+            selectSpinnerItemByValue(timeOfDaySpinner, TimeOfDay.AFTERNOON);
+        else
             handleIntent();
     }
 
@@ -108,6 +116,7 @@ public class RtEditActivity extends KomActivity implements FragmentUpdateListene
         selectSpinnerItemByValue(periodTypeSpinner, existing.getPeriodType());
         periodEditText.setText("" + existing.getPeriod());
         datesFragment.setDates(existing.getDates());
+        selectSpinnerItemByValue(timeOfDaySpinner, existing.getTimeOfDay());
     }
 
     @Override

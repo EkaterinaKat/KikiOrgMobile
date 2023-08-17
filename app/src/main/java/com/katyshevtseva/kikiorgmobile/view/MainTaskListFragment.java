@@ -78,7 +78,8 @@ public class MainTaskListFragment extends Fragment {
             TextView textView = new TextView(getContext());
 
             linearLayout.setGravity(Gravity.CENTER);
-            linearLayout.setBackground(ViewUtils.getBackground(task.getUrgency(), getContext()));
+            linearLayout.setBackground(ViewUtils.getBackground2(task.getTimeOfDay(), getContext()));
+//            linearLayout.setBackground(ViewUtils.getBackground(task.getUrgency(), getContext()));
             linearLayout.setMinimumWidth(500);
             linearLayout.setOnClickListener(view -> taskClickListener(task));
 

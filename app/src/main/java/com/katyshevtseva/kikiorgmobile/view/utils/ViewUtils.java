@@ -17,6 +17,7 @@ import androidx.core.content.ContextCompat;
 
 import com.example.kikiorgmobile.R;
 import com.katyshevtseva.kikiorgmobile.core.enums.TaskUrgency;
+import com.katyshevtseva.kikiorgmobile.core.enums.TimeOfDay;
 import com.katyshevtseva.kikiorgmobile.utils.knobs.OneInKnob;
 
 import java.util.Arrays;
@@ -145,6 +146,18 @@ public class ViewUtils {
                 return ContextCompat.getDrawable(context, R.drawable.task_block_medium_urgency);
             case HIGH:
                 return ContextCompat.getDrawable(context, R.drawable.task_block_high_urgency);
+        }
+        throw new RuntimeException();
+    }
+
+    public static Drawable getBackground2(TimeOfDay timeOfDay, Context context) {
+        switch (timeOfDay) {
+            case MORNING:
+                return ContextCompat.getDrawable(context, R.drawable.morning);
+            case AFTERNOON:
+                return ContextCompat.getDrawable(context, R.drawable.afternoon);
+            case EVENING:
+                return ContextCompat.getDrawable(context, R.drawable.evening);
         }
         throw new RuntimeException();
     }

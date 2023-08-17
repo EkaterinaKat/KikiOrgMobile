@@ -55,6 +55,7 @@ public class Service {
         task.setUrgency(regularTask.getUrgency());
         task.setTitle(regularTask.getTitle());
         task.setDesc(regularTask.getDesc());
+        task.setTimeOfDay(regularTask.getTimeOfDay());
         task.setDate(new Date());
         return task;
     }
