@@ -31,7 +31,7 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_margin="10dp"
-        android:background="@drawable/blue_circle"
+        android:background="@drawable/button"
         android:text="+" />
 
     <TextView
