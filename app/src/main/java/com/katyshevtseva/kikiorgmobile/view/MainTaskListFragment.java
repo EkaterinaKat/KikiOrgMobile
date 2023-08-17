@@ -3,6 +3,7 @@ package com.katyshevtseva.kikiorgmobile.view;
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,12 +34,8 @@ public class MainTaskListFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_schedule, container, false);
+        View view = inflater.inflate(R.layout.fragment_main_task_list, container, false);
         taskBox = view.findViewById(R.id.task_box);
-
-        view.findViewById(R.id.add_irt_button).setOnClickListener(view1 -> {
-            getContext().startActivity(IrtEditActivity.newIntent(getContext(), null));
-        });
 
         if (tasks != null) {
             showTasks();
@@ -77,18 +74,25 @@ public class MainTaskListFragment extends Fragment {
     private void showTasks() {
         taskBox.removeAllViews();
         for (Task task : tasks) {
+            LinearLayout linearLayout = new LinearLayout(getContext());
             TextView textView = new TextView(getContext());
-            textView.setBackground(ViewUtils.getBackground(task.getUrgency(), getContext()));
-            textView.setText(task.getTitle());
-            textView.setSingleLine(false);
-            textView.setPadding(15, 15, 15, 15);
-            taskBox.addView(textView);
+
+            linearLayout.setGravity(Gravity.CENTER);
+            linearLayout.setBackground(ViewUtils.getBackground(task.getUrgency(), getContext()));
+            linearLayout.setMinimumWidth(500);
+            linearLayout.setOnClickListener(view -> taskClickListener(task));
 
             LayoutParams params = new LayoutParams(WRAP_CONTENT, WRAP_CONTENT);
             params.setMargins(15, 15, 15, 15);
-            textView.setLayoutParams(params);
+            linearLayout.setLayoutParams(params);
 
-            textView.setOnClickListener(view -> taskClickListener(task));
+            textView.setText(task.getTitle());
+            textView.setSingleLine(false);
+            textView.setPadding(15, 15, 15, 15);
+            textView.setTextSize(16);
+
+            linearLayout.addView(textView);
+            taskBox.addView(linearLayout);
         }
     }
 

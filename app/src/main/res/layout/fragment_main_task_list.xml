@@ -4,24 +4,16 @@
     android:layout_height="match_parent"
     tools:context="com.katyshevtseva.kikiorgmobile.view.MainTaskListFragment">
 
-    <Button
-        android:id="@+id/add_irt_button"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:background="@drawable/blue_circle"
-        android:text="+" />
-
     <ScrollView
         android:id="@+id/not_scheduled_scroll"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/add_irt_button">
+        android:layout_centerInParent="true"
+        android:layout_centerVertical="true">
 
         <LinearLayout
             android:id="@+id/task_box"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:orientation="vertical">

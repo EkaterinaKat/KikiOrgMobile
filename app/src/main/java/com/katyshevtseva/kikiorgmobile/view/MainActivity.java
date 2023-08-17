@@ -54,6 +54,9 @@ public class MainActivity extends KomActivity {
                 startActivity(new Intent(getApplicationContext(), AdminActivity.class)));
         dateView.setOnClickListener(view -> openDatePicker());
 
+        findViewById(R.id.add_irt_button).setOnClickListener(view1 ->
+                startActivity(IrtEditActivity.newIntent(this, null)));
+
         getSupportFragmentManager().beginTransaction().add(R.id.task_list_container, mainTaskListFragment).commit();
 
         updateTaskPane();
