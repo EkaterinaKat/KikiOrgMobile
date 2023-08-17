@@ -11,7 +11,6 @@ import com.katyshevtseva.kikiorgmobile.core.enums.TaskUrgency;
 import com.katyshevtseva.kikiorgmobile.core.model.Log;
 import com.katyshevtseva.kikiorgmobile.core.model.RegularTask;
 import com.katyshevtseva.kikiorgmobile.utils.DateUtils;
-import com.katyshevtseva.kikiorgmobile.utils.Time;
 
 import java.util.Comparator;
 import java.util.Date;
@@ -35,7 +34,7 @@ public class RegularTaskService {
     }
 
     public void save(RegularTask existing, String title, String desc, PeriodType periodType,
-                     List<Date> dates, int period, Time duration, Time begin, boolean wobs) { //todo рефакторить
+                     List<Date> dates, int period) { //todo рефакторить
         if (existing == null) {
             RegularTask task = new RegularTask();
             task.setUrgency(TaskUrgency.LOW);
@@ -44,9 +43,6 @@ public class RegularTaskService {
             task.setPeriodType(periodType);
             task.setPeriod(period);
             task.setDates(dates);
-            task.setDuration(duration);
-            task.setBeginTime(begin);
-            task.setAbsoluteWobs(wobs);
             komDao.saveNew(task);
             LogService.INSTANCE.saveLog(Log.Action.CREATION, task);
         } else {
@@ -55,9 +51,6 @@ public class RegularTaskService {
             existing.setPeriodType(periodType);
             existing.setPeriod(period);
             existing.setDates(dates);
-            existing.setDuration(duration);
-            existing.setBeginTime(begin);
-            existing.setAbsoluteWobs(wobs);
             komDao.update(existing);
             LogService.INSTANCE.saveLog(Log.Action.EDITING, existing);
         }
@@ -134,7 +127,7 @@ public class RegularTaskService {
             IrregularTaskService.INSTANCE.save(null,
                     regularTask.getTitle() + "*",
                     regularTask.getDesc(),
-                    targetDate, regularTask.getDuration(), regularTask.getBeginTime());
+                    targetDate);
         }
         LogService.INSTANCE.saveLog(Log.Action.RESCHEDULE, regularTask,
                 String.format("Reschedule from %s to %s \n%s", getDateString(initDate), getDateString(targetDate),

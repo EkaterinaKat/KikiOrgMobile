@@ -17,7 +17,7 @@ import androidx.core.content.ContextCompat;
 
 import com.example.kikiorgmobile.R;
 import com.katyshevtseva.kikiorgmobile.core.enums.TaskUrgency;
-import com.katyshevtseva.kikiorgmobile.utils.OneInKnob;
+import com.katyshevtseva.kikiorgmobile.utils.knobs.OneInKnob;
 
 import java.util.Arrays;
 import java.util.Calendar;

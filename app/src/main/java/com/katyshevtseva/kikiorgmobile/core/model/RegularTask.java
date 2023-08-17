@@ -3,9 +3,8 @@ package com.katyshevtseva.kikiorgmobile.core.model;
 import com.katyshevtseva.kikiorgmobile.core.enums.PeriodType;
 import com.katyshevtseva.kikiorgmobile.core.enums.TaskType;
 import com.katyshevtseva.kikiorgmobile.core.enums.TaskUrgency;
-import com.katyshevtseva.kikiorgmobile.db.Entity;
+import com.katyshevtseva.kikiorgmobile.db.lib.Entity;
 import com.katyshevtseva.kikiorgmobile.utils.DateUtils;
-import com.katyshevtseva.kikiorgmobile.utils.Time;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -18,7 +17,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class RegularTask implements Task, Entity, Setting {
+public class RegularTask implements Task, Entity {
     private long id;
     private String title;
     private String desc;
@@ -26,21 +25,11 @@ public class RegularTask implements Task, Entity, Setting {
     private int period;
     private boolean archived;
     private List<Date> dates;
-    private Time duration;
-    private Time beginTime;
-    private boolean absoluteWobs;
     private TaskUrgency urgency;
 
     public String getAdminTaskListDesk() {
-        String result = String.format("%s\n\n%s %s\n%s",
+        return String.format("%s\n\n%s %s\n%s",
                 desc, period, periodType, getLoppedDateListString());
-        if (duration != null) {
-            result += ("\nDuration: " + duration.getS());
-        }
-        if (beginTime != null) {
-            result += ("\nBegin: " + beginTime.getS() + (absoluteWobs ? " abs" : " rel"));
-        }
-        return result;
     }
 
     public String getLogTaskDesk() {
@@ -75,24 +64,11 @@ public class RegularTask implements Task, Entity, Setting {
                 ", period=" + period +
                 ", archived=" + archived +
                 ", dates=" + dates +
-                ", duration=" + duration +
-                ", beginTime=" + beginTime +
-                ", absoluteWobs=" + absoluteWobs +
                 '}';
     }
 
     @Override
     public TaskType getType() {
         return TaskType.REGULAR;
-    }
-
-    @Override
-    public long getTaskId() {
-        return id;
-    }
-
-    @Override
-    public boolean isTask() {
-        return true;
     }
 }

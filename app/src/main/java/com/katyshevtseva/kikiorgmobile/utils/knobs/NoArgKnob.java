@@ -1,4 +1,4 @@
-package com.katyshevtseva.kikiorgmobile.utils;
+package com.katyshevtseva.kikiorgmobile.utils.knobs;
 
 @FunctionalInterface
 public interface NoArgKnob {

@@ -5,13 +5,15 @@ import static com.katyshevtseva.kikiorgmobile.db.DbConstants.DATE;
 import static com.katyshevtseva.kikiorgmobile.db.DbConstants.DESC;
 import static com.katyshevtseva.kikiorgmobile.db.DbConstants.ID;
 import static com.katyshevtseva.kikiorgmobile.db.DbConstants.SUBJECT;
-import static com.katyshevtseva.kikiorgmobile.db.DbTable.ColumnActualType.DATE_TIME;
-import static com.katyshevtseva.kikiorgmobile.db.DbTable.ColumnActualType.LONG;
-import static com.katyshevtseva.kikiorgmobile.db.DbTable.ColumnActualType.STRING;
+import static com.katyshevtseva.kikiorgmobile.db.lib.DbTable.ColumnActualType.DATE_TIME;
+import static com.katyshevtseva.kikiorgmobile.db.lib.DbTable.ColumnActualType.LONG;
+import static com.katyshevtseva.kikiorgmobile.db.lib.DbTable.ColumnActualType.STRING;
 
 import android.database.sqlite.SQLiteDatabase;
 
 import com.katyshevtseva.kikiorgmobile.core.model.Log;
+import com.katyshevtseva.kikiorgmobile.db.lib.AbstractDao;
+import com.katyshevtseva.kikiorgmobile.db.lib.DbTable;
 
 import java.util.ArrayList;
 import java.util.Date;

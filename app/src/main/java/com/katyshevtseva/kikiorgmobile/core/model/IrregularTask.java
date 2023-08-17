@@ -4,9 +4,8 @@ import static com.katyshevtseva.kikiorgmobile.utils.DateUtils.getDateString;
 
 import com.katyshevtseva.kikiorgmobile.core.enums.TaskType;
 import com.katyshevtseva.kikiorgmobile.core.enums.TaskUrgency;
-import com.katyshevtseva.kikiorgmobile.db.Entity;
+import com.katyshevtseva.kikiorgmobile.db.lib.Entity;
 import com.katyshevtseva.kikiorgmobile.utils.DateUtils;
-import com.katyshevtseva.kikiorgmobile.utils.Time;
 
 import java.util.Date;
 
@@ -17,13 +16,11 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class IrregularTask implements Task, Entity, Setting {
+public class IrregularTask implements Task, Entity {
     private long id;
     private String title;
     private String desc;
     private Date date;
-    private Time duration;
-    private Time beginTime;
     private TaskUrgency urgency;
 
     public String getAdminTaskListDesk() {
@@ -46,23 +43,6 @@ public class IrregularTask implements Task, Entity, Setting {
                 ", title='" + title + '\'' +
                 ", desc='" + desc + '\'' +
                 ", date=" + date +
-                ", duration=" + duration +
-                ", beginTime=" + beginTime +
                 '}';
-    }
-
-    @Override
-    public boolean isAbsoluteWobs() {
-        return true;
-    }
-
-    @Override
-    public long getTaskId() {
-        return id;
-    }
-
-    @Override
-    public boolean isTask() {
-        return true;
     }
 }

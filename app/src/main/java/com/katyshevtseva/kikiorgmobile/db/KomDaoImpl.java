@@ -13,8 +13,6 @@ import android.database.sqlite.SQLiteDatabase;
 import com.katyshevtseva.kikiorgmobile.core.KomDao;
 import com.katyshevtseva.kikiorgmobile.core.model.IrregularTask;
 import com.katyshevtseva.kikiorgmobile.core.model.Log;
-import com.katyshevtseva.kikiorgmobile.core.model.OneDaySetting;
-import com.katyshevtseva.kikiorgmobile.core.model.PrefEntity;
 import com.katyshevtseva.kikiorgmobile.core.model.RegularTask;
 
 import java.util.ArrayList;
@@ -26,8 +24,6 @@ public class KomDaoImpl implements KomDao {
     private final RegularTaskDao regularTaskDao;
     private final RtDateDao rtDateDao;
     private final LogDao logDao;
-    private final PrefDao prefDao;
-    private final OneDaySettingDao oneDaySettingDao;
 
     public KomDaoImpl(Context context) {
         SQLiteDatabase database = new DbHelper(context).getWritableDatabase();
@@ -35,8 +31,6 @@ public class KomDaoImpl implements KomDao {
         regularTaskDao = new RegularTaskDao(database);
         rtDateDao = new RtDateDao(database);
         logDao = new LogDao(database);
-        prefDao = new PrefDao(database);
-        oneDaySettingDao = new OneDaySettingDao(database);
     }
 
     ////////////////////////////  Log  //////////////////////////////////
@@ -54,46 +48,6 @@ public class KomDaoImpl implements KomDao {
     @Override
     public void delete(Log log) {
         logDao.delete(log);
-    }
-
-    ////////////////////////////  Pref  //////////////////////////////////
-
-    @Override
-    public PrefEntity getPrefByTitle(String title) {
-        List<PrefEntity> prefs = prefDao.find(TITLE, title);
-        if (prefs.size() != 1) {
-            throw new RuntimeException("По заданному заголовку найдено более или менее одного преференса");
-        }
-        return prefs.get(0);
-    }
-
-    @Override
-    public void update(PrefEntity pref) {
-        prefDao.update(pref);
-    }
-
-    ////////////////////////////  OneDaySetting  //////////////////////////////////
-
-    @Override
-    public List<OneDaySetting> findOneDaySetting(long taskId, Date date) {
-        return oneDaySettingDao.find(
-                new String[]{TASK_ID, DATE},
-                new String[]{"" + taskId, DATE_FORMAT.format(date)});
-    }
-
-    @Override
-    public void saveNew(OneDaySetting setting) {
-        oneDaySettingDao.saveNew(setting);
-    }
-
-    @Override
-    public List<OneDaySetting> getAllOneDaySettings() {
-        return oneDaySettingDao.findAll();
-    }
-
-    @Override
-    public void delete(OneDaySetting setting) {
-        oneDaySettingDao.delete(setting);
     }
 
     ////////////////////////////  IrregularTask  //////////////////////////////////

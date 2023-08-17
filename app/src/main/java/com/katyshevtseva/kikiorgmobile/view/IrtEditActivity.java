@@ -23,7 +23,6 @@ import com.katyshevtseva.kikiorgmobile.core.Service;
 import com.katyshevtseva.kikiorgmobile.core.model.IrregularTask;
 import com.katyshevtseva.kikiorgmobile.core.model.RegularTask;
 import com.katyshevtseva.kikiorgmobile.view.utils.KomActivity;
-import com.katyshevtseva.kikiorgmobile.view.utils.MyTimePicker;
 
 import java.util.Date;
 
@@ -31,9 +30,6 @@ public class IrtEditActivity extends KomActivity {
     private static final String EXTRA_TASK_ID = "task_id";
     private static final String EXTRA_REG_TO_IRREG = "reg_to_irreg";
     private IrregularTask existing;
-
-    private MyTimePicker beginTp;
-    private MyTimePicker durationTp;
 
     private EditText titleEdit;
     private EditText descEdit;
@@ -61,18 +57,10 @@ public class IrtEditActivity extends KomActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_irt_edit);
 
-        initTimePickers();
         initializeControls();
         setControlListeners();
         setInitFieldValues();
         setDoneButtonAccessibility();
-    }
-
-    private void initTimePickers() {
-        beginTp = new MyTimePicker(findViewById(R.id.begin_view), this,
-                null, null, findViewById(R.id.begin_time_container));
-        durationTp = new MyTimePicker(findViewById(R.id.duration_view), this,
-                null, null, findViewById(R.id.duration_container));
     }
 
     private void setInitFieldValues() {
@@ -98,11 +86,6 @@ public class IrtEditActivity extends KomActivity {
         titleEdit.setText(existing.getTitle());
         descEdit.setText(existing.getDesc());
         dateTextView.setText(getDateString(existing.getDate()));
-
-        if (existing.getBeginTime() != null)
-            beginTp.setTime(existing.getBeginTime());
-        if (existing.getDuration() != null)
-            durationTp.setTime(existing.getDuration());
     }
 
     private void initializeControls() {
@@ -118,9 +101,6 @@ public class IrtEditActivity extends KomActivity {
 
         setEditTextListener(titleEdit, text -> setDoneButtonAccessibility());
         setEditTextListener(descEdit, text -> setDoneButtonAccessibility());
-
-        findViewById(R.id.duration_clear_button).setOnClickListener(view -> durationTp.clear());
-        findViewById(R.id.begin_clear_button).setOnClickListener(view -> beginTp.clear());
     }
 
     public void openDatePicker(final TextView textViewToChange) {
@@ -137,9 +117,7 @@ public class IrtEditActivity extends KomActivity {
                 existing,
                 titleEdit.getText().toString(),
                 descEdit.getText().toString(),
-                getDateByString(dateTextView.getText().toString()),
-                durationTp.getTime(),
-                beginTp.getTime()
+                getDateByString(dateTextView.getText().toString())
         );
         finish();
     }

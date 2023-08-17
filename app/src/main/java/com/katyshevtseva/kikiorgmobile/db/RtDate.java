@@ -1,5 +1,7 @@
 package com.katyshevtseva.kikiorgmobile.db;
 
+import com.katyshevtseva.kikiorgmobile.db.lib.Entity;
+
 import java.util.Date;
 
 import lombok.AllArgsConstructor;

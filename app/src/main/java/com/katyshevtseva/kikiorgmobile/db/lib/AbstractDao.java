@@ -1,13 +1,14 @@
-package com.katyshevtseva.kikiorgmobile.db;
+package com.katyshevtseva.kikiorgmobile.db.lib;
 
-import static com.katyshevtseva.kikiorgmobile.db.DbConstants.ID;
+
+import static com.katyshevtseva.kikiorgmobile.db.lib.DbLibConstants.ID;
 
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.CursorWrapper;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.katyshevtseva.kikiorgmobile.db.DbTable.Column;
+import com.katyshevtseva.kikiorgmobile.db.lib.DbTable.Column;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,16 +16,16 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-abstract class AbstractDao<T extends Entity> {
+public abstract class AbstractDao<T extends Entity> {
     protected final SQLiteDatabase database;
     private final DbTable<T> table;
 
-    void saveNew(T t) {
+    public void saveNew(T t) {
         ContentValues values = getContentValues(t);
         database.insert(table.getName(), null, values);
     }
 
-    List<T> findAll() {
+    public List<T> findAll() {
         List<T> items = new ArrayList<>();
         try (KomCursorWrapper cursor = getCursor()) {
             cursor.moveToFirst();
@@ -36,7 +37,7 @@ abstract class AbstractDao<T extends Entity> {
         return items;
     }
 
-    T findFirst(String columnName, String value) {
+    public T findFirst(String columnName, String value) {
         Cursor cursor = database.query(table.getName(), null, columnName + "=?",
                 new String[]{"" + value}, null, null, null, null);
 
@@ -49,7 +50,7 @@ abstract class AbstractDao<T extends Entity> {
         return null;
     }
 
-    List<T> find(String columnName, String value) {
+    public List<T> find(String columnName, String value) {
         return find(new String[]{columnName}, new String[]{value});
     }
 
@@ -92,7 +93,7 @@ abstract class AbstractDao<T extends Entity> {
         delete(ID, "" + t.getId());
     }
 
-    void delete(String columnName, String value) {
+    public void delete(String columnName, String value) {
         String selection = columnName + "=?";
         String[] selectionArgs = {value};
         database.delete(table.getName(), selection, selectionArgs);

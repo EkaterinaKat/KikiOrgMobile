@@ -2,7 +2,7 @@ package com.katyshevtseva.kikiorgmobile.core.model;
 
 import static com.katyshevtseva.kikiorgmobile.utils.DateUtils.getDateTimeString;
 
-import com.katyshevtseva.kikiorgmobile.db.Entity;
+import com.katyshevtseva.kikiorgmobile.db.lib.Entity;
 
 import java.util.Date;
 

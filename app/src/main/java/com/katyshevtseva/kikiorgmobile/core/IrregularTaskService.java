@@ -7,7 +7,6 @@ import com.katyshevtseva.kikiorgmobile.core.enums.TaskUrgency;
 import com.katyshevtseva.kikiorgmobile.core.model.IrregularTask;
 import com.katyshevtseva.kikiorgmobile.core.model.Log;
 import com.katyshevtseva.kikiorgmobile.utils.DateUtils;
-import com.katyshevtseva.kikiorgmobile.utils.Time;
 
 import java.util.Comparator;
 import java.util.Date;
@@ -30,7 +29,7 @@ public class IrregularTaskService {
         return komDao.getIrregularTaskById(id);
     }
 
-    public void save(IrregularTask existing, String title, String desc, Date date, Time duration, Time begin) {
+    public void save(IrregularTask existing, String title, String desc, Date date) {
         if (existing == null) {
             existing = new IrregularTask();
             existing.setUrgency(TaskUrgency.LOW);
@@ -38,8 +37,6 @@ public class IrregularTaskService {
         existing.setTitle(title);
         existing.setDesc(desc);
         existing.setDate(date);
-        existing.setDuration(duration);
-        existing.setBeginTime(begin);
 
         if (existing.getId() == 0) {
             komDao.saveNew(existing);

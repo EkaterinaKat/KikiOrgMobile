@@ -5,7 +5,7 @@ import android.view.MotionEvent;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.katyshevtseva.kikiorgmobile.utils.GeneralUtil;
-import com.katyshevtseva.kikiorgmobile.utils.NoArgKnob;
+import com.katyshevtseva.kikiorgmobile.utils.knobs.NoArgKnob;
 
 import lombok.Setter;
 

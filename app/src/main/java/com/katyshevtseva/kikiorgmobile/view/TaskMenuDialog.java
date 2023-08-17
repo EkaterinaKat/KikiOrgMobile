@@ -18,14 +18,13 @@ import com.example.kikiorgmobile.R;
 import com.katyshevtseva.kikiorgmobile.core.IrregularTaskService;
 import com.katyshevtseva.kikiorgmobile.core.RegularTaskService;
 import com.katyshevtseva.kikiorgmobile.core.Service;
-import com.katyshevtseva.kikiorgmobile.core.enums.TaskType;
 import com.katyshevtseva.kikiorgmobile.core.enums.TaskUrgency;
 import com.katyshevtseva.kikiorgmobile.core.model.IrregularTask;
 import com.katyshevtseva.kikiorgmobile.core.model.RegularTask;
 import com.katyshevtseva.kikiorgmobile.core.model.Task;
 import com.katyshevtseva.kikiorgmobile.utils.DateUtils;
 import com.katyshevtseva.kikiorgmobile.utils.GeneralUtil;
-import com.katyshevtseva.kikiorgmobile.utils.NoArgKnob;
+import com.katyshevtseva.kikiorgmobile.utils.knobs.NoArgKnob;
 import com.katyshevtseva.kikiorgmobile.view.utils.ViewUtils;
 
 import java.util.Date;
@@ -90,16 +89,6 @@ public class TaskMenuDialog extends DialogFragment {
                     regularEditListener();
             }
         });
-
-        if (task.getType() == TaskType.REGULAR) {
-            itemView.findViewById(R.id.add_setting_button).setOnClickListener(view -> {
-                new OneDaySettingCreationDialog((RegularTask) task, activityUpdateKnob, date)
-                        .show(context.getSupportFragmentManager(), "dialog2");
-                dismiss();
-            });
-        } else {
-            itemView.findViewById(R.id.add_setting_button).setVisibility(View.GONE);
-        }
 
         tuneUrgencyBox(itemView);
 

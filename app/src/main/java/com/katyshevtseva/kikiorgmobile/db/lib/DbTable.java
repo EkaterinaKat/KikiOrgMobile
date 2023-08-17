@@ -1,12 +1,12 @@
-package com.katyshevtseva.kikiorgmobile.db;
+package com.katyshevtseva.kikiorgmobile.db.lib;
 
 
-import static com.katyshevtseva.kikiorgmobile.db.DbConstants.DATE_FORMAT;
-import static com.katyshevtseva.kikiorgmobile.db.DbConstants.DATE_TIME_FORMAT;
+import static com.katyshevtseva.kikiorgmobile.db.lib.DbLibConstants.DATE_FORMAT;
+import static com.katyshevtseva.kikiorgmobile.db.lib.DbLibConstants.DATE_TIME_FORMAT;
 
-import com.katyshevtseva.kikiorgmobile.utils.OneInOneOutKnob;
-import com.katyshevtseva.kikiorgmobile.utils.OneOutKnob;
-import com.katyshevtseva.kikiorgmobile.utils.TwoInKnob;
+import com.katyshevtseva.kikiorgmobile.utils.knobs.OneInOneOutKnob;
+import com.katyshevtseva.kikiorgmobile.utils.knobs.OneOutKnob;
+import com.katyshevtseva.kikiorgmobile.utils.knobs.TwoInKnob;
 
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -17,7 +17,7 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-class DbTable<T> {
+public class DbTable<T> {
     private final String name;
     private final Column<T> idColumn;
     private final List<Column<T>> contentColumns;
@@ -30,14 +30,14 @@ class DbTable<T> {
     }
 
     @Getter
-    static class Column<T> {
+    public static class Column<T> {
         private final String name;
         private ColumnDbType dbType;
         private final ColumnActualType actualType;
         private final OneInOneOutKnob<T, Object> actualValueSupplier;
         private final TwoInKnob<T, Object> actualValueReceiver;
 
-        Column(String name, ColumnActualType actualType,
+        public Column(String name, ColumnActualType actualType,
                OneInOneOutKnob<T, Object> actualValueSupplier,
                TwoInKnob<T, Object> actualValueReceiver) {
             this.name = name;
@@ -96,11 +96,11 @@ class DbTable<T> {
         }
     }
 
-    enum ColumnDbType {
+    public enum ColumnDbType {
         STRING, LONG
     }
 
-    enum ColumnActualType {
+    public enum ColumnActualType {
         STRING, LONG, DATE, BOOLEAN, DATE_TIME
     }
 }

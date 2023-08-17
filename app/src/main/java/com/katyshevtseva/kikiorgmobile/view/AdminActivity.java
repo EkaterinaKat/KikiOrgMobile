@@ -30,8 +30,7 @@ public class AdminActivity extends KomActivity {
         findViewById(R.id.archive_button).setOnClickListener(view -> startActivity(new Intent(this, ArchiveTasksActivity.class)));
         findViewById(R.id.logs_button).setOnClickListener(view -> startActivity(new Intent(this, LogsActivity.class)));
         ViewUtils.setEditTextListener(findViewById(R.id.search_edit_text), s -> taskListAdapter.updateContent(s));
-        getSupportFragmentManager().beginTransaction().add(R.id.activity_period_container, new ActivityPeriodFragment()).commit();
-        RecyclerView taskList = findViewById(R.id.admin_task_list);
+       RecyclerView taskList = findViewById(R.id.admin_task_list);
         taskList.setLayoutManager(new LinearLayoutManager(this));
         taskListAdapter = new TaskListAdapter(this);
         taskList.setAdapter(taskListAdapter);

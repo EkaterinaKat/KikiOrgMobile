@@ -13,10 +13,7 @@ import com.example.kikiorgmobile.R;
 import com.katyshevtseva.kikiorgmobile.core.IrregularTaskService;
 import com.katyshevtseva.kikiorgmobile.core.KomDao;
 import com.katyshevtseva.kikiorgmobile.core.LogService;
-import com.katyshevtseva.kikiorgmobile.core.OneDaySettingService;
-import com.katyshevtseva.kikiorgmobile.core.PrefService;
 import com.katyshevtseva.kikiorgmobile.core.RegularTaskService;
-import com.katyshevtseva.kikiorgmobile.core.ScheduleService;
 import com.katyshevtseva.kikiorgmobile.core.Service;
 import com.katyshevtseva.kikiorgmobile.db.KomDaoImpl;
 import com.katyshevtseva.kikiorgmobile.utils.DateUtils;
@@ -28,7 +25,7 @@ import java.util.Date;
 public class MainActivity extends KomActivity {
     private Date date;
     private TextView dateView;
-    private final ScheduleFragment scheduleFragment = new ScheduleFragment(this::fragmentUpdateListener);
+    private final MainTaskListFragment mainTaskListFragment = new MainTaskListFragment(this::fragmentUpdateListener);
     private TextView alarmTextView;
     private boolean prevDateIsAvailable;
 
@@ -46,9 +43,6 @@ public class MainActivity extends KomActivity {
 
         KomDao komDao = new KomDaoImpl(this);
         Service.init(komDao);
-        PrefService.init(komDao);
-        ScheduleService.init(komDao);
-        OneDaySettingService.init(komDao);
         RegularTaskService.init(komDao);
         IrregularTaskService.init(komDao);
         LogService.init(komDao);
@@ -60,14 +54,14 @@ public class MainActivity extends KomActivity {
                 startActivity(new Intent(getApplicationContext(), AdminActivity.class)));
         dateView.setOnClickListener(view -> openDatePicker());
 
-        getSupportFragmentManager().beginTransaction().add(R.id.task_list_container, scheduleFragment).commit();
+        getSupportFragmentManager().beginTransaction().add(R.id.task_list_container, mainTaskListFragment).commit();
 
         updateTaskPane();
     }
 
     private void updateTaskPane() {
         dateView.setText(DateUtils.getDateStringWithWeekDay(date));
-        scheduleFragment.setDate(date);
+        mainTaskListFragment.setDate(date);
         setDateViewStyle();
         updateAlarmBanner();
         prevDateIsAvailable = DateUtils.beforeIgnoreTime(Service.INSTANCE.getEarliestTaskDate(), date);

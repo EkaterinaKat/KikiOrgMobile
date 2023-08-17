@@ -56,10 +56,6 @@ public class Service {
         task.setTitle(regularTask.getTitle());
         task.setDesc(regularTask.getDesc());
         task.setDate(new Date());
-        task.setDuration(regularTask.getDuration());
-        if (regularTask.getBeginTime() != null) {
-            task.setBeginTime(ScheduleService.INSTANCE.getAbsoluteBeginTime(regularTask));
-        }
         return task;
     }
 

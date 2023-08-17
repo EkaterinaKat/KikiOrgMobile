@@ -3,10 +3,13 @@ package com.katyshevtseva.kikiorgmobile.db;
 import static com.katyshevtseva.kikiorgmobile.db.DbConstants.ID;
 import static com.katyshevtseva.kikiorgmobile.db.DbConstants.TASK_ID;
 import static com.katyshevtseva.kikiorgmobile.db.DbConstants.VALUE;
-import static com.katyshevtseva.kikiorgmobile.db.DbTable.ColumnActualType.DATE;
-import static com.katyshevtseva.kikiorgmobile.db.DbTable.ColumnActualType.LONG;
+import static com.katyshevtseva.kikiorgmobile.db.lib.DbTable.ColumnActualType.DATE;
+import static com.katyshevtseva.kikiorgmobile.db.lib.DbTable.ColumnActualType.LONG;
 
 import android.database.sqlite.SQLiteDatabase;
+
+import com.katyshevtseva.kikiorgmobile.db.lib.AbstractDao;
+import com.katyshevtseva.kikiorgmobile.db.lib.DbTable;
 
 import java.util.ArrayList;
 import java.util.Date;

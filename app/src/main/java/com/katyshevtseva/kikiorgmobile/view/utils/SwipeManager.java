@@ -4,7 +4,7 @@ import android.content.Context;
 import android.view.MotionEvent;
 import android.view.ViewConfiguration;
 
-import com.katyshevtseva.kikiorgmobile.utils.NoArgKnob;
+import com.katyshevtseva.kikiorgmobile.utils.knobs.NoArgKnob;
 
 import lombok.Setter;
 
