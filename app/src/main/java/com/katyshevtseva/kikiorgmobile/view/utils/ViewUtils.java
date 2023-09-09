@@ -1,6 +1,8 @@
 package com.katyshevtseva.kikiorgmobile.view.utils;
 
 import android.app.AlertDialog;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.text.Editable;
@@ -26,6 +28,12 @@ import java.util.Date;
 import java.util.List;
 
 public class ViewUtils {
+
+    public static void copyToClipboard(Context context, String text) {
+        ClipboardManager clipboard = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
+        ClipData clip = ClipData.newPlainText("label", text);
+        clipboard.setPrimaryClip(clip);
+    }
 
     public static void showAlertDialog(Context context, String text) {
         new AlertDialog.Builder(context).setTitle(text)

@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -46,9 +47,14 @@ public class TaskMenuDialog extends DialogFragment {
         View itemView = inflater.inflate(R.layout.dialog_task_menu, null);
 
         ((TextView) itemView.findViewById(R.id.title_text_view)).setText(task.getTitle());
-        if (!GeneralUtil.isEmpty(task.getDesc()))
-            ((TextView) itemView.findViewById(R.id.desc_text_view)).setText(task.getDesc());
-        else
+        if (!GeneralUtil.isEmpty(task.getDesc())) {
+            TextView textView = itemView.findViewById(R.id.desc_text_view);
+            textView.setText(task.getDesc());
+            textView.setOnClickListener(view -> {
+                ViewUtils.copyToClipboard(context, task.getDesc());
+                Toast.makeText(context, "Desc copied", Toast.LENGTH_LONG).show();
+            });
+        } else
             itemView.findViewById(R.id.desc_text_view).setVisibility(View.GONE);
 
         itemView.findViewById(R.id.done_button).setOnClickListener(view -> {
