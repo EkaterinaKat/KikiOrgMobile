@@ -19,7 +19,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 public class DbHelper extends SQLiteOpenHelper {
-    private static final int VERSION = 26;
+    private static final int VERSION = 27;
     private static final String DATABASE_NAME = "kom.db";
 
     DbHelper(Context context) {
@@ -56,6 +56,10 @@ public class DbHelper extends SQLiteOpenHelper {
                 DATE + " TEXT, " +
                 ACTION + " TEXT, " +
                 SUBJECT + " TEXT )");
+
+        database.execSQL("create table " + OptionalTaskDao.NAME + "(" +
+                ID + " INTEGER primary key autoincrement, " +
+                TITLE + " TEXT )");
     }
 
     @Override

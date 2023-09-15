@@ -8,8 +8,7 @@
         android:id="@+id/not_scheduled_scroll"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:layout_centerVertical="true">
+        android:layout_centerInParent="true">
 
         <LinearLayout
             android:id="@+id/task_box"
@@ -20,5 +19,38 @@
 
         </LinearLayout>
     </ScrollView>
+
+    <LinearLayout
+        android:id="@+id/ot_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/ot_image_view"
+            android:layout_width="90dp"
+            android:layout_height="40dp"
+            android:background="@mipmap/show_ot" />
+
+        <ScrollView
+            android:id="@+id/ot_scroll_view"
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:background="@mipmap/flowers"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:id="@+id/ot_box"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="vertical">
+
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+
 
 </RelativeLayout>

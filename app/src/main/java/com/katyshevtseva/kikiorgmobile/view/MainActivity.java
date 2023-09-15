@@ -13,6 +13,7 @@ import com.example.kikiorgmobile.R;
 import com.katyshevtseva.kikiorgmobile.core.IrregularTaskService;
 import com.katyshevtseva.kikiorgmobile.core.KomDao;
 import com.katyshevtseva.kikiorgmobile.core.LogService;
+import com.katyshevtseva.kikiorgmobile.core.OptionalTaskService;
 import com.katyshevtseva.kikiorgmobile.core.RegularTaskService;
 import com.katyshevtseva.kikiorgmobile.core.Service;
 import com.katyshevtseva.kikiorgmobile.db.KomDaoImpl;
@@ -46,6 +47,7 @@ public class MainActivity extends KomActivity {
         RegularTaskService.init(komDao);
         IrregularTaskService.init(komDao);
         LogService.init(komDao);
+        OptionalTaskService.init(komDao);
         alarmTextView = findViewById(R.id.alarm_text_view);
 
         date = new Date();

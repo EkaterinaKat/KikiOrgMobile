@@ -4,7 +4,6 @@ import static com.katyshevtseva.kikiorgmobile.db.DbConstants.DATE;
 import static com.katyshevtseva.kikiorgmobile.db.DbConstants.DATE_FORMAT;
 import static com.katyshevtseva.kikiorgmobile.db.DbConstants.ID;
 import static com.katyshevtseva.kikiorgmobile.db.DbConstants.TASK_ID;
-import static com.katyshevtseva.kikiorgmobile.db.DbConstants.TITLE;
 import static com.katyshevtseva.kikiorgmobile.db.DbConstants.VALUE;
 
 import android.content.Context;
@@ -13,6 +12,7 @@ import android.database.sqlite.SQLiteDatabase;
 import com.katyshevtseva.kikiorgmobile.core.KomDao;
 import com.katyshevtseva.kikiorgmobile.core.model.IrregularTask;
 import com.katyshevtseva.kikiorgmobile.core.model.Log;
+import com.katyshevtseva.kikiorgmobile.core.model.OptionalTask;
 import com.katyshevtseva.kikiorgmobile.core.model.RegularTask;
 
 import java.util.ArrayList;
@@ -24,6 +24,7 @@ public class KomDaoImpl implements KomDao {
     private final RegularTaskDao regularTaskDao;
     private final RtDateDao rtDateDao;
     private final LogDao logDao;
+    private final OptionalTaskDao optionalTaskDao;
 
     public KomDaoImpl(Context context) {
         SQLiteDatabase database = new DbHelper(context).getWritableDatabase();
@@ -31,6 +32,7 @@ public class KomDaoImpl implements KomDao {
         regularTaskDao = new RegularTaskDao(database);
         rtDateDao = new RtDateDao(database);
         logDao = new LogDao(database);
+        optionalTaskDao = new OptionalTaskDao(database);
     }
 
     ////////////////////////////  Log  //////////////////////////////////
@@ -48,6 +50,28 @@ public class KomDaoImpl implements KomDao {
     @Override
     public void delete(Log log) {
         logDao.delete(log);
+    }
+
+    ////////////////////////////  OptionalTask  //////////////////////////////////
+
+    @Override
+    public void saveNew(OptionalTask optionalTask) {
+        optionalTaskDao.saveNew(optionalTask);
+    }
+
+    @Override
+    public List<OptionalTask> getAllOptionalTasks() {
+        return optionalTaskDao.findAll();
+    }
+
+    @Override
+    public void update(OptionalTask optionalTask) {
+        optionalTaskDao.update(optionalTask);
+    }
+
+    @Override
+    public void delete(OptionalTask optionalTask) {
+        optionalTaskDao.delete(optionalTask);
     }
 
     ////////////////////////////  IrregularTask  //////////////////////////////////

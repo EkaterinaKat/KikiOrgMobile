@@ -2,6 +2,7 @@ package com.katyshevtseva.kikiorgmobile.core;
 
 import com.katyshevtseva.kikiorgmobile.core.model.IrregularTask;
 import com.katyshevtseva.kikiorgmobile.core.model.Log;
+import com.katyshevtseva.kikiorgmobile.core.model.OptionalTask;
 import com.katyshevtseva.kikiorgmobile.core.model.RegularTask;
 
 import java.util.Date;
@@ -35,4 +36,12 @@ public interface KomDao {
     List<Log> getAllLogs();
 
     void delete(Log log);
+
+    void saveNew(OptionalTask irregularTask);
+
+    List<OptionalTask> getAllOptionalTasks();
+
+    void update(OptionalTask optionalTask);
+
+    void delete(OptionalTask optionalTask);
 }

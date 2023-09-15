@@ -2,6 +2,7 @@ package com.katyshevtseva.kikiorgmobile.core;
 
 import com.katyshevtseva.kikiorgmobile.core.model.IrregularTask;
 import com.katyshevtseva.kikiorgmobile.core.model.Log;
+import com.katyshevtseva.kikiorgmobile.core.model.OptionalTask;
 import com.katyshevtseva.kikiorgmobile.core.model.RegularTask;
 
 import java.util.Comparator;
@@ -46,12 +47,20 @@ public class LogService {
         saveLog(action, Log.Subject.REGULAR_TASK, regularTask.getLogTaskDesk() + "\n" + additionalInfo);
     }
 
+    public void saveLog(Log.Action action, OptionalTask optionalTask, String additionalInfo) {
+        saveLog(action, Log.Subject.OPTIONAL_TASK, optionalTask.getTitle() + "\n" + additionalInfo);
+    }
+
     public void saveLog(Log.Action action, IrregularTask irregularTask, String additionalInfo) {
         saveLog(action, Log.Subject.IRREGULAR_TASK, irregularTask.getLogTaskDesk() + "\n" + additionalInfo);
     }
 
     public void saveLog(Log.Action action, RegularTask regularTask) {
         saveLog(action, Log.Subject.REGULAR_TASK, regularTask.getLogTaskDesk());
+    }
+
+    public void saveLog(Log.Action action, OptionalTask optionalTask) {
+        saveLog(action, Log.Subject.OPTIONAL_TASK, optionalTask.getTitle());
     }
 
     public void saveLog(Log.Action action, IrregularTask irregularTask) {
