@@ -72,7 +72,6 @@ public class LogService {
     }
 
     public List<Log> getLogs() {
-//        new SimpleBackupService(komDao).execute();
         return komDao.getAllLogs().stream().sorted(Comparator.comparing(Log::getId).reversed()).collect(Collectors.toList());
     }
 }

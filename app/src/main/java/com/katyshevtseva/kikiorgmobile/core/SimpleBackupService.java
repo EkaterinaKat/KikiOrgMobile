@@ -1,30 +1,35 @@
 package com.katyshevtseva.kikiorgmobile.core;
 
-import android.util.Log;
-
 import com.katyshevtseva.kikiorgmobile.core.model.IrregularTask;
 import com.katyshevtseva.kikiorgmobile.core.model.RegularTask;
 
-class SimpleBackupService {
+public class SimpleBackupService {
     private static final String tag = "KikiBackup";
+    public static SimpleBackupService INSTANCE;
     private final KomDao komDao;
 
-    SimpleBackupService(KomDao komDao) {
+    public static void init(KomDao komDao) {
+        INSTANCE = new SimpleBackupService(komDao);
+    }
+
+    private SimpleBackupService(KomDao komDao) {
         this.komDao = komDao;
     }
 
-    void execute() {
-        Log.i(tag, "*** START ***");
-        Log.i(tag, "*** REGULAR TASKS ***");
+    public String getBackup() {
+        StringBuilder stringBuilder = new StringBuilder("*** START *** \n\n *** REGULAR TASKS ***");
+
+
         for (RegularTask regularTask : komDao.getAllRegularTasks()) {
-            Log.i(tag, regularTask.getBackupString());
+            stringBuilder.append("\n").append(regularTask.getBackupString());
         }
 
-        Log.i(tag, "*** IRREGULAR TASKS ***");
+        stringBuilder.append("\n\n*** IRREGULAR TASKS ***");
         for (IrregularTask irregularTask : komDao.getAllIrregularTasks()) {
-            Log.i(tag, irregularTask.getBackupString());
+            stringBuilder.append("\n").append(irregularTask.getBackupString());
         }
 
-        Log.i(tag, "--- END ---");
+        stringBuilder.append("\n\n--- END ---");
+        return stringBuilder.toString();
     }
 }

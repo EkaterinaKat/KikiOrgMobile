@@ -39,6 +39,14 @@
                 android:layout_margin="5dp"
                 android:background="@mipmap/archive" />
 
+            <ImageButton
+                android:id="@+id/backup_button"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_margin="5dp"
+                android:layout_toStartOf="@id/logs_button"
+                android:background="@mipmap/backup" />
+
         </RelativeLayout>
 
         <LinearLayout
