@@ -87,10 +87,10 @@ public class MainTaskListFragment extends Fragment {
 
     private void otButtonListener() {
         if (otShown) {
-            otImageView.setBackground(ContextCompat.getDrawable(getContext(), R.mipmap.show_ot));
+            otImageView.setBackground(ContextCompat.getDrawable(getContext(), R.mipmap.ot_show));
             otScrollView.setVisibility(View.GONE);
         } else {
-            otImageView.setBackground(ContextCompat.getDrawable(getContext(), R.mipmap.hide_ot));
+            otImageView.setBackground(ContextCompat.getDrawable(getContext(), R.mipmap.ot_hide));
             otScrollView.setVisibility(View.VISIBLE);
         }
         otShown = !otShown;
